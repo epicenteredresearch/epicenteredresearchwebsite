@@ -15,13 +15,13 @@ interests:
 - Environmental influences on pubertal development
 - Life-course epigenetics, biological aging, and cancer risk
 - Guiding the design and analysis of epigenetic epidemiology studies
-#organizations:
-#- name: University of Hawaii Cancer Center
-#  url: https://www.uhcancercenter.org
-#role: Assistant Professor of Cancer Epidemiology
-#- name: UCLA School of Public Health
-#  url: https://ph.ucla.edu
-#role: Adjunct Assistant Professor of Epidemiology
+organizations:
+  - name: University of Hawaii Cancer Center
+    url: https://www.uhcancercenter.org
+    role: Assistant Professor of Cancer Epidemiology
+  - name: UCLA School of Public Health
+    url: https://ph.ucla.edu
+    role: Adjunct Assistant Professor of Epidemiology
 social:
 - icon: twitter
   icon_pack: fab
