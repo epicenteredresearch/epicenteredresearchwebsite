@@ -12,27 +12,23 @@ type: docs
 weight: 2
 ---
 
-The last step is re-running the analysis among mothers without pregnancy complications or physician initiated delivery that might affect gestational age. As extra sensitivity analyses, we will ask you to run the models again in the following subsets of children:
-
-1.	**Subset 1**: Mothers without pregnancy complications or physician initiated delivery that might affect gestational age. 
-    +	Pre-existing medical conditions in the mother: 
-        - diabetes (type 1, type 2)
-        - hypertension
-        - autoimmunediseases (including SLE, RA, and sclerodermia)
-        - immuno-compromised patients
-    +	Pregnancy complications:
-        - gestational diabetes
-        - placental abruption 
-        - placenta previa
-        - pre-eclampsia/eclampsia
-        - polyhydramnios, oligohydramnios
-        - placental insufficiency
-        - cervical insufficiency, isoimmunization, 
-        - cervical cerclaje
-    + Physician initiated delivery, which might be indicative of pregnancy complications.
-    + Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in.  
-    
-2.	**Subset 2**: All previous restrictions in only term births (>=37 weeks GA)
+The last step is re-running the analysis among mothers without pregnancy complications or physician initiated delivery that might affect gestational age. As an extra sensitivity analysis, we ask you to run the models again among the subset of mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
++	Pre-existing medical conditions in the mother: 
+    - diabetes (type 1, type 2)
+    - hypertension
+    - autoimmunediseases (including SLE, RA, and sclerodermia)
+    - immuno-compromised patients
++	Pregnancy complications:
+    - gestational diabetes
+    - placental abruption 
+    - placenta previa
+    - pre-eclampsia/eclampsia
+    - polyhydramnios, oligohydramnios
+    - placental insufficiency
+    - cervical insufficiency, isoimmunization, 
+    - cervical cerclaje
++ Physician initiated delivery, which might be indicative of pregnancy complications.
++ Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in. 
 
 ### Note: you only need to subset the phenofinal
 
@@ -41,3 +37,127 @@ You only need to subset the phenofinal data.frame to the samples in the given su
 ### Re-running final models
 
 Re-run the models in Step 3 among the specified subset. Be sure to change the destination folder so that you do not overwrite prior results.
+
+#### Example, if running among multiple race/ethnicities
+
+```{r eval=FALSE}
+
+## The exclusions is going to depend on your cohort
+phenodataframesensitivity<-phenodataframe[which(phenodataframe$GDM == 0 &
+                                                phenodataframe$PE == 0 &
+                                                phenodataframe$Diabetes == 0 &
+                                                phenodataframe$Hypertension == 0 &
+                                                phenodataframe$Previa == 0),]
+
+modelstorun<-data.frame(varofinterest=c("Gestage","PTB"),
+                        vartype=c("OutcomeCont","OutcomeBin"))
+modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
+modelstorun$vartype<-as.character(modelstorun$vartype)
+
+for (i in 1:nrow(modelstorun)){
+  
+  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  tempresults<-dataAnalysis(phenofinal=phenodataframesensitivity,
+                  betafinal=processedOut$processedBetas,
+                  array="450K",
+                  maxit=100,
+                  Omega=processedOut$Omega,
+                  vartype=modelstorun$vartype[i],
+                  varofinterest=modelstorun$varofinterest[i],
+                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  StratifyTable1=FALSE,
+                  StratifyTable1var=NULL,
+                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  RunUnadjusted=TRUE,
+                  RunAdjusted=TRUE,
+                  RunCellTypeAdjusted=TRUE,
+                  RunSexSpecific=TRUE,
+                  RestricttoEthnicity=FALSE,
+                  IndicatorforEthnicity=NULL,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-sensitivityanalysis-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210103")
+                  
+  tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframesensitivity,
+                  betafinal=processedOut$processedBetas,
+                  array="450K",
+                  maxit=100,
+                  Omega=processedOut$Omega,
+                  vartype=modelstorun$vartype[i],
+                  varofinterest=modelstorun$varofinterest[i],
+                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  StratifyTable1=FALSE,
+                  StratifyTable1var=NULL,
+                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  RunUnadjusted=TRUE,
+                  RunAdjusted=TRUE,
+                  RunCellTypeAdjusted=TRUE,
+                  RunSexSpecific=TRUE,
+                  RestricttoEthnicity=TRUE,
+                  IndicatorforEthnicity="1",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-sensitivityanalysis-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210103")
+  
+}
+
+## Then we run the models without adjusting for birth weight
+## Be sure to change the destination folder
+
+for (i in 1:nrow(modelstorun)){
+  
+  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  tempresults<-dataAnalysis(phenofinal=phenodataframesensitivity,
+                  betafinal=processedOut$processedBetas,
+                  array="450K",
+                  maxit=100,
+                  Omega=processedOut$Omega,
+                  vartype=modelstorun$vartype[i],
+                  varofinterest=modelstorun$varofinterest[i],
+                  Table1vars=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  StratifyTable1=FALSE,
+                  StratifyTable1var=NULL,
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
+                  RunAdjusted=TRUE,
+                  RunCellTypeAdjusted=TRUE,
+                  RunSexSpecific=TRUE,
+                  RestricttoEthnicity=FALSE,
+                  IndicatorforEthnicity=NULL,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-sensitivityanalysis-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210103")
+                  
+  tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframesensitivity,
+                  betafinal=processedOut$processedBetas,
+                  array="450K",
+                  maxit=100,
+                  Omega=processedOut$Omega,
+                  vartype=modelstorun$vartype[i],
+                  varofinterest=modelstorun$varofinterest[i],
+                  Table1vars=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  StratifyTable1=FALSE,
+                  StratifyTable1var=NULL,
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
+                  RunAdjusted=TRUE,
+                  RunCellTypeAdjusted=TRUE,
+                  RunSexSpecific=TRUE,
+                  RestricttoEthnicity=TRUE,
+                  IndicatorforEthnicity="1",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-sensitivityanalysis-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210103")
+  
+}
+
+
+```

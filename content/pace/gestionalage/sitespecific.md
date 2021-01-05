@@ -49,26 +49,23 @@ We provide an example description for reference (PACEPla_GA_Cohort_Methods_Date.
 
 Analysis will be restricted to singleton births. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.
 
-As extra sensitivity analyses, we will ask you to run the models again in the following subsets of children:
-
-1.	**Subset 1**: Mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
-    +	Pre-existing medical conditions in the mother: 
-        - diabetes (type 1, type 2)
-        - hypertension
-        - autoimmunediseases (including SLE, RA, and sclerodermia)
-        - immuno-compromised patients
-    +	Pregnancy complications:
-        - gestational diabetes
-        - placental abruption 
-        - placenta previa
-        - pre-eclampsia/eclampsia
-        - polyhydramnios, oligohydramnios
-        - placental insufficiency
-        - cervical insufficiency, isoimmunization, 
-        - cervical cerclaje
-    + Physician initiated delivery, which might be indicative of pregnancy complications.
-    + Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in. 
-2.	**Subset 2**: All previous restrictions in only term births (>=37 weeks GA)
+As an extra sensitivity analysis, we ask you to run the models again among the subset of mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
++	Pre-existing medical conditions in the mother: 
+    - diabetes (type 1, type 2)
+    - hypertension
+    - autoimmunediseases (including SLE, RA, and sclerodermia)
+    - immuno-compromised patients
++	Pregnancy complications:
+    - gestational diabetes
+    - placental abruption 
+    - placenta previa
+    - pre-eclampsia/eclampsia
+    - polyhydramnios, oligohydramnios
+    - placental insufficiency
+    - cervical insufficiency, isoimmunization, 
+    - cervical cerclaje
++ Physician initiated delivery, which might be indicative of pregnancy complications.
++ Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in. 
 
 ### Gestational age outcomes
 
