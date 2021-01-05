@@ -103,6 +103,8 @@ for (i in 1:nrow(modelstorun)){
 
 ### Running the final models
 
+Now running the models for all CpG loci
+
 ```{r eval=FALSE}
 
 ## First we run the models adjusting for birth weight 
@@ -176,31 +178,41 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210103_Output"
 
+listchecking<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking)<-modelstorun$varofinterest
+
 for (i in 1:nrow(modelstorun)){
-  
+
   tempvarofinterest<-modelstorun$varofinterest[i]
-  
+
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  lapply(alldataout,function(x)table(x$warnings))
+  listchecking[[i]]<-lapply(alldataout,function(x)table(x$warnings))
 
 }
 
 baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-noBWT-placenta/HEBC_20210103_Output"
 
+listchecking_nobwt<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_nobwt)<-modelstorun$varofinterest
+
 for (i in 1:nrow(modelstorun)){
-  
+
   tempvarofinterest<-modelstorun$varofinterest[i]
-  
+
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  lapply(alldataout,function(x)table(x$warnings))
+  listchecking_nobwt[[i]]<-lapply(alldataout,function(x)table(x$warnings))
 
 }
+
+## Check them out
+listchecking
+listchecking_nobwt
 
 
 

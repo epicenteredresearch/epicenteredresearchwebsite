@@ -54,6 +54,29 @@ for (i in 1:nrow(modelstorun)){
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
                   cohort="HEBC",analysisdate="20210103")
+                  
+  tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
+                  betafinal=processedOut$processedBetas[1:100,],
+                  array="450K",
+                  maxit=100,
+                  Omega=processedOut$Omega,
+                  vartype=modelstorun$vartype[i],
+                  varofinterest=modelstorun$varofinterest[i],
+                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  StratifyTable1=FALSE,
+                  StratifyTable1var=NULL,
+                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  RunUnadjusted=TRUE,
+                  RunAdjusted=TRUE,
+                  RunCellTypeAdjusted=TRUE,
+                  RunSexSpecific=TRUE,
+                  RestricttoEthnicity=TRUE,
+                  IndicatorforEthnicity="1",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210103")
   
 }
 
@@ -85,6 +108,29 @@ for (i in 1:nrow(modelstorun)){
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
                   savelog=TRUE,
                   cohort="HEBC",analysisdate="20210103")
+                  
+  tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
+                  betafinal=processedOut$processedBetas[1:100,],
+                  array="450K",
+                  maxit=100,
+                  Omega=processedOut$Omega,
+                  vartype=modelstorun$vartype[i],
+                  varofinterest=modelstorun$varofinterest[i],
+                  Table1vars=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  StratifyTable1=FALSE,
+                  StratifyTable1var=NULL,
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
+                  RunAdjusted=TRUE,
+                  RunCellTypeAdjusted=TRUE,
+                  RunSexSpecific=TRUE,
+                  RestricttoEthnicity=TRUE,
+                  IndicatorforEthnicity="1",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210103")
   
 }
 
@@ -92,6 +138,8 @@ for (i in 1:nrow(modelstorun)){
 ```
 
 ### Running the final models
+
+Now running the models for all CpG loci
 
 ```{r eval=FALSE}
 
@@ -213,43 +261,67 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210103_Output"
 
+listchecking<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking)<-modelstorun$varofinterest
+
+listchecking_race1<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_race1)<-modelstorun$varofinterest
+
 for (i in 1:nrow(modelstorun)){
-  
+
   tempvarofinterest<-modelstorun$varofinterest[i]
-  
+
   cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  lapply(alldataout,function(x)table(x$warnings))
-  
+  listchecking[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  lapply(alldataout,function(x)table(x$warnings))
+  listchecking_race1[[i]]<-lapply(alldataout,function(x)table(x$warnings))
 
 }
 
+## Check them out
+
+listchecking
+listchecking_race1
+
+
 baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-noBWT-placenta/HEBC_20210103_Output"
 
+listchecking_nobwt<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_nobwt)<-modelstorun$varofinterest
+
+listchecking_nobwt_race1<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_nobwt_race1)<-modelstorun$varofinterest
+
 for (i in 1:nrow(modelstorun)){
-  
+
   tempvarofinterest<-modelstorun$varofinterest[i]
-  
+
   cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  lapply(alldataout,function(x)table(x$warnings))
-  
-  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest"\n")
+  listchecking_nobwt[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+
+  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  lapply(alldataout,function(x)table(x$warnings))
+  listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x)table(x$warnings))
 
 }
+
+## Check them out
+
+listchecking_nobwt
+listchecking_nobwt_race1
+
 
 ```
 
