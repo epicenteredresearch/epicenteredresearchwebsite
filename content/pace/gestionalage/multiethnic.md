@@ -28,16 +28,6 @@ modelstorun<-data.frame(varofinterest=c("Gestage","PTB"),
                         vartype=c("OutcomeCont","OutcomeBin"))
 modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
 modelstorun$vartype<-as.character(modelstorun$vartype)
-modelstorun$table1vars<-c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic")
-                                   
-## including birth weight from adjustment variables
-modelstorun$adjustmentvariablesV1<-c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic")
-                                   
-## excluding birth weight from adjustment variables
-modelstorun$adjustmentvariablesV2<-c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic")
 
 for (i in 1:nrow(modelstorun)){
   
@@ -49,10 +39,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariablesV1[i],
+                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -66,7 +58,6 @@ for (i in 1:nrow(modelstorun)){
 }
 
 ## Then we run the models without adjusting for birth weight
-## (we now refer to adjustmentvariablesV2, which do not include birth weight)
 ## Be sure to change the destination folder
 
 for (i in 1:nrow(modelstorun)){
@@ -79,10 +70,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariablesV2[i],
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -115,10 +108,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariablesV1[i],
+                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -136,10 +131,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariablesV1[i],
+                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -153,7 +150,6 @@ for (i in 1:nrow(modelstorun)){
 }
 
 ## Then we run the models without adjusting for birth weight
-## (we now refer to adjustmentvariablesV2, which do not include birth weight)
 ## Be sure to change the destination folder
 
 for (i in 1:nrow(modelstorun)){
@@ -166,10 +162,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariablesV2[i],
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -187,10 +185,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariablesV2[i],
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
                   RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -223,7 +223,7 @@ for (i in 1:nrow(modelstorun)){
   load("HEBC_20210103_allanalyses.RData")
   lapply(alldataout,function(x)table(x$warnings))
   
-  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest"\n")
+  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")

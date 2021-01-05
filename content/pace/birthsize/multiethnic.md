@@ -28,10 +28,6 @@ modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
 modelstorun$vartype<-"OutcomeCont"
 modelstorun$vartype[modelstorun$varofinterest %in% c("LBWbin","HBWbin")]<-"OutcomeBin"
 
-modelstorun$adjustmentvariables<-c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","Ethnic")
-modelstorun$table1vars<-c("Gestage","Sex","Age","Parity","MaternalEd",
-                          "Smoke","preBMI","Ethnic")
 
 ## You can reduce this dataframe to whatever variables you have.
 ## For example, if you only have birthweight, you would specify:
@@ -49,10 +45,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariables[i],
+                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -71,10 +69,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariables[i],
+                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -104,10 +104,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariables[i],
+                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -126,10 +128,12 @@ for (i in 1:nrow(modelstorun)){
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=modelstorun$table1vars[i],
+                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=modelstorun$adjustmentvariables[i],
+                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -162,7 +166,7 @@ for (i in 1:nrow(modelstorun)){
   load("HEBC_20210103_allanalyses.RData")
   lapply(alldataout,function(x)table(x$warnings))
   
-  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest"\n")
+  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
