@@ -275,13 +275,13 @@ for (i in 1:nrow(modelstorun)){
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  listchecking[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  listchecking_race1[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+  listchecking_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }
 
@@ -307,13 +307,13 @@ for (i in 1:nrow(modelstorun)){
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  listchecking_nobwt[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+  listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+  listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }
 

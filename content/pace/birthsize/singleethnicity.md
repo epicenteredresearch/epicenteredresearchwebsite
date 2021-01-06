@@ -116,7 +116,7 @@ for (i in 1:nrow(modelstorun)){
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
-  listchecking[[i]]<-lapply(alldataout,function(x)table(x$warnings))
+  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }
 
