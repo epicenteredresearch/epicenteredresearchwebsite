@@ -24,19 +24,8 @@ modelstorun<-data.frame(varofinterest=c("Gestage","PTB"),
                         vartype=c("OutcomeCont","OutcomeBin"))
 modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
 modelstorun$vartype<-as.character(modelstorun$vartype)
-modelstorun$table1vars<-c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery")
-                                   
-## including birth weight from adjustment variables
-modelstorun$adjustmentvariablesV1<-c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery")
-                                   
-## excluding birth weight from adjustment variables
-modelstorun$adjustmentvariablesV2<-c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery")
 
 ## First we run the models adjusting for birth weight 
-## (we refer to adjustmentvariablesV1, which includes birth weight)
 
 for (i in 1:nrow(modelstorun)){
   
@@ -67,7 +56,6 @@ for (i in 1:nrow(modelstorun)){
 }
 
 ## Then we run the models without adjusting for birth weight
-## (we now refer to adjustmentvariablesV2, which do not include birth weight)
 ## Be sure to change the destination folder
 
 for (i in 1:nrow(modelstorun)){
