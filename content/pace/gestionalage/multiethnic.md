@@ -14,7 +14,7 @@ weight: 2
 
 This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the gestational age project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
 
-If you have multiple race/ethnicities in your cohort, run the below code. Be sure to update IndicatorforEthnicity to whatever is appropriate for your cohort. For example, if one of your race/ethnicity categories is "White" for individuals of European descent, use that instead of "1". 
+If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestricttoEthnicity is TRUE), the data.frame specified by the phenofinal argument must include the column ‘Ethnic’, which is assumed to be a categorical variable. Be sure to update IndicatorforEthnicity to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
 
 First, we will run the models adjusting for birth weight, and then we will run the models without adjusting for birth weight. Be sure to change the destination folder for your models not adjusting for birth weight so that you do not overwrite your initial results.
 
