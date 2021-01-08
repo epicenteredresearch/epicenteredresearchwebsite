@@ -49,7 +49,7 @@ We provide an example description for reference (PACEPla_GA_Cohort_Methods_Date.
 
 Analysis will be restricted to singleton births. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.
 
-As an extra sensitivity analysis, we ask you to run the models again among the subset of mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
+As an extra sensitivity analysis, we ask you to run the gestational age model again among the subset **term births (>=37 weeks gestation)** from mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
 +	Pre-existing medical conditions in the mother: 
     - diabetes (type 1, type 2)
     - hypertension
@@ -66,6 +66,7 @@ As an extra sensitivity analysis, we ask you to run the models again among the s
     - cervical cerclaje
 + Physician initiated delivery, which might be indicative of pregnancy complications.
 + Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in. 
++ Restrict to only term births (>=37 weeks gestation)
 
 ### Gestational age outcomes
 

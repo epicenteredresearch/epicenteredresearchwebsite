@@ -51,6 +51,6 @@ hero_media = "pace2.png"
 #  label = '<a class="js-github-release" #href="https://sourcethemes.com/academic/updates" #data-repo="gcushen/hugo-academic">Latest release<!-- V #--></a>'
 +++
 
-Click below for guidance on PACE analysis
+The Pregnancy And Childhood Epigenetics (PACE) consortium is comprised of researchers at NIEHS and around the world who are interested in studying the early life environmental impacts on human disease using epigenetics. Affiliated researchers can click below for guidance on current PACE analysis
 
 
