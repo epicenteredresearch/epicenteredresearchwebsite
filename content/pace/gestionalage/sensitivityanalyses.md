@@ -12,7 +12,7 @@ type: docs
 weight: 2
 ---
 
-The last step is re-running the analysis among mothers without pregnancy complications or physician initiated delivery that might affect gestational age. As an extra sensitivity analysis, we ask you to run the gestational age model again among the subset **term births (>=37 weeks gestation)** from mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
+The last step is re-running the analysis among mothers without pregnancy complications or physician initiated delivery that might affect gestational age. As an extra sensitivity analysis, we ask you to run the gestational age model again among the subset of  **term births (>=37 weeks gestation)** from mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
 +	Pre-existing medical conditions in the mother: 
     - diabetes (type 1, type 2)
     - hypertension
