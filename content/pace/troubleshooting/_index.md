@@ -14,7 +14,7 @@ type: docs
 weight: 1
 ---
 
-### Adding addtional covariates to the analysis dataframe
+### Adding additional covariates to the analysis dataframe
 
 What if you have already preprocessed the data, but you want to add additional covariates to the phenotype dataframe for your analysis? See below:
 
