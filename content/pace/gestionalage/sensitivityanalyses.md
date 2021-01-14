@@ -55,7 +55,7 @@ phenodataframe$NoPregnancyComplications[which(phenodataframe$GDM == 0 &
 
 ## Creating a category based on those without complications and that are among the most prevalent race/ethnicity
 phenodataframe$NoPregnancyComplicationsandWhite<-"No"
-phenodataframe$NoPregnancyComplicationsandWhite[which(phenodataframe$PregnancyComplications=="Yes" &
+phenodataframe$NoPregnancyComplicationsandWhite[which(phenodataframe$NoPregnancyComplications=="Yes" &
                                                     phenodataframe$Ethnic=="1")]<-"Yes"
 
 tempresults<-dataAnalysis(phenofinal=phenodataframe,
