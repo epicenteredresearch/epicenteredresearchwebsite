@@ -44,13 +44,21 @@ Re-run the models in Step 3 among the specified subset. Be sure to change the de
 ```{r eval=FALSE}
 
 ## The exclusions is going to depend on your cohort
-phenodataframesensitivity<-phenodataframe[which(phenodataframe$GDM == 0 &
+phenodataframe$NoPregnancyComplications<-"Yes"
+phenodataframe$NoPregnancyComplications[which(phenodataframe$GDM == 0 &
                                                 phenodataframe$PE == 0 &
                                                 phenodataframe$Diabetes == 0 &
                                                 phenodataframe$Hypertension == 0 &
-                                                phenodataframe$Previa == 0),]
+                                                phenodataframe$Previa == 0 &
+                                                phenodataframe$Gestage>=37)]<-"No"
 
-tempresults<-dataAnalysis(phenofinal=phenodataframesensitivity,
+
+## Creating a category based on those without complications and that are among the most prevalent race/ethnicity
+phenodataframe$NoPregnancyComplicationsandWhite<-"No"
+phenodataframe$NoPregnancyComplicationsandWhite[which(phenodataframe$PregnancyComplications=="Yes" &
+                                                    phenodataframe$Ethnic=="1")]<-"Yes"
+
+tempresults<-dataAnalysis(phenofinal=phenodataframe,
                           betafinal=processedOut$processedBetas,
                           array="450K",
                           maxit=100,
@@ -67,13 +75,15 @@ tempresults<-dataAnalysis(phenofinal=phenodataframesensitivity,
                           RunAdjusted=TRUE,
                           RunCellTypeAdjusted=TRUE,
                           RunSexSpecific=TRUE,
-                          RestricttoEthnicity=FALSE,
-                          IndicatorforEthnicity=NULL,
-                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-sensitivityanalysis-placenta",
+                          RestrictToSubset=TRUE,
+                          RestrictionVar="NoPregnancyComplications",
+                          RestrictToIndicator="Yes",
+                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103")
+                          cohort="HEBC",analysisdate="20210103",
+                          analysisname="sensitivtyanalysis")
 
-tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframesensitivity,
+tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                           betafinal=processedOut$processedBetas,
                           array="450K",
                           maxit=100,
@@ -90,16 +100,16 @@ tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframesensitivity,
                           RunAdjusted=TRUE,
                           RunCellTypeAdjusted=TRUE,
                           RunSexSpecific=TRUE,
-                          RestricttoEthnicity=TRUE,
-                          IndicatorforEthnicity="1",
-                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-sensitivityanalysis-placenta",
+                          RestrictToSubset=TRUE,
+                          RestrictionVar="NoPregnancyComplicationsandWhite",
+                          RestrictToIndicator="Yes",
+                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103")
+                          cohort="HEBC",analysisdate="20210103",
+                          analysisname="sensitivtyanalysis")
                   
-## Then we run the models without adjusting for birth weight
-## Be sure to change the destination folder
 
-tempresults<-dataAnalysis(phenofinal=phenodataframesensitivity,
+tempresults<-dataAnalysis(phenofinal=phenodataframe,
                           betafinal=processedOut$processedBetas,
                           array="450K",
                           maxit=100,
@@ -116,13 +126,15 @@ tempresults<-dataAnalysis(phenofinal=phenodataframesensitivity,
                           RunAdjusted=TRUE,
                           RunCellTypeAdjusted=TRUE,
                           RunSexSpecific=TRUE,
-                          RestricttoEthnicity=FALSE,
-                          IndicatorforEthnicity=NULL,
-                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-sensitivityanalysis-placenta",
+                          RestrictToSubset=TRUE,
+                          RestrictionVar="NoPregnancyComplications",
+                          RestrictToIndicator="Yes",
+                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103")
+                          cohort="HEBC",analysisdate="20210103",
+                          analysisname="sensitivtyanalysis_nobwtadjustment")
 
-tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframesensitivity,
+tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                           betafinal=processedOut$processedBetas,
                           array="450K",
                           maxit=100,
@@ -139,11 +151,13 @@ tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframesensitivity,
                           RunAdjusted=TRUE,
                           RunCellTypeAdjusted=TRUE,
                           RunSexSpecific=TRUE,
-                          RestricttoEthnicity=TRUE,
-                          IndicatorforEthnicity="1",
-                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-sensitivityanalysis-placenta",
+                          RestrictToSubset=TRUE,
+                          RestrictionVar="NoPregnancyComplicationsandWhite",
+                          RestrictToIndicator="Yes",
+                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103")
+                          cohort="HEBC",analysisdate="20210103",
+                          analysisname="sensitivtyanalysis_nobwtadjustment")
 
 
 

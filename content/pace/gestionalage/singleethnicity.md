@@ -12,7 +12,7 @@ type: docs
 weight: 3
 ---
 
-This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
+This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the gestational age project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. Be sure to use different analysisname arguments when running the model with and without adjustment for birth weight so that the results are written into separate subfolder directories. 
 
 ### Quick check to make sure the function runs in your cohort
 
@@ -47,16 +47,18 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
 ## Then we run the models without adjusting for birth weight
-## Be sure to change the destination folder
+## be sure to change the analysisname argument to create a new directory for the results
 
 for (i in 1:nrow(modelstorun)){
   
@@ -78,11 +80,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main_nobwtadjustment")
   
 }
 
@@ -121,12 +125,13 @@ for (i in 1:nrow(modelstorun)){
                   IndicatorforEthnicity=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
 ## Then we run the models without adjusting for birth weight
-## Be sure to change the destination folder
+## be sure to change the analysisname argument to create a new directory for the results
 
 for (i in 1:nrow(modelstorun)){
   
@@ -150,9 +155,10 @@ for (i in 1:nrow(modelstorun)){
                   RunSexSpecific=TRUE,
                   RestricttoEthnicity=FALSE,
                   IndicatorforEthnicity=NULL,
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main_nobwtadjustment")
   
 }
 
@@ -169,20 +175,6 @@ baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210103_Output"
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
 
-for (i in 1:nrow(modelstorun)){
-
-  tempvarofinterest<-modelstorun$varofinterest[i]
-
-  cat("Outcome:",tempvarofinterest,"\n")
-  tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
-  setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
-  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
-}
-
-baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-noBWT-placenta/HEBC_20210103_Output"
-
 listchecking_nobwt<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking_nobwt)<-modelstorun$varofinterest
 
@@ -191,9 +183,16 @@ for (i in 1:nrow(modelstorun)){
   tempvarofinterest<-modelstorun$varofinterest[i]
 
   cat("Outcome:",tempvarofinterest,"\n")
-  tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  load(tempfilename)
+  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment",sep="")
+  setwd(tempdirectory)
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
+  load(tempfilename)
   listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }

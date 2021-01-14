@@ -52,11 +52,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
@@ -88,11 +90,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
@@ -113,15 +117,17 @@ for (i in 1:nrow(modelstorun)){
   tempvarofinterest<-modelstorun$varofinterest[i]
 
   cat("Outcome:",tempvarofinterest,"\n")
-  tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  load(tempfilename)
   listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }
 
 ## Check them out
 listchecking
+
 
 
 

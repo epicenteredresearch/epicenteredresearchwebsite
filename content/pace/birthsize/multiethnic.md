@@ -14,7 +14,7 @@ weight: 2
 
 This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
 
-If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestricttoEthnicity is TRUE), the data.frame specified by the phenofinal  argument must include the column 'Ethnic', which is assumed to be a categorical variable. Be sure to update IndicatorforEthnicity to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is "White" for individuals of European descent, use that instead of "1". 
+If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestrictToSubset is TRUE), the data.frame specified by the phenofinal argument must include the column specified by the argument RestrictionVar, which is assumed to be a categorical variable for race/ethnicity. Be sure to update RestrictToIndicator to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
 
 ### Quick check to make sure the function runs in your cohort
 
@@ -55,11 +55,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
     ## restricting to the most prevalent race/ethnicity
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
@@ -79,11 +81,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=TRUE,
-                  IndicatorforEthnicity="1",
+                  RestrictToSubset=TRUE,
+                  RestrictionVar="Ethnic",
+                  RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
@@ -116,11 +120,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
     ## restricting to the most prevalent race/ethnicity
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
@@ -140,11 +146,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=TRUE,
-                  IndicatorforEthnicity="1",
+                  RestrictToSubset=TRUE,
+                  RestrictionVar="Ethnic",
+                  RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
@@ -161,31 +169,31 @@ baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210103_Output"
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
 
-listchecking_race1<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_race1)<-modelstorun$varofinterest
+listchecking_Ethnic_1<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_Ethnic_1)<-modelstorun$varofinterest
 
 for (i in 1:nrow(modelstorun)){
 
   tempvarofinterest<-modelstorun$varofinterest[i]
 
-  cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
-  tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
+  cat("Outcome:",tempvarofinterest,"\n")
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  load(tempfilename)
   listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
-  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
-  tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
+  
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main/Ethnic_1",sep="")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
-  listchecking_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  load(tempfilename)
+  listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  
 }
 
 ## Check them out
-
 listchecking
-listchecking_race1
+listchecking_Ethnic_1
 
 ```
 

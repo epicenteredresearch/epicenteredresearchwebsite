@@ -14,9 +14,9 @@ weight: 2
 
 This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the gestational age project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
 
-If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestricttoEthnicity is TRUE), the data.frame specified by the phenofinal argument must include the column ‘Ethnic’, which is assumed to be a categorical variable. Be sure to update IndicatorforEthnicity to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
+If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestrictToSubset is TRUE), the data.frame specified by the phenofinal argument must include the column specified by the argument RestrictionVar, which is assumed to be a categorical variable for race/ethnicity. Be sure to update RestrictToIndicator to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
 
-First, we will run the models adjusting for birth weight, and then we will run the models without adjusting for birth weight. Be sure to change the destination folder for your models not adjusting for birth weight so that you do not overwrite your initial results.
+First, we will run the models adjusting for birth weight, and then we will run the models without adjusting for birth weight. Be sure to use different analysisname arguments when running the model with and without adjustment for birth weight so that the results are written into separate subfolder directories. 
 
 ### Quick check to make sure the function runs in your cohort
 
@@ -49,11 +49,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
                   
   tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas[1:100,],
@@ -72,16 +74,18 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=TRUE,
-                  IndicatorforEthnicity="1",
+                  RestrictToSubset=TRUE,
+                  RestrictionVar="Ethnic",
+                  RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
 ## Then we run the models without adjusting for birth weight
-## Be sure to change the destination folder
+## be sure to change the analysisname argument to create a new directory for the results
 
 for (i in 1:nrow(modelstorun)){
   
@@ -103,11 +107,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main_nobwtadjustment")
                   
   tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas[1:100,],
@@ -126,11 +132,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=TRUE,
-                  IndicatorforEthnicity="1",
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  RestrictToSubset=TRUE,
+                  RestrictionVar="Ethnic",
+                  RestrictToIndicator="1",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main_nobwtadjustment")
   
 }
 
@@ -166,11 +174,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas,
@@ -189,16 +199,18 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=TRUE,
-                  IndicatorforEthnicity="1",
+                  RestrictToSubset=TRUE,
+                  RestrictionVar="Ethnic",
+                  RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main")
   
 }
 
 ## Then we run the models without adjusting for birth weight
-## Be sure to change the destination folder
+## be sure to change the analysisname argument to create a new directory for the results
 
 for (i in 1:nrow(modelstorun)){
   
@@ -220,11 +232,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=FALSE,
-                  IndicatorforEthnicity=NULL,
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  RestrictToSubset=FALSE,
+                  RestrictionVar=NULL,
+                  RestrictToIndicator=NULL,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main_nobwtadjustment")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas,
@@ -243,11 +257,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
-                  RestricttoEthnicity=TRUE,
-                  IndicatorforEthnicity="1",
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-noBWT-placenta",
+                  RestrictToSubset=TRUE,
+                  RestrictionVar="Ethnic",
+                  RestrictToIndicator="1",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103")
+                  cohort="HEBC",analysisdate="20210103",
+                  analysisname="main_nobwtadjustment")
   
 }
 
@@ -264,8 +280,57 @@ baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210103_Output"
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
 
-listchecking_race1<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_race1)<-modelstorun$varofinterest
+listchecking_nobwt<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_nobwt)<-modelstorun$varofinterest
+
+listchecking_Ethnic_1<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_Ethnic_1)<-modelstorun$varofinterest
+
+listchecking_nobwt_Ethnic_1<-as.list(rep(NA,nrow(modelstorun)))
+names(listchecking_nobwt_Ethnic_1)<-modelstorun$varofinterest
+
+for (i in 1:nrow(modelstorun)){
+
+  tempvarofinterest<-modelstorun$varofinterest[i]
+
+  cat("Outcome:",tempvarofinterest,"\n")
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
+  setwd(tempdirectory)
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  load(tempfilename)
+  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment",sep="")
+  setwd(tempdirectory)
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
+  load(tempfilename)
+  listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main/Ethnic_1",sep="")
+  setwd(tempdirectory)
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  load(tempfilename)
+  listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  
+  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment/Ethnic_1",sep="")
+  setwd(tempdirectory)
+  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
+  load(tempfilename)
+  listchecking_nobwt_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  
+
+}
+
+## Check them out
+listchecking
+listchecking_nobwt
+listchecking_Ethnic_1
+listchecking_nobwt_Ethnic_1
+
+
+
+
+
 
 for (i in 1:nrow(modelstorun)){
 
@@ -278,7 +343,7 @@ for (i in 1:nrow(modelstorun)){
   listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
-  tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
+  tempdirectory<-paste(tempdirectory,"Ethnic_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
   listchecking_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
@@ -310,7 +375,7 @@ for (i in 1:nrow(modelstorun)){
   listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
-  tempdirectory<-paste(tempdirectory,"Race_1",sep="/")
+  tempdirectory<-paste(tempdirectory,"Ethnic_1",sep="/")
   setwd(tempdirectory)
   load("HEBC_20210103_allanalyses.RData")
   listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))

@@ -40,7 +40,9 @@ BiocManager::install(c("minfi","sva","sesame","wateRmelon","EpiDISH",
                        "IlluminaHumanMethylation450kanno.ilmn12.hg19",
                        "IlluminaHumanMethylationEPICanno.ilm10b4.hg19",
                        "FlowSorted.CordBlood.450k",
-                       "FlowSorted.Blood.450k"))
+                       "FlowSorted.Blood.450k",
+                       "FlowSorted.CordBloodCombined.450k",
+                       "FlowSorted.Blood.EPIC"))
 
 ## Need to then install package, specifying path to the source package
 install.packages("F:\\PACE\\PACEanalysis_0.1.0.tar.gz",
