@@ -36,6 +36,7 @@ for (i in 1:nrow(modelstorun)){
                   betafinal=processedOut$processedBetas[1:100,],
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -49,18 +50,20 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main")
                   
-  tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
+  robust=TRUE,tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas[1:100,],
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -74,12 +77,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=TRUE,
                   RestrictionVar="Ethnic",
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main")
   
 }
@@ -94,6 +98,7 @@ for (i in 1:nrow(modelstorun)){
                   betafinal=processedOut$processedBetas[1:100,],
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -107,18 +112,20 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main_nobwtadjustment")
                   
   tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas[1:100,],
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -132,12 +139,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=TRUE,
                   RestrictionVar="Ethnic",
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main_nobwtadjustment")
   
 }
@@ -161,6 +169,7 @@ for (i in 1:nrow(modelstorun)){
                   betafinal=processedOut$processedBetas,
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -174,18 +183,20 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas,
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -199,12 +210,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=TRUE,
                   RestrictionVar="Ethnic",
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main")
   
 }
@@ -219,6 +231,7 @@ for (i in 1:nrow(modelstorun)){
                   betafinal=processedOut$processedBetas,
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -232,18 +245,20 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main_nobwtadjustment")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=processedOut$processedBetas,
                   array="450K",
                   maxit=100,
+                  robust=TRUE,
                   Omega=processedOut$Omega,
                   vartype=modelstorun$vartype[i],
                   varofinterest=modelstorun$varofinterest[i],
@@ -257,12 +272,13 @@ for (i in 1:nrow(modelstorun)){
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
                   RunSexSpecific=TRUE,
+                  RunCellTypeInteract=TRUE,
                   RestrictToSubset=TRUE,
                   RestrictionVar="Ethnic",
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210103",
+                  cohort="HEBC",analysisdate="20210330",
                   analysisname="main_nobwtadjustment")
   
 }
@@ -275,7 +291,7 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 ```{r eval=FALSE}
 
-baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210103_Output"
+baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210330_Output"
 
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
@@ -296,27 +312,31 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
-  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
   load(tempfilename)
-  listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main/Ethnic_1",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
-  listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment/Ethnic_1",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210103_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
   load(tempfilename)
-  listchecking_nobwt_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
 
 }
@@ -339,14 +359,16 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
-  listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  load("HEBC_20210330_allanalyses.RData")
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Ethnic_1",sep="/")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
-  listchecking_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  load("HEBC_20210330_allanalyses.RData")
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }
 
@@ -371,14 +393,16 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
-  listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  load("HEBC_20210330_allanalyses.RData")
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
   cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
   tempdirectory<-paste(tempdirectory,"Ethnic_1",sep="/")
   setwd(tempdirectory)
-  load("HEBC_20210103_allanalyses.RData")
-  listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
+  load("HEBC_20210330_allanalyses.RData")
+  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
+  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
 
 }
 

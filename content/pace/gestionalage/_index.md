@@ -30,7 +30,8 @@ First need to install required packages if you don't have them already
 install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS",
                     "pvclust","heatmap.plus","GGally","Hmisc","MASS",
                     "sandwich", "lmtest","plyr","remotes"))
-remotes::install_github("ki-tools/growthstandards") 
+devtools::install_github("ki-tools/growthstandards") 
+devtools::install_github("hhhh5/ewastools")
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
@@ -40,12 +41,10 @@ BiocManager::install(c("minfi","sva","sesame","wateRmelon","EpiDISH",
                        "IlluminaHumanMethylation450kanno.ilmn12.hg19",
                        "IlluminaHumanMethylationEPICanno.ilm10b4.hg19",
                        "FlowSorted.CordBlood.450k",
-                       "FlowSorted.Blood.450k",
-                       "FlowSorted.CordBloodCombined.450k",
-                       "FlowSorted.Blood.EPIC"))
+                       "FlowSorted.Blood.450k"))
 
 ## Need to then install package, specifying path to the source package
-install.packages("F:\\PACE\\PACEanalysis_0.1.0.tar.gz",
+install.packages("F:\\PACE\\PACEanalysis_0.1.4.tar.gz",
                  repos = NULL, type="source")
 
 ```
@@ -76,13 +75,13 @@ exampledat<-loadingSamples(SamplePlacement=NULL,PhenoData=allphenodata,
                   IDATdir="H:\\UCLA\\PACE\\Birthweight-placenta\\IDATfiles",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20201229")
+                  cohort="HEBC",analysisdate="20210330")
 
 EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   globalvarexplore=c("BWT","Sex"),
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20201229")
+                  cohort="HEBC",analysisdate="20210330")
 ```
 
 
@@ -98,7 +97,7 @@ Before moving on to the next stage, check out the figures and csv files in the n
 
 - signal intensities on X and Y chromosomes (used to identify sex mix-ups)
 
-- dendogram of the SNPs on the array (to identify possible sample replications or appraise relatedness)
+- dendogram and heatmap of the SNPs on the array (to identify possible sample replications or appraise relatedness)
 
 - scatterplot of first two PCs
 
@@ -106,7 +105,7 @@ Before moving on to the next stage, check out the figures and csv files in the n
 
 - csv file of suggested probes to remove based on the percent of samples that failed for that probe (see function details)
 
-- csv file of suggested samples to potentially remove based on evidence of sex mix-ups, a high proportion of failed probes for that sample, or unintentional replicates based on clustering of SNP probes (see dendogram of the SNPs on the array).
+- csv file of suggested samples to potentially remove based on evidence of sex mix-ups, a high proportion of failed probes for that sample, low global methylated or unmethylated intensities, or unintentional replicates based on clustering of SNP probes (see dendogram of the SNPs on the array).
 
 The function also returns a list that includes:  
 
@@ -115,6 +114,8 @@ The function also returns a list that includes:
 - *ProbestoRemove* : A character vector of CpGIDs to exclude based on the exploratory data analysis
 
 - *DetectionPval* : A matrix used to mask methylation values with a poor detection p-value (p>0.05); NA if poor detection, 1 otherwise
+
+- *logOddsContamin* : The average log odds from the SNP posterior probabilities from the outlier component; capturing how irregular the SNP beta-values deviate from the ideal trimodal distribution. Values greater than -4 are suggest potentially contaminated samples
 
 ## Pre-processing the data
 
@@ -129,7 +130,7 @@ processedOut<-preprocessingofData(RGset=exampledat,
                   compositeCellType="RefFree",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20201229")
+                  cohort="HEBC",analysisdate="20210330")
 
 ```
 

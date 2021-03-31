@@ -98,8 +98,8 @@ If you encounter any issues, please check out our troubleshooting guide to see i
 ## If you closed prior R session, you can load list of pre-processed objects 
 ## that is automatically saved by the preprocessingofData function
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20201229_Output")
-load("HEBC_20201229_Preprocessed.RData")
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210330_Output")
+load("HEBC_20210330_Preprocessed.RData")
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
 phenodataframe$LBWbin<-ifelse(phenodataframe$BWT<2500,1,0)
