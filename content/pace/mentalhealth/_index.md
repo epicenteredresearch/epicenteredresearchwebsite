@@ -16,7 +16,7 @@ weight: 1
 
 ## Loading the IDAT files and performing exploratory data analysis
 
-This part of the analysis can be used for multiple downstream site-specific analyses. If you have already run this part, you can skip to "Step 2. Site-Specific Analysis"
+This part of the analysis can be used for multiple downstream site-specific analyses. If you have already run this part, you can skip to "Step 2. Data Preparation"
 
 If you encounter any issues, please check out our troubleshooting guide to see if there is any guidance that may help: https://www.epicenteredresearch.com/pace/troubleshooting/
 
