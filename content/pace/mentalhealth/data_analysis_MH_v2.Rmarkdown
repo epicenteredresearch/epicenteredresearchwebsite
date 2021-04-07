@@ -1,16 +1,18 @@
 ---
 date: "2021-01-03T00:00:00+01:00"
 draft: false
-linktitle: Step 3. Data Analysis
+linktitle: Step 4. Data Analysis
 menu:
   mentalhealth:
-    name: Step 3. Data Analysis
+    name: Step 4. Data Analysis
     weight: 3
 title: Site-Specific Data Analysis
 toc: true
-type: docs
 weight: 3
 ---
+
+
+
 
 This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
 
