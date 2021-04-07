@@ -152,19 +152,16 @@ Estimated cell types are estimated in the pre-processing phase using the R packa
 
 If you encounter any issues, please check out our troubleshooting guide to see if there is any guidance that may help: https://www.epicenteredresearch.com/pace/troubleshooting/
 
+If you closed prior R session, you can load list of pre-processed objects that is automatically saved by the preprocessingofData function, e.g.
+
 
 ```{r eval=FALSE}
 
-## If you closed prior R session, you can load list of pre-processed objects 
-## that is automatically saved by the preprocessingofData function, e.g.
-#    load("C:/methylation_placenta/ITU_20210331_Output/ITU_20210331_Preprocessed.Rdata")
+load("C:/methylation_placenta/ITU_20210331_Output/ITU_20210331_Preprocessed.Rdata")
 
 ```
 
-
-First goal in this step is to create a phenodataframe that contains all the necessary variables and only complete cases
-
-You can get the phenodata from the preprocessed data object as follows:
+First goal in this step is to create a phenodataframe that contains all the necessary variables and only complete cases. You can get the phenodata from the preprocessed data object as follows:
 
 ```r
 
@@ -172,7 +169,7 @@ phenodata <-as.data.frame(pData(processedOut$mset))
 
 ```
 
-### If you already included all the necessary phenodata in step 1 it's only necessary to filter phenodata to complete cases.
+#### If you already included all the necessary phenodata in step 1 it's only necessary to filter phenodata to complete cases.
 
 ```r
 # You can see the amount of complete cases
@@ -197,7 +194,7 @@ phenodataframe <- na.omit(phenodata)
 # phenodataframe <- phenodataframe[phenodataframe$INDEX !=1,] 
 ```
 
-### If you don't have all necessary variables in phenodata, you can just load another phenodata and merge them by ID-variable
+#### If you don't have all necessary variables in phenodata, you can just load another phenodata and merge them by ID-variable
 
 ```r
 
@@ -212,7 +209,7 @@ phenodataframe <- na.omit(phenodataframe).
 rownames(phenodataframe)<-as.character(phenodataframe$Basename)
 
 ```
-### Make sure all categorical adjustment variables are coded as factors or characters
+#### Make sure all categorical adjustment variables are coded as factors or characters
 
 ```r
 ## 'Sex' is already coded as a character
