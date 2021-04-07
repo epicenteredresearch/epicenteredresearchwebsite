@@ -24,7 +24,7 @@ If you encounter any issues, please check out our troubleshooting guide to see i
 
 First need to install required packages if you don't have them already 
 
-```ruby
+```r
 
 ## First need to install required packages if you don't have them already
 install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS",
