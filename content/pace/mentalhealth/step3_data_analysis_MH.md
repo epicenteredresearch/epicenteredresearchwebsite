@@ -4,9 +4,9 @@ draft: false
 linktitle: Step 3. Data Analysis
 menu:
   mentalhealth:
-    parent: Step 2. Site-Specific Analysis
+    name: Step 3. Data Analysis
     weight: 2
-title: Step 3. Data Analysis
+title: Data Analysis
 toc: true
 type: docs
 weight: 2
