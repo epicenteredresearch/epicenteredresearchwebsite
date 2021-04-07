@@ -24,7 +24,7 @@ If you encounter any issues, please check out our troubleshooting guide to see i
 
 First need to install required packages if you don't have them already 
 
-```{r eval=FALSE}
+```r
 
 ## First need to install required packages if you don't have them already
 install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS",
@@ -61,7 +61,8 @@ install.packages("C:/PACE/PACEanalysis_0.1.4.tar.gz",
 
 Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. library(PACEanalysis)), and entering ? followed by the function name in your R console, e.g. ?loadingSamples
 
-```{r eval=FALSE}
+```r
+
 ## Attach package
 library(PACEanalysis)
 
@@ -154,7 +155,7 @@ The function also returns a list that includes:
 
 This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'
 
-```{r eval=FALSE}
+```r
 
 ## Please note that this step will take substantially longer than the previous ExploratoryDataAnalysis
 
@@ -180,7 +181,7 @@ If using a reference-free method to estimate Omega (matrix of cell composition e
 
 Check out the estimated cell composition distribution for the samples, does it look correct?
 
-```{r eval=FALSE}
+```r
 
 library(reshape)
 evaluatingOmega<-as.data.frame(processedOut$Omega)

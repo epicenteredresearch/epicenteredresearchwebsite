@@ -155,7 +155,7 @@ If you encounter any issues, please check out our troubleshooting guide to see i
 If you closed prior R session, you can load list of pre-processed objects that is automatically saved by the preprocessingofData function, e.g.
 
 
-```{r eval=FALSE}
+```r
 
 load("C:/methylation_placenta/ITU_20210331_Output/ITU_20210331_Preprocessed.Rdata")
 

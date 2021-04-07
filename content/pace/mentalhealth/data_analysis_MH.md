@@ -18,7 +18,8 @@ This stage of the analysis is specific to the chosen exposure/outcome and the sp
 
 Given the modeling approaches used, the dataAnalysis function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
 
-```{r eval=FALSE}
+```r
+
 # if needed reload Preprocessed data of step 1 and the final phenodataframe from step 2
 # library(PACEanalysis)
 # load("C:/methylation_placenta/ITU_20210331_Output/ITU_20210331_Preprocessed.Rdata")
@@ -197,8 +198,7 @@ for (i in 1:nrow(modelstorun)){
 Now running the models for all CpG loci.
 Please note that the R package automatically saves the results in the end.
 
-```{r eval=FALSE}
-
+```r
 
 # MAIN MODELS WITH EXPOSURE AS CONTINUOUS (M01-M03 in the Analysis plan)
 
@@ -368,7 +368,7 @@ for (i in 1:nrow(modelstorun)){
 
 The function dataAnalysis includes an indicator of whether each site-specific model converged. If the models are not converging, you can increase the number of specified iterations for the robust regression models using the argument maxit in the dataAnalysis function. The current default number of iterations is 100; increasing this number will make the function slower.
 
-```{r eval=FALSE}
+```r
 
 baseoutputdirectory<-"C:/methylation_placenta/ITU_20210404_Output"
 
