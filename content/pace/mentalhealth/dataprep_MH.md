@@ -4,9 +4,9 @@ draft: false
 linktitle: Tips 1-2
 menu:
   mentalhealth:
-    name: Step 2. Site-Specific Analysis
+    name: Step 2. Data Preparation
     weight: 1
-title: Site-Specific Analysis
+title: Preparing for the Site-Specific Analysis
 toc: true
 type: docs
 weight: 1
