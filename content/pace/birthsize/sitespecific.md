@@ -93,7 +93,7 @@ Make sure that all categorical adjustment variables are coded as a factor; if th
 If you encounter any issues, please check out our troubleshooting guide to see if there is any guidance that may help: https://www.epicenteredresearch.com/pace/troubleshooting/
 
 
-```{r eval=FALSE}
+```r 
 
 ## If you closed prior R session, you can load list of pre-processed objects 
 ## that is automatically saved by the preprocessingofData function
