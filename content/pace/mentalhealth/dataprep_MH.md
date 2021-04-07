@@ -159,54 +159,62 @@ If you encounter any issues, please check out our troubleshooting guide to see i
 ## that is automatically saved by the preprocessingofData function, e.g.
 #    load("C:/methylation_placenta/ITU_20210331_Output/ITU_20210331_Preprocessed.Rdata")
 
+```
 
-# first goal in this step is to create a phenodataframe that contains all the necessary variables and only complete cases
 
-# you can get the phenodata from the preprocessed data object as follows:
+First goal in this step is to create a phenodataframe that contains all the necessary variables and only complete cases
+
+You can get the phenodata from the preprocessed data object as follows:
+
+```r
 
 phenodata <-as.data.frame(pData(processedOut$mset))
 
-# 
-# A)) if you already included all the necessary phenodata in step 1 it's only necessary to filter phenodata to complete cases.
-#
-# You can see the amount of complete cases
-#
-sum(complete.cases(phenodata)==TRUE)   # does the amount look right? Remember that some samples dropped in the methylation QC.
+```
 
+### If you already included all the necessary phenodata in step 1 it's only necessary to filter phenodata to complete cases.
+
+```r
+# You can see the amount of complete cases
+
+sum(complete.cases(phenodata)==TRUE)   # does the amount look right? Remember that some samples dropped in the methylation QC.
 
 # you can check that the amount does not change in subset of only necessary variables (no need if you know you don't have unnecessary variables with NAs)
 
-#  pheno_subset <- 
-#  subset(phenodata, select=c(Basename,Sex,SES,AGE,PARITY,SMOKE,
-#  ANX_CONT,DEP_CONT,COM_CONT,ANX_BIN,DEP_BIN,COM_BIN,               # EDIT if you don't have all the exposures
-#  PCA1,PCA2,PCA3,BWT,GESTA,SELECTION,MEDICATION))                   # EDIT if you don't e.g have SELECTION or have different amount of PCAs 
-#  sum(complete.cases(pheno_subset)==TRUE)												  
-#  sum(complete.cases(phenodata$MEDICATION)==FALSE)  # This should be 0.
+pheno_subset <- 
+   subset(phenodata, select=c(Basename,Sex,SES,AGE,PARITY,SMOKE,
+   ANX_CONT,DEP_CONT,COM_CONT,ANX_BIN,DEP_BIN,COM_BIN,               # EDIT if you don't have all the exposures
+   PCA1,PCA2,PCA3,BWT,GESTA,SELECTION,MEDICATION))                   # EDIT if you don't e.g have SELECTION or have different amount of PCAs 
 
-# phenodataframe <- na.omit(phenodata)         
+sum(complete.cases(pheno_subset)==TRUE)												  
+sum(complete.cases(phenodata$MEDICATION)==FALSE)  # This should be 0.
+
+phenodataframe <- na.omit(phenodata)         
 # or phenodataframe <- na.omit(pheno_subset)
 
 # finally, check that you have done the possible exclusions - check Analysis plan or above
 # (for example, if you have index variable in which INDEX=1 means that sample must be excluded
 # phenodataframe <- phenodataframe[phenodataframe$INDEX !=1,] 
+```
 
+### If you don't have all necessary variables in phenodata, you can just load another phenodata and merge them by ID-variable
 
-##   B)) if you don't have all necessary variables in phenodata, you can just load another phenodata and merge them by ID-variable
-# e.g # phenodataframe <- merge (phenodata,pheno2,by="ID") 
+```r
+
 ## In this case it's practical to check that same variables are not in both phenodatas (otherwise they will be both renamed) and
 ## probably it's also good to pre-filter pheno2 to complete cases and do possible exclusions of samples to pheno2.
 
-
-# phenodataframe <- merge (phenodata,pheno2,by="ID") 
-# sum(complete.cases(phenodataframe)==FALSE) # and if necessary
-# phenodataframe <- na.omit(phenodataframe).
+phenodataframe <- merge (phenodata,pheno2,by="ID") 
+sum(complete.cases(phenodataframe)==FALSE) # and if necessary
+phenodataframe <- na.omit(phenodataframe).
 
 # In any case, and especially if you merge datas, check that the phenodataframe has Basename as rownames: 
 rownames(phenodataframe)<-as.character(phenodataframe$Basename)
 
+```
+### Make sure all categorical adjustment variables are coded as factors or characters
 
-
-## Make sure all categorical adjustment variables are coded as factors or characters
+```r
 ## 'Sex' is already coded as a character
 phenodataframe$SES<-as.factor(phenodataframe$SES)
 phenodataframe$PARITY<-as.factor(phenodataframe$PARITY)
