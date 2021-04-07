@@ -35,7 +35,7 @@ We will ask to providea README file containing the following information:
 + Study design
 + Country and ethnicity of participants
 + Citation of a cohort profile or 1-3 other key papers describing the cohort
-+ Consent and ethical approval for the study. e.g. "The Generation R Study is a population-based prospective cohort study.  All pregnant women living in Rotterdam, the Netherlands, with an expected delivery date between April 2002 and January 2006 were invited to participate. These women and their children have been followed at regular intervals since recruitment. [Kooijman 2016] Only participants who reported being of Dutch ethnicity were included. All participants gave written informed consent, and the study was approved by the Medical Ethical Committee of the Erasmus Medical Center, Rotterdam. "
++ Consent and ethical approval for the study. e.g. "The Generation R Study is a population-based prospective cohort study.  All pregnant women living in Rotterdam, the Netherlands, with an expected delivery date between April 2002 and January 2006 were invited to participate. These women and their children have been followed at regular intervals since recruitment. [Kooijman 2016] Only participants who reported being of Dutch ethnicity were included. All participants gave written informed consent, and the study was approved by the Medical Ethical Committee of the Erasmus Medical Center, Rotterdam."
 
 #### Maternal anxiety data
 + Name and citation of questionnaire
@@ -115,33 +115,34 @@ Create a combined binary variable: Dichotomise the continuous combined score clo
 + If you have measured anxiety or depression using several different alternative measures (e.g. mothers filled out both the CES-D scale and the BDI scale, which both measure depression), please contact us before choosing your scale!
 
 
-Diagnostic data (diagnosis of anxiety disorder during pregnancy vs no; diagnosis of depressive disorder during pregnancy vs no) can also be incorporated into the meta-analysis:
-ANX_BIN=1 if mother was diagnosed during pregnancy with anxiety disorder, and ANX_BIN=0 if mother was not diagnosed with an anxiety disorder during pregnancy
-DEP_BIN=1 if mother was diagnosed during pregnancy with depressive disorder, and DEP_BIN=0 if mother was not diagnosed with a depressive disorder during pregnancy
-COM_BIN=1 if mother was diagnosed during pregnancy with depressive or anxiety disorder or both, and COM_BIN=0 if mother was diagnosed with neither a depressive nor an anxiety disorder during pregnancy
+#### Diagnostic data (diagnosis of anxiety disorder during pregnancy vs no; diagnosis of depressive disorder during pregnancy vs no) can also be incorporated into the meta-analysis:
++ ANX_BIN=1 if mother was diagnosed during pregnancy with anxiety disorder, and ANX_BIN=0 if mother was not diagnosed with an anxiety disorder during pregnancy
++ DEP_BIN=1 if mother was diagnosed during pregnancy with depressive disorder, and DEP_BIN=0 if mother was not diagnosed with a depressive disorder during pregnancy
++ COM_BIN=1 if mother was diagnosed during pregnancy with depressive or anxiety disorder or both, and COM_BIN=0 if mother was diagnosed with neither a depressive nor an anxiety disorder during pregnancy
+
 If you have diagnostic data, you will likely need at least 10-15 cases (with a diagnosis) for the analyses to make sense. If the number of cases is very low, you might need to drop covariates to get the models to converge - let us know if you have any questions. 
 
 If you have maternal mental health data measured during pregnancy, but you are not sure if/how those data can contribute to this project, please do not hesitate to contact us to discuss! 
 
 ### Methylation data
 
-Use DNA methylation data of placental tissue samples taken after delivery 
-Samples taken from the fetal side of the placenta (not the maternal side)
-Samples taken at birth (if your placental samples were taken during pregnancy through chorionic villus sampling, please contact us)
-DNAm measured using Illumina Infinium 450k BeadChip or EPIC 850k BeadChip
++ Use DNA methylation data of placental tissue samples taken after delivery 
++ Samples taken from the fetal side of the placenta (not the maternal side)
++ Samples taken at birth (if your placental samples were taken during pregnancy through chorionic villus sampling, please contact us)
++ DNAm measured using Illumina Infinium 450k BeadChip or EPIC 850k BeadChip
 
 ### Covariates
 
-+ SEX: Sex of the child. If child is female, SEX=1 ("Female"). If child is male, SEX=2 ("Male"). 
-+ SES: Maternal socioeconomic class. Factor variable, with preferably three groups (treated as 2 dummy variables). Use an education-based SES variable if possible. Categorise as appropriate in your cohort. We recommend distinguishing "high" (e.g., tertiary), "medium" (e.g., upper-secondary), and "low" (e.g., primary or lower secondary only) education: however you may need to refine the categorisation according to the overall educational level of your population.
++ *SEX*: Sex of the child. If child is female, SEX=1 ("Female"). If child is male, SEX=2 ("Male"). 
++ *SES*: Maternal socioeconomic class. Factor variable, with preferably three groups (treated as 2 dummy variables). Use an education-based SES variable if possible. Categorise as appropriate in your cohort. We recommend distinguishing "high" (e.g., tertiary), "medium" (e.g., upper-secondary), and "low" (e.g., primary or lower secondary only) education: however you may need to refine the categorisation according to the overall educational level of your population.
 For information on classifying education, please see https://ec.europa.eu/eurostat/statistics-explained/index.php/International_Standard_Classification_of_Education_(ISCED) ). If in doubt, or if you want to use a different SES measure, please contact us.
-+ AGE: Maternal age at delivery. Continuous, in years.
-+ PARITY: Primiparous (=0) vs multiparous (=1)
-+ SMOKE: Maternal smoking during pregnancy. Factor variable, with three groups (treated as 2 dummy variables). If mother never smoked during pregnancy, SMOKE=0 ("never"). If mother quit smoking in early pregnancy, i.e. during the 1st trimester or when pregnancy was known, SMOKE=1 ("quit"). If mother continued smoking after early pregnancy, SMOKE=2 ("smoking continued"). If this categorisation is not possible, alternatively you can use binary coding: 0=did not smoke during pregnancy, vs 1=smoked during pregnancy. Please include a variabe describing the mother's own smoking status, not second-hand smoking: if in doubt, contact us.
-+ BWT: Birth weight of the child in grams, continuous. Use the most accurate estimate (medical records is preferred to maternal report). 
-+ GESTA: Gestational age at birth in weeks, continuous. Use the most accurate estimate. The priority is: medical record (ultrasound-confirmed) > medical record (last menstrual period) > self-reported (ultrasound) > self-reported (last menstrual period). 
++ *AGE*: Maternal age at delivery. Continuous, in years.
++ *PARITY*: Primiparous (=0) vs multiparous (=1)
++ *SMOKE*: Maternal smoking during pregnancy. Factor variable, with three groups (treated as 2 dummy variables). If mother never smoked during pregnancy, SMOKE=0 ("never"). If mother quit smoking in early pregnancy, i.e. during the 1st trimester or when pregnancy was known, SMOKE=1 ("quit"). If mother continued smoking after early pregnancy, SMOKE=2 ("smoking continued"). If this categorisation is not possible, alternatively you can use binary coding: 0=did not smoke during pregnancy, vs 1=smoked during pregnancy. Please include a variabe describing the mother's own smoking status, not second-hand smoking: if in doubt, contact us.
++ *BWT*: Birth weight of the child in grams, continuous. Use the most accurate estimate (medical records is preferred to maternal report). 
++ *GESTA*: Gestational age at birth in weeks, continuous. Use the most accurate estimate. The priority is: medical record (ultrasound-confirmed) > medical record (last menstrual period) > self-reported (ultrasound) > self-reported (last menstrual period). 
 PCA1, PCA2, PCA3... : Ancestry covariates. These are continuous GWAS-based principal components, which capture ethnicity/ancestry. If GWAS data are not available, use self-reported ethnicity: in this case, create a categorical factor variable called ETHNIC (which will be treated as a dummy-coded covariate by the R package). If you feel another way to address ethnicity/race/ancestry would be more appropriate for your cohort (e.g., stratification, methylation-based estimates...), please contact us first and let's discuss how to proceed.
-+ Selection factors (optional covariate): Please include if relevant for your study. For example, if your sample contains cases and controls for some condition, please include the case/control variable in all models. 
++ *Selection factors (optional covariate)*: Please include if relevant for your study. For example, if your sample contains cases and controls for some condition, please include the case/control variable in all models. 
 
 Batch effects are dealt with using Combat in the pre-processing phase: batch covariates are not needed in the EWAS phase models, as shown in the example script using the R package provided.
 
