@@ -20,7 +20,7 @@ If you have multiple race/ethnicities in your cohort, run the below code. In the
 
 Given the modeling approaches used, the dataAnalysis function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
 
-```{r eval=FALSE}
+```r
 
 modelstorun<-data.frame(varofinterest=c("BWT","LBWbin","HBWbin","BirthLength",
                                         "WeightLengthRatio","HeadCircum"))
@@ -101,7 +101,7 @@ for (i in 1:nrow(modelstorun)){
 
 Now running the models for all CpG loci
 
-```{r eval=FALSE}
+```r
 for (i in 1:nrow(modelstorun)){
   
   cat("Outcome:",modelstorun$varofinterest[i],"\n")
@@ -170,7 +170,7 @@ for (i in 1:nrow(modelstorun)){
 
 The function dataAnalysis includes an indicator of whether each site-specific model converged. If the models are not converging, you can increase the number of specified iterations for the robust regression models using the argument maxit in the dataAnalysis function. The current default number of iterations is 100; increasing this number will make the function slower.
 
-```{r eval=FALSE}
+```r
 
 baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210330_Output"
 
