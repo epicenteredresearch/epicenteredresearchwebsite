@@ -466,10 +466,12 @@ listchecking_SENSITIVITY
 
 ### Data upload
 
-The **PACEanalysis** functions will create an “Output” folder(s) in your specified destination directory, which will contain everything to be shared for the subsequent meta-analysis. 
-We would like to have all the output-files from dataAnalyses (models 1-12, or all models that you ran), AND the probe summary (COHORTNAME_DATE_Summarize_Beta_Values.csv) and "trimming log" (COHORTNAME_DATE_NewGapHunter_CpGs.csv) from the data pre-processing phase. Descriptives tables are produced automatically by the package as output-files. Finally, we ask that you  send us a README along with the results (see step 2 or analysis plan for instructions on what to report in the README).
-Please do not send us any individual-level data.
-Please do not delete the files created during the analyses: we may need to ask you to check further details if something unexpected comes up during the meta-analysis phase.
-To submit your results, zip your results (Output) and ask for an upload link from Sara (sara.sammallahti@helsinki.fi).  
+The **PACEanalysis** functions will create an “Output” folder(s) in your specified destination directory, which will contain everything to be shared for the subsequent meta-analysis. We would like to have all the output-files from dataAnalyses (models 1-12, or all models that you ran), AND the probe summary (COHORTNAME_DATE_Summarize_Beta_Values.csv) and "trimming log" (COHORTNAME_DATE_NewGapHunter_CpGs.csv) from the data pre-processing phase. Descriptives tables are produced automatically by the package as output-files. Finally, we ask that you  send us a README along with the results (see step 2 or analysis plan for instructions on what to report in the README).
 
-THANK YOU VERY MUCH FOR PARTICIPATING IN THIS PROJECT!
+Please do not send us any individual-level data.
+
+Please do not delete the files created during the analyses. We may need to ask you to check further details during the meta-analysis phase.
+
+To submit your results, zip your results and ask for an upload link from Sara (sara.sammallahti@helsinki.fi).  
+
+**Thank you very much for participating in this project!**
