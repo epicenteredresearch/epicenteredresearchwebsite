@@ -12,9 +12,9 @@ type: docs
 weight: 1
 ---
 
-## ANALYSIS PLAN
+### ANALYSIS PLAN
 
-If you do not have a copy of the full analysis plan, please email Sara Sammallahti (sara.sammallahti@helsinki.fi) for a copy. The full analysis plan includes additional information regarding study background, exposures and covariates, file sharing, study timeline etc.
+If you do not have a copy of the full analysis plan, please email Sara Sammallahti (sara.sammallahti@helsinki.fi) for a copy. The full analysis plan includes additional information regarding study background, file sharing, study timeline etc. The details needed to run the analyses are shown on this site.
 
 
 ### OBJECTIVE
@@ -25,56 +25,6 @@ The aim of the current study is to establish whether maternal  symptoms of anxie
 ### COHORTS
 
 All PACE-placenta and PLACENTOMICS cohorts with data on depression and/or anxiety during pregnancy will be invited to participate 
-
-
-### COHORT DESCRIPTION / WHAT TO REPORT IN README
-
-We will ask to providea README file containing the following information:
- 
-#### Basic information
-+ Full name of the cohort; abbreviated name of the cohort (if applicable)
-+ Names and email addresses of the researchers (we recommend 1-4 co-authors per cohort)
-+ Brief description of study population
-+ Study design
-+ Country and ethnicity of participants
-+ Citation of a cohort profile or 1-3 other key papers describing the cohort
-+ Consent and ethical approval for the study. 
-+ e.g. "The Generation R Study is a population-based prospective cohort study.  All pregnant women living in Rotterdam, the Netherlands, with an expected delivery date between April 2002 and January 2006 were invited to participate. These women and their children have been followed at regular intervals since recruitment. [Kooijman 2016] Only participants who reported being of Dutch ethnicity were included. All participants gave written informed consent, and the study was approved by the Medical Ethical Committee of the Erasmus Medical Center, Rotterdam."
-
-#### Maternal anxiety data
-+ Name and citation of questionnaire
-+ Citations relating to the psychometric properties of this instrument (e.g. 2-3 papers describing the validity and reliability of the instrument)
-+ Number of items, scale, and protocol for calculating sum score 
-+ Gestational weeks (range) when mothers filled out the questionnaire, e.g. "Anxiety during pregnancy was measured using the 20-item State anxiety subscale of the Spielberger State-Trait Anxiety Inventory (STAI). [Spielberger 1983]. This scale is widely used and has good psychometric properties [Barnes 2002], and it has been validated among pregnant women [Gunning 2008,, Meades 2011]. The items were rated on a 4-point Likert scale from 1 to 4. Mothers completed the questionnaire at 18-25 weeks of gestation. Sumscores were calculated as the sum of all items (reverse-coded if necessary so that higher scores reflect more symptoms)."
-
-#### Maternal depression data
-+ Name and citation of questionnaire
-+ Citations relating to the psychometric properties of this instrument (e.g. 2-3 papers describing the validity and reliability of the instrument)
-+ Number of items, scale, and protocol for calculating sum score 
-+ Gestational weeks (range) when mothers filled out the questionnaire
-
-#### DNAm data
-+ How were the placental samples collected, processed, stored and analysed
-+ What array was used to measure DNAm
-+ Any quality control steps taken in this cohort specifically (note that the preprocessing phase is harmonised using the R package provided)
-
-#### Covariates: 
-+ How was maternal SES determined and categorised?
-+ Maternal smoking: how determined and categorised?
-+ Birth weight: how determined?
-+ Gestational age: how determined?
-+ What type of ancestry/race variable(s) were included in the model?
-+ Any other covariates, or deviations from analysis plan in terms of batch correction, cell type correction, etc
-
-#### Maternal psychiatric medications: 
-+ Were medication data available? 
-+ If yes, which medications were included? How were data on medications collected? How many mothers used psychiatric medications (and were thus excluded in models 4,8,12)?
-
-#### Further information about the cohort (these can be finalised in the writing phase, but please provide a preliminary description already now if possible)
-+ Funding statement on your cohort's behalf
-+ Acknowledgements on your cohort's behalf
-+ Any deviations from the analysis plan
-+ Any other relevant information
 
 
 ### EXCLUSION CRITERIA
@@ -153,6 +103,59 @@ For information on classifying education, please see https://ec.europa.eu/eurost
 Batch effects are dealt with using Combat in the pre-processing phase: batch covariates are not needed in the EWAS phase models, as shown in the example script using the R package provided.
 
 Estimated cell types are estimated in the pre-processing phase using the R package: they are included in the analysis, as shown in the example script using the R package provided.
+
+
+### COHORT DESCRIPTION / WHAT TO REPORT IN README
+
+We will ask you to provide a README file containing the infrmation described below, along with the results. 
+This may be a good time to write the README file.
+ 
+#### Basic information
++ Full name of the cohort; abbreviated name of the cohort (if applicable)
++ Names and email addresses of the researchers (we recommend 1-4 co-authors per cohort)
++ Brief description of study population
++ Study design
++ Country and ethnicity of participants
++ Citation of a cohort profile or 1-3 other key papers describing the cohort
++ Consent and ethical approval for the study. 
++ e.g. "The Generation R Study is a population-based prospective cohort study.  All pregnant women living in Rotterdam, the Netherlands, with an expected delivery date between April 2002 and January 2006 were invited to participate. These women and their children have been followed at regular intervals since recruitment. [Kooijman 2016] Only participants who reported being of Dutch ethnicity were included. All participants gave written informed consent, and the study was approved by the Medical Ethical Committee of the Erasmus Medical Center, Rotterdam."
+
+#### Maternal anxiety data
++ Name and citation of questionnaire
++ Citations relating to the psychometric properties of this instrument (e.g. 2-3 papers describing the validity and reliability of the instrument)
++ Number of items, scale, and protocol for calculating sum score 
++ Gestational weeks (range) when mothers filled out the questionnaire, e.g. "Anxiety during pregnancy was measured using the 20-item State anxiety subscale of the Spielberger State-Trait Anxiety Inventory (STAI). [Spielberger 1983]. This scale is widely used and has good psychometric properties [Barnes 2002], and it has been validated among pregnant women [Gunning 2008,, Meades 2011]. The items were rated on a 4-point Likert scale from 1 to 4. Mothers completed the questionnaire at 18-25 weeks of gestation. Sumscores were calculated as the sum of all items (reverse-coded if necessary so that higher scores reflect more symptoms)."
++ If you used diagnostic data rather than questionnaire data, please describe how the diagnoses were established.
+
+#### Maternal depression data
++ Name and citation of questionnaire
++ Citations relating to the psychometric properties of this instrument (e.g. 2-3 papers describing the validity and reliability of the instrument)
++ Number of items, scale, and protocol for calculating sum score 
++ Gestational weeks (range) when mothers filled out the questionnaire
++ If you used diagnostic data rather than questionnaire data, please describe how the diagnoses were established.
+
+#### DNAm data
++ How were the placental samples collected, processed, stored and analysed
++ What array was used to measure DNAm
++ Any quality control steps taken in this cohort specifically (note that the preprocessing phase is harmonised using the R package provided)
+
+#### Covariates: 
++ How was maternal SES determined and categorised?
++ Maternal smoking: how determined and categorised?
++ Birth weight: how determined?
++ Gestational age: how determined?
++ What type of ancestry/race variable(s) were included in the model?
++ Any other covariates?
+
+#### Maternal psychiatric medications: 
++ Were medication data available? 
++ If yes, which medications were included? How were data on medications collected? How many mothers used psychiatric medications?
+
+#### Further information about the cohort (these can be finalised in the writing phase, but please provide a preliminary description already now if possible)
++ Funding statement on your cohort's behalf
++ Acknowledgements on your cohort's behalf
++ Any deviations from the analysis plan
++ Any other relevant information
 
 
 ### GETTING STARTED WITH YOUR PHENOTYPE DATA
