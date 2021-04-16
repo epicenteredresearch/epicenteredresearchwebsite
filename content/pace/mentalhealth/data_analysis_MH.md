@@ -12,7 +12,7 @@ type: docs
 weight: 2
 ---
 
-This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
+This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the mental health project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
 
 ### Quick check to make sure the function runs in your cohort
 
@@ -466,5 +466,10 @@ listchecking_SENSITIVITY
 
 ### Data upload
 
-The **PACEanalysis** functions will create an “Output” folder(s) in your specified destination directory, which will contain everything to be shared for the subsequent meta-analysis. We would like to have all the output-files from dataAnalyses (models 1-12), and probe summary (COHORTNAME_DATE_Summarize_Beta_Values.csv) and "trimming log" (COHORTNAME_DATE_NewGapHunter_CpGs.csv) from pre-processing of data. Details(/repetition) in the Analysis plan. You may send also other output files from the pre-processing if you wish, but please no files with individual-level data.
-To submit your results, zip this Output folder, and ask for upload link from Sara (sara.sammallahti@helsinki.fi).  
+The **PACEanalysis** functions will create an “Output” folder(s) in your specified destination directory, which will contain everything to be shared for the subsequent meta-analysis. 
+We would like to have all the output-files from dataAnalyses (models 1-12, or all models that you ran), AND the probe summary (COHORTNAME_DATE_Summarize_Beta_Values.csv) and "trimming log" (COHORTNAME_DATE_NewGapHunter_CpGs.csv) from the data pre-processing phase. Descriptives tables are produced automatically by the package as output-files. Finally, we ask that you  send us a README along with the results (see step 2 or analysis plan for instructions on what to report in the README).
+Please do not send us any individual-level data.
+Please do not delete the files created during the analyses: we may need to ask you to check further details if something unexpected comes up during the meta-analysis phase.
+To submit your results, zip your results (Output) and ask for an upload link from Sara (sara.sammallahti@helsinki.fi).  
+
+THANK YOU VERY MUCH FOR PARTICIPATING IN THIS PROJECT!
