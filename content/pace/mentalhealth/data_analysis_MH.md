@@ -62,7 +62,7 @@ for (i in 1:nrow(modelstorun)){
                             savelog=TRUE,
                             cohort="ITU",
                             analysisdate = "20210404",
-                            analysisname = "MAIN")
+                            analysisname = "testMAIN")
 }
 
 
@@ -87,8 +87,8 @@ for (i in 1:nrow(modelstorun)){
                             varofinterest=modelstorun$varofinterest[i],
                             Table1vars=c("Sex","SES","AGE","PARITY",
                                          "SMOKE","PCA1","PCA2","PCA3","SELECTION"),
-                            StratifyTable1=FALSE,
-                            StratifyTable1var=NULL,             
+                            StratifyTable1=TRUE,
+                            StratifyTable1var=modelstorun$varofinterest[i],             
                             adjustmentvariables=c("Sex","SES","AGE","PARITY",
                                                   "SMOKE","PCA1","PCA2","PCA3","SELECTION"),
                             RunUnadjusted=FALSE,
@@ -103,7 +103,7 @@ for (i in 1:nrow(modelstorun)){
                             savelog=TRUE,
                             cohort="ITU",
                             analysisdate = "20210404",
-                            analysisname = "MAIN")
+                            analysisname = "testMAIN")
 }
 
 # MODELS ADDITIONALLY ADJUSTED FOR GESTATIONAL AGE AND BIRTH WEIGHT - BINARY EXPOSURE (M07-M09 in the Analysis plan)
@@ -143,7 +143,7 @@ for (i in 1:nrow(modelstorun)){
                             savelog=TRUE,
                             cohort="ITU",
                             analysisdate = "20210404",
-                            analysisname = "BWTGESTA")
+                            analysisname = "testBWTGESTA")
 }
 
 
@@ -184,7 +184,7 @@ for (i in 1:nrow(modelstorun)){
                             savelog=TRUE,
                             cohort="ITU",
                             analysisdate = "20210404",
-                            analysisname = "SENSITIVITY")
+                            analysisname = "testSENSITIVITY")
 }
 
 
@@ -262,8 +262,8 @@ for (i in 1:nrow(modelstorun)){
                             varofinterest=modelstorun$varofinterest[i],
                             Table1vars=c("Sex","SES","AGE","PARITY",
                                          "SMOKE","PCA1","PCA2","PCA3","SELECTION"),
-                            StratifyTable1=FALSE,
-                            StratifyTable1var=NULL,             
+                            StratifyTable1=TRUE,
+                            StratifyTable1var=modelstorun$varofinterest[i],             
                             adjustmentvariables=c("Sex","SES","AGE","PARITY",
                                                   "SMOKE","PCA1","PCA2","PCA3","SELECTION"),
                             RunUnadjusted=FALSE,
