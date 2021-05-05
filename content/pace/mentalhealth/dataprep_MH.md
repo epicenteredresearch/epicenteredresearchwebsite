@@ -102,12 +102,12 @@ For information on classifying education, please see https://ec.europa.eu/eurost
 
 Batch effects are dealt with using Combat in the pre-processing phase: batch covariates are not needed in the EWAS phase models, as shown in the example script using the R package provided. Estimated cell types are estimated in the pre-processing phase using the R package: they are included in the analysis, as shown in the example script using the R package provided.
 
-Further, you will need a **MEDICATION** variable (see Analysis plan for details), where 1=used psychiatric medications during prengancy and 0=did not use psychiatric medications during pregnancy, for running the sensitivity analyses (if you do not have medication data, you do not need to run these extra models).
+Further, you will need a **MEDICATION** variable (see Analysis plan for details), where 0=did not use psychiatric medications during pregnancy, 1=used psychiatric medications during prengancy, and 2=data on psychiatric medication use during pregnancy missing, for running the sensitivity analyses among only non-medicated mothers (if you do not have medication data, you do not need to run these extra models). 
 
 ### COHORT DESCRIPTION / WHAT TO REPORT IN README
 
 We will ask you to provide a README file containing the infrmation described below, along with the results. 
-This may be a good time to write the README file.
+This may be a good time to write the README file. 
  
 #### Basic information
 + Full name of the cohort; abbreviated name of the cohort (if applicable)
