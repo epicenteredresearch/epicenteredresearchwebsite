@@ -100,10 +100,9 @@ For information on classifying education, please see https://ec.europa.eu/eurost
 + **PCA1, PCA2, PCA3...** : Ancestry covariates. These are continuous GWAS-based principal components, which capture ethnicity/ancestry. If GWAS data are not available, use self-reported ethnicity: in this case, create a categorical factor variable called ETHNIC (which will be treated as a dummy-coded covariate by the R package). If you feel another way to address ethnicity/race/ancestry would be more appropriate for your cohort (e.g., stratification, methylation-based estimates...), please contact us first and let's discuss how to proceed.
 + **Selection factors (optional covariate)**: Please include if relevant for your study. For example, if your sample contains cases and controls for some condition, please include the case/control variable in all models. 
 
-Batch effects are dealt with using Combat in the pre-processing phase: batch covariates are not needed in the EWAS phase models, as shown in the example script using the R package provided.
+Batch effects are dealt with using Combat in the pre-processing phase: batch covariates are not needed in the EWAS phase models, as shown in the example script using the R package provided. Estimated cell types are estimated in the pre-processing phase using the R package: they are included in the analysis, as shown in the example script using the R package provided.
 
-Estimated cell types are estimated in the pre-processing phase using the R package: they are included in the analysis, as shown in the example script using the R package provided.
-
+Further, you will need a **MEDICATION** variable (see Analysis plan for details), where 1=used psychiatric medications during prengancy and 0=did not use psychiatric medications during pregnancy, for running the sensitivity analyses (if you do not have medication data, you do not need to run these extra models).
 
 ### COHORT DESCRIPTION / WHAT TO REPORT IN README
 
