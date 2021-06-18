@@ -160,12 +160,9 @@ The function also returns a list that includes:
 
 ## Pre-processing the data
 
-This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See ?preprocessingofData for more details.
+#### **For more details on the quality control checks, see here: https://www.epicenteredresearch.com/pace/troubleshooting/**
 
-The detectionMask function masks the beta-values based on a specified detection p-value (default is 0.05) and/or poor intensity values based on the number of beads (specified by minNbeads in the ExploratoryDataAnalysis function; default minimum is zero, meaning no filtering) and/or intensity values of zero (if FilterZeroIntensities is TRUE in the ExploratoryDataAnalysis). It provides the beta-value matrix after this masking. See ?detectionMask for more details.
-
-The outlierprocess function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. See ?outlierprocess for more details.
-
+This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See ?preprocessingofData for more details. For this analysis, please use the reference-based method for the placenta (https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-07186-6), which estimates cell composition using the constrained Houseman method. 
 
 ```r
 processedOut<-preprocessingofData(RGset=exampledat,
@@ -176,7 +173,12 @@ processedOut<-preprocessingofData(RGset=exampledat,
                   KchooseManual=NULL,
                   savelog=TRUE,
                   cohort="HEBC",analysisdate="20210330")
-                  
+
+```
+
+We will use the SeSAMe method to estimate the detection p-values (specified by the DetectionPvalMethod in the ExploratoryDataAnalysis). The detectionMask function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by DetectionPvalCutoff in the detectionMask function) and a matrix that indicates other poor intensity values, which is output by the ExploratoryDataAnalysis function. Other poor intensity values that are masked include those having less than three beads per probe (specified by minNbeads=3 in the ExploratoryDataAnalysis function) and intensity values of zero (FilterZeroIntensities is TRUE in the ExploratoryDataAnalysis). The detectionMask function outputs a beta-value matrix after masking (with NA) of all of these indicators of poor intensity values. See ?detectionMask for more details.
+
+```r
 betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   DetectionPvals=EDAresults$DetectionPval,
                                   DetectionPvalCutoff=0.05,
@@ -184,10 +186,15 @@ betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                                   cohort="HEBC",analysisdate="20210330")
 
+```
+
+The outlierprocess function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. If trimming is TRUE, remove extreme outliers based on gaps that must be at least 3*IQR; the cutoff for the number of outliers in a group is either a maximum of 5 or 0.0025 of the total number of samples (whichever is larger). Detected outliers are recoded as NA. If trimming is FALSE, winsorize outliers based on the specified percentile (default is 1%, 0.5% on each side, corresponding to pct=0.005). Percentiles can be estimated based on the quantile function or the empirical beta-distribution. For this analysis, winsorizing 1%. See ?outlierprocess for more details.
+
+```r
 Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
-                                  quantilemethod="Quantile",
+                                  quantilemethod="EmpiricalBeta",
                                   trimming=TRUE,
-                                  pct=0.25,
+                                  pct=0.005,
                                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                                   cohort="HEBC",analysisdate="20210330")
 
