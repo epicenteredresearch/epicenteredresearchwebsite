@@ -124,6 +124,8 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
 
 ### Examining the Exploratory Data Analysis
 
+#### **For more details on the quality control checks, see here: https://www.epicenteredresearch.com/pace/troubleshooting/**
+
 Before moving on to the next stage, check out the figures and csv files in the new "EDA" subfolder created by the function 'ExploratoryDataAnalysis'. As noted in the function documentation, output includes: 
 
 - red/green signal intensities (are their any low outliers?)
