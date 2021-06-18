@@ -59,7 +59,7 @@ phenodataframe$NoPregnancyComplicationsandWhite[which(phenodataframe$NoPregnancy
                                                     phenodataframe$Ethnic=="1")]<-"Yes"
 
 tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                          betafinal=processedOut$processedBetas,
+                          betafinal=Betasnooutliers,
                           array="450K",
                           maxit=100,
                           Omega=processedOut$Omega,
@@ -84,7 +84,7 @@ tempresults<-dataAnalysis(phenofinal=phenodataframe,
                           analysisname="sensitivtyanalysis")
 
 tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                          betafinal=processedOut$processedBetas,
+                          betafinal=Betasnooutliers,
                           array="450K",
                           maxit=100,
                           Omega=processedOut$Omega,
@@ -110,7 +110,7 @@ tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                   
 
 tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                          betafinal=processedOut$processedBetas,
+                          betafinal=Betasnooutliers,
                           array="450K",
                           maxit=100,
                           Omega=processedOut$Omega,
@@ -135,7 +135,7 @@ tempresults<-dataAnalysis(phenofinal=phenodataframe,
                           analysisname="sensitivtyanalysis_nobwtadjustment")
 
 tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                          betafinal=processedOut$processedBetas,
+                          betafinal=Betasnooutliers,
                           array="450K",
                           maxit=100,
                           Omega=processedOut$Omega,

@@ -37,7 +37,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas[1:100,],
+                            betafinal=Betasnooutliers[1:100,],
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -78,7 +78,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas[1:100,],
+                            betafinal=Betasnooutliers[1:100,],
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -118,7 +118,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas[1:100,],
+                            betafinal=Betasnooutliers[1:100,],
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -159,7 +159,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas[1:100,],
+                            betafinal=Betasnooutliers[1:100,],
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -212,7 +212,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas,
+                            betafinal=Betasnooutliers,
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -253,7 +253,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas,
+                            betafinal=Betasnooutliers,
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -293,7 +293,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas,
+                            betafinal=Betasnooutliers,
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,
@@ -334,7 +334,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Exposure:",modelstorun$varofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                            betafinal=processedOut$processedBetas,
+                            betafinal=Betasnooutliers,
                             array="EPIC",
                             maxit=100,
                             robust=TRUE,

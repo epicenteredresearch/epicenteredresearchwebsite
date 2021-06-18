@@ -33,7 +33,7 @@ for (i in 1:nrow(modelstorun)){
   
   cat("Outcome:",modelstorun$varofinterest[i],"\n")
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas[1:100,],
+                  betafinal=Betasnooutliers[1:100,],
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -60,7 +60,7 @@ for (i in 1:nrow(modelstorun)){
                   analysisname="main")
                   
   robust=TRUE,tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas[1:100,],
+                  betafinal=Betasnooutliers[1:100,],
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -95,7 +95,7 @@ for (i in 1:nrow(modelstorun)){
   
   cat("Outcome:",modelstorun$varofinterest[i],"\n")
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas[1:100,],
+                  betafinal=Betasnooutliers[1:100,],
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -122,7 +122,7 @@ for (i in 1:nrow(modelstorun)){
                   analysisname="main_nobwtadjustment")
                   
   tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas[1:100,],
+                  betafinal=Betasnooutliers[1:100,],
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -166,7 +166,7 @@ for (i in 1:nrow(modelstorun)){
   
   cat("Outcome:",modelstorun$varofinterest[i],"\n")
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas,
+                  betafinal=Betasnooutliers,
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -193,7 +193,7 @@ for (i in 1:nrow(modelstorun)){
                   analysisname="main")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas,
+                  betafinal=Betasnooutliers,
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -228,7 +228,7 @@ for (i in 1:nrow(modelstorun)){
   
   cat("Outcome:",modelstorun$varofinterest[i],"\n")
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas,
+                  betafinal=Betasnooutliers,
                   array="450K",
                   maxit=100,
                   robust=TRUE,
@@ -255,7 +255,7 @@ for (i in 1:nrow(modelstorun)){
                   analysisname="main_nobwtadjustment")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=processedOut$processedBetas,
+                  betafinal=Betasnooutliers,
                   array="450K",
                   maxit=100,
                   robust=TRUE,

@@ -27,32 +27,56 @@ First need to install required packages if you don't have them already
 ```r
 
 ## First need to install required packages if you don't have them already
-install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS",
-                    "pvclust","heatmap.plus","GGally","Hmisc","MASS",
-                    "sandwich", "lmtest","plyr","remotes","devtools"))
-devtools::install_github("ki-tools/growthstandards") 
-devtools::install_github("hhhh5/ewastools")
+install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS","pvclust",
+                   "GGally","Hmisc","MASS","sandwich", "lmtest","plyr","remotes","devtools"))
+
+remotes::install_version("heatmap.plus", "1.3")
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-BiocManager::install(c("minfi","sva","sesame","wateRmelon","EpiDISH",
+BiocManager::install(c("methylumi","minfi","sva","sesame","wateRmelon","EpiDISH",
                        "IlluminaHumanMethylationEPICmanifest",
                        "IlluminaHumanMethylation450kmanifest",
                        "IlluminaHumanMethylation450kanno.ilmn12.hg19",
                        "IlluminaHumanMethylationEPICanno.ilm10b4.hg19",
                        "FlowSorted.CordBlood.450k",
-                       "FlowSorted.Blood.450k"))
+                       "FlowSorted.Blood.450k",
+                       "illuminaio"))
 
-### Additionally, before the PACEanalysis package can be installed, it may be necessary to
-### install the following packages too - and to choose n (none) if R asks whether or not to update other packages:
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
-BiocManager::install(c("FlowSorted.Blood.EPIC",
-                       "FlowSorted.CordBloodCombined.450k"
-                       ))
+BiocManager::install("FlowSorted.Blood.EPIC")
 
+remotes::install_github("bokeh/rbokeh")
+remotes::install_github("ki-tools/growthstandards")
+devtools::install_github("hhhh5/ewastools")
+
+## If ExperimentHub (>1.17.2), need to update caching location
+moveFiles<-function(package){
+       olddir <- path.expand(rappdirs::user_cache_dir(appname=package))
+       newdir <- tools::R_user_dir(package, which="cache")
+       dir.create(path=newdir, recursive=TRUE)
+       files <- list.files(olddir, full.names =TRUE)
+       moveres <- vapply(files,
+           FUN=function(fl){
+           filename = basename(fl)
+           newname = file.path(newdir, filename)
+           file.rename(fl, newname)
+           },
+           FUN.VALUE = logical(1))
+       if(all(moveres)) unlink(olddir, recursive=TRUE)
+       }
+
+package="ExperimentHub"
+moveFiles(package)
+
+## If recently installed sesame, need to cache the associated annotation data
+## This only needs to be done once per new installation of sesame
+sesameData::sesameDataCacheAll()
 
 ## Need to then install package, specifying path to the source package
-install.packages("C:/PACE/PACEanalysis_0.1.4.tar.gz",
+install.packages("F:\\PACE\\PACEanalysis_0.1.6.tar.gz",
                  repos = NULL, type="source")
 
 ```
@@ -107,11 +131,14 @@ exampledat<-loadingSamples(
 ## Please note that the following ExploratoryDataAnalysis will take several hours
 
 EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
-   globalvarexplore=c("BWT","Sex"),    # We don't need these in the Mental Health project, but other projects might use these. 
-   destinationfolder="C:/methylation_placenta",
-   savelog=TRUE,                         # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20210401_Output/EDA
-   cohort="ITU", 
-   analysisdate="20210331")
+                  globalvarexplore=c("BWT","Sex"),  # We don't need these in the Mental Health project, but other projects might use these. 
+                  DetectionPvalMethod="SeSAMe",
+                  DetectionPvalCutoff=0.05,
+                  minNbeads=3,
+                  FilterZeroIntensities=TRUE,
+                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
+                  savelog=TRUE, # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20210401_Output/EDA
+                  cohort="HEBC",analysisdate="20210331")
 
 ## You may want to save your data at this point, e.g
 ## save(exampledat,EDAresults,file="C:/methylation_placenta/exampledat_EDAresults.Rdata")
@@ -147,13 +174,19 @@ The function also returns a list that includes:
 
 - *ProbestoRemove* : A character vector of CpGIDs to exclude based on the exploratory data analysis
 
-- *DetectionPval* : A matrix used to mask methylation values with a poor detection p-value (p>0.05); NA if poor detection, 1 otherwise
+- *DetectionPval* : A matrix of detection p-values
+
+- *IndicatorGoodIntensity* : A matrix used to mask methylation values with a poor intensity value based on the number of beads (if minNbeads is larger than zero) and intensity values of zero (if FilterZeroIntensities=TRUE); NA if poor intensity value and 1 otherwise
 
 - *logOddsContamin* : The average log odds from the SNP posterior probabilities from the outlier component; capturing how irregular the SNP beta-values deviate from the ideal trimodal distribution. Values greater than -4 are suggest potentially contaminated samples
 
 ## Pre-processing the data
 
-This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'
+This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See ?preprocessingofData for more details.
+
+The detectionMask function masks the beta-values based on a specified detection p-value (default is 0.05) and/or poor intensity values based on the number of beads (specified by minNbeads in the ExploratoryDataAnalysis function; default minimum is zero, meaning no filtering) and/or intensity values of zero (if FilterZeroIntensities is TRUE in the ExploratoryDataAnalysis). It provides the beta-value matrix after this masking. See ?detectionMask for more details.
+
+The outlierprocess function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. See ?outlierprocess for more details.
 
 ```r
 
@@ -162,14 +195,26 @@ This part of the analysis can similarly be used for multiple downstream site-spe
 processedOut<-preprocessingofData(RGset=exampledat,
                   SamplestoRemove=EDAresults$SamplestoRemove,
                   ProbestoRemove=EDAresults$ProbestoRemove,
-                  DetectionPvals=EDAresults$DetectionPval,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                  destinationfolder="C:/methylation_placenta",
-                  compositeCellType="RefFree",
+                  compositeCellType="Placenta",
                   KchooseManual=NULL,
-                  savelog=TRUE,        
-                  cohort="ITU",
-                  analysisdate = "20210331") # If analysisdate is unchanged, output will be saved to the same subfolder than in previous steps
+                  savelog=TRUE,
+                  cohort="ITU",analysisdate="20210331") # If analysisdate is unchanged, output will be saved to the same subfolder than in previous steps
+                  
+betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
+                                  DetectionPvals=EDAresults$DetectionPval,
+                                  DetectionPvalCutoff=0.05,
+                                  IndicatorGoodIntensity=EDAresults$IndicatorGoodIntensity,
+                                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
+                                  cohort="HEBC",analysisdate="20210331")
+
+Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
+                                  quantilemethod="Quantile",
+                                  trimming=TRUE,
+                                  pct=0.25,
+                                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
+                                  cohort="HEBC",analysisdate="20210331")
+
 
 ```
 
