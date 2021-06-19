@@ -26,7 +26,16 @@ To evaluate fetal growth not linked to gestational age or pregnancy complication
 
 #### Secondary Analysis
 
-For this secondary analyses, we will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. If you do not have more than 10 infants with pregnancy complications, you do not need to run these analyses. Please contact us if you have any questions regarding this guidance. 
+For this secondary analyses, we will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. If you do not have more than 10 infants with pregnancy complications, you do not need to run these analyses. Please contact us if you have any questions regarding this guidance. Some pregnancy complications that may be considered for adjustment:
+
+    - gestational diabetes
+    - placental abruption 
+    - placenta previa
+    - pre-eclampsia/eclampsia
+    - polyhydramnios, oligohydramnios
+    - placental insufficiency
+    - cervical insufficiency, isoimmunization, 
+    - cervical cerclaje
 
 ### Covariates
 
@@ -41,6 +50,7 @@ If any of the categorical variables below have less than 10 individuals in one o
 +	**Ancestry (optional)**: We will first run models adjusting for self-reported ancestry. We will then run models stratified by major ethnic groups (ie. European, African, Asian…). Within each major ethic group, additional adjustment for ethnic background is optional (ie. country, GWAS PCs, etc).
 +	**Selection factors (optional)**: If your study design includes an enrichment of cases of some condition, please include the case-control variable, or discuss with us. 
 + **Pregnancy complications**: Include a separate indicator variable for each pregnancy complication.
++	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `EDAresults` function. See below how to add this variable to your dataset
 
 ## Data Checking
 
@@ -64,7 +74,16 @@ load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
 phenodataframe<-as.data.frame(pData(processedOut$mset))
 
 ```
+We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `EDAresults` function.
 
+```{r eval=FALSE}
+
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output\\EDA")
+samplestoexclude<-read.csv("HEBC_20210618_Recommended_Samples_to_Remove.csv",header=TRUE)
+phenodataframe<-merge(phenodataframe,samplestoexclude,by=c("Basename","ID"))
+summary(phenodataframe$Meanlog2oddsContamination)
+
+```
 Make sure that you have sufficient numbers of samples between categories of exposure/outcome of interest as well as adjustment variables; you are assumed to have at least 10. Please note, these variable names may be different in your cohort. These numbers may be different from your main analyses.
 
 ```{r eval=FALSE}
