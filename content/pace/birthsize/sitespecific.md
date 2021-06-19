@@ -55,11 +55,11 @@ Analysis will be restricted to singleton births. If the DNA methylation data ste
 
 #### Main Analysis
 
-To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be subset of children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.
+To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be restricted to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.
 
 #### Secondary Analysis
 
-Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. This secondary analyses will be restricted to cohorts with at least 10 pregnancy complications in their dataset. 
+Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. These secondary analyses will be restricted to cohorts with at least 10 mothers with pregnancy complications in their dataset. 
 
 ### Outcome
 
@@ -70,7 +70,7 @@ The outcomes of interest are:
 3.	**Birthweight-for-length (BWL) Z-score** - an indicator of adiposity under 2 years:  Continuous (kg/cm)
 4.	**Head circumference (HC) Z-score**: Continuous (cm)
 
-The Z-score for each of these characteristics is automatically calculated in the loadingSamples function, and are based on the INTERGROWTH-21(st) Project ([link](https://pubmed.ncbi.nlm.nih.gov/25209487/)).
+The Z-score for each of these characteristics is automatically calculated in the `loadingSamples` function, and are based on the INTERGROWTH-21(st) Project ([link](https://pubmed.ncbi.nlm.nih.gov/25209487/)).
 
 ### Methylation data
 
@@ -102,7 +102,7 @@ If you closed prior R session, you can load list of the phenotype information by
 
 ```{r eval=FALSE}
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210330_Output")
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output")
 load("HEBC_20210618_Preprocessed.RData")
 
 ## load beta-values

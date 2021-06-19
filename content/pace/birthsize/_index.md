@@ -80,7 +80,7 @@ install.packages("F:\\PACE\\PACEanalysis_0.1.6.tar.gz",
                  repos = NULL, type="source")
 ```
 
-### Attaching package and running the first functions
+### Attaching package and loading the samples
 
 Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. `library(PACEanalysis)`), and entering `?` followed by the function name in your R console, e.g. `?loadingSamples`
 
@@ -108,22 +108,15 @@ exampledat<-loadingSamples(SamplePlacement=NULL,PhenoData=allphenodata,
                   savelog=TRUE,
                   cohort="HEBC",analysisdate="20210330")
 
-EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
-                  globalvarexplore=c("BWT","Sex"),
-                  DetectionPvalMethod="SeSAMe",
-                  DetectionPvalCutoff=0.05,
-                  minNbeads=3,
-                  FilterZeroIntensities=TRUE,
-                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                  savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330")
-                  
-                  
+
 ```
+
+<p>&nbsp;</p>
+
 
 ## Performing exploratory data analysis
 
-To perform initial exploratory data analysis, run the function `ExploratoryDataAnalysis`. See `?ExploratoryDataAnalysis` for more details. 
+To perform initial exploratory data analysis, run the function `ExploratoryDataAnalysis`. For this analysis, we are estimating the detection p-values using the method applied in the SeSAMe package (`DetectionPvalMethod="SeSAMe"`), using a cut-off of 0.05 (`DetectionPvalCutoff=0.05`). We are also suggesting to filter out probes with less than 3 beads (`minNbeads=3`) and with intensity values of zero (`FilterZeroIntensities=TRUE`). The `globalvarexplore` argument is used to specify a vector of characteristic column names to explore in association with the first 12 principle components. See `?ExploratoryDataAnalysis` for more details.
 
 ```r
 
@@ -135,7 +128,7 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   FilterZeroIntensities=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330")
+                  cohort="HEBC",analysisdate="20210618")
                   
                   
 ```
@@ -176,11 +169,16 @@ The function also returns a list that includes:
 
 - *logOddsContamin* : The average log odds from the SNP posterior probabilities from the outlier component; capturing how irregular the SNP beta-values deviate from the ideal trimodal distribution. Values greater than -4 are suggest potentially contaminated samples
 
+<p>&nbsp;</p>
+
 ## Pre-processing the data
 
 #### For more details on the quality control checks, see here: [link](https://www.epicenteredresearch.com/pace/qcsteps/)
 
-This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See `?preprocessingofData` for more details. For this analysis, please use the reference-based method for the placenta ([ref](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-07186-6)), which estimates cell composition using the constrained Houseman method. 
+This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). For this analysis, please use the reference-based method for the placenta ([ref](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-07186-6)), which estimates cell composition using the constrained Houseman method. 
+
+To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See `?preprocessingofData` for more details. 
+
 
 ```r
 processedOut<-preprocessingofData(RGset=exampledat,
@@ -190,11 +188,11 @@ processedOut<-preprocessingofData(RGset=exampledat,
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330")
+                  cohort="HEBC",analysisdate="20210618")
 
 ```
 
-We will use the SeSAMe method to estimate the detection p-values (specified by the `DetectionPvalMethod` in the `ExploratoryDataAnalysis`). The detectionMask function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by `DetectionPvalCutoff=0.05` in the `detectionMask` function) and a matrix that indicates other poor intensity values, which is output by the `ExploratoryDataAnalysis` function. Other poor intensity values that are masked include those having less than three beads per probe (specified by `minNbeads=3` in the `ExploratoryDataAnalysis` function) and intensity values of zero (`FilterZeroIntensities` is `TRUE` in the `ExploratoryDataAnalysis`). The `detectionMask` function outputs a beta-value matrix after masking (with `NA`) of all of these indicators of poor intensity values. See `?detectionMask` for more details.
+We will use the SeSAMe method to estimate the detection p-values (specified by the `DetectionPvalMethod` in the `ExploratoryDataAnalysis`). The `detectionMask` function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by `DetectionPvalCutoff=0.05` in the `detectionMask` function) and a matrix that indicates other poor intensity values, which is output by the `ExploratoryDataAnalysis` function. Other poor intensity values that are masked include those having less than three beads per probe (specified by `minNbeads=3` in the `ExploratoryDataAnalysis` function) and intensity values of zero (`FilterZeroIntensities` is `TRUE` in the `ExploratoryDataAnalysis`). The `detectionMask` function outputs a beta-value matrix after masking (with `NA`) of all of these indicators of poor intensity values. See `?detectionMask` for more details.
 
 ```r
 betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
@@ -202,11 +200,11 @@ betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   DetectionPvalCutoff=0.05,
                                   IndicatorGoodIntensity=EDAresults$IndicatorGoodIntensity,
                                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                                  cohort="HEBC",analysisdate="20210330")
+                                  cohort="HEBC",analysisdate="20210618")
 
 ```
 
-The outlierprocess function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. If `trimming=TRUE`, remove extreme outliers based on gaps that must be at least 3*IQR; the cutoff for the number of outliers in a group is either a maximum of 5 or 0.0025 of the total number of samples (whichever is larger). Detected outliers are recoded as `NA`. If `trimming=FALSE`, winsorize outliers based on the specified percentile (default is 1%, 0.5% on each side, corresponding to `pct=0.005`). Percentiles can be estimated based on the quantile function or the empirical beta-distribution. For this analysis, winsorizing 1%. See `?outlierprocess` for more details.
+The `outlierprocess` function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. If `trimming=TRUE`, remove extreme outliers based on gaps that must be at least 3*IQR; the cutoff for the number of outliers in a group is either a maximum of 5 or 0.0025 of the total number of samples (whichever is larger). Detected outliers are recoded as `NA`. If `trimming=FALSE`, winsorize outliers based on the specified percentile (default is 1%, 0.5% on each side, corresponding to `pct=0.005`). Percentiles can be estimated based on the quantile function or the empirical beta-distribution. For this analysis, winsorizing 1%. See `?outlierprocess` for more details.
 
 ```r
 Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
@@ -214,7 +212,7 @@ Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
                                   trimming=TRUE,
                                   pct=0.005,
                                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                                  cohort="HEBC",analysisdate="20210330")
+                                  cohort="HEBC",analysisdate="20210618")
 
 ```
 

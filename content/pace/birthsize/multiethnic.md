@@ -20,7 +20,8 @@ A few important specifications to note in the `dataAnalysis` function:
 
    - By specifying `vartype="ExposureCont"`, the birth size characteristic is modeled as a continuous exposure and assumed to be numeric
    - By specifying `robust=TRUE`, analyses are run via robust regression using iterated re-weighted least squares (Huber weights), and White's estimator for the variance
-   - By specifying `adjustmentvariables=c("Sex","Age","Parity","MaternalEd","Smoke","preBMI","Ethnic")`, we adjust our models for these variables
+   - The `Table1vars` argument is used to specify the variables to include in our descriptive Table 1
+   - The `adjustmentvariables` argument specifies the variables we will adjust for in our models
    - `RunUnadjusted=TRUE`, indicates to run unadjusted models
    - `RunAdjusted=TRUE`, indicates to also run adjusted models
    - `RunCellTypeAdjusted=TRUE`, indicates to also run adjusted models, further adjusting for estimated cell composition
@@ -31,7 +32,7 @@ Additional details regarding the `dataAnalysis` function can be found by running
 
 ### Quick check to make sure the function runs in your cohort
 
-Given the modeling approaches used, the dataAnalysis function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
+Given the modeling approaches used, the `dataAnalysis` function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
 
 ```r
 
@@ -54,7 +55,7 @@ for (i in 1:length(allvarsofinterest)){
                   Omega=processedOut$Omega,
                   vartype="ExposureCont",
                   varofinterest=allvarsofinterest[i],
-                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  Table1vars=c("BWT","Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
@@ -82,7 +83,7 @@ for (i in 1:length(allvarsofinterest)){
                   Omega=processedOut$Omega,
                   vartype="ExposureCont",
                   varofinterest=allvarsofinterest[i],
-                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  Table1vars=c("BWT","Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
@@ -123,7 +124,7 @@ for (i in 1:length(allvarsofinterest)){
                   Omega=processedOut$Omega,
                   vartype="ExposureCont",
                   varofinterest=allvarsofinterest[i],
-                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  Table1vars=c("BWT","Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
@@ -151,7 +152,7 @@ for (i in 1:length(allvarsofinterest)){
                   Omega=processedOut$Omega,
                   vartype="ExposureCont",
                   varofinterest=allvarsofinterest[i],
-                  Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  Table1vars=c("BWT","Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
@@ -176,7 +177,7 @@ for (i in 1:length(allvarsofinterest)){
 
 ### Check model convergence 
 
-The function dataAnalysis includes an indicator of whether each site-specific model converged. If the models are not converging, you can increase the number of specified iterations for the robust regression models using the argument maxit in the dataAnalysis function. The current default number of iterations is 100; increasing this number will make the function slower.
+The function `dataAnalysis` includes an indicator of whether each site-specific model converged. If the models are not converging, you can increase the number of specified iterations for the robust regression models using the argument `maxit` in the `dataAnalysis` function. The current default number of iterations is 100; increasing this number will make the function slower.
 
 ```r
 
