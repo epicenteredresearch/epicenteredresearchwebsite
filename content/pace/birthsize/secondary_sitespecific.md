@@ -4,9 +4,9 @@ draft: false
 linktitle: Tips 1-2
 menu:
   birthsize:
-    name: Step 2. Main Site-Specific Analyses
+    name: Step 4. Secondary Site-Specific Analyses
     weight: 1
-title: Main Site-Specific Analyses
+title: Secondary Site-Specific Analyses
 toc: true
 type: docs
 weight: 1
@@ -70,7 +70,7 @@ The outcomes of interest are:
 3.	**Birthweight-for-length (BWL) Z-score** - an indicator of adiposity under 2 years:  Continuous (kg/cm)
 4.	**Head circumference (HC) Z-score**: Continuous (cm)
 
-The Z-score for each of these characteristics is automatically calculated in the loadingSamples function, and are based on the INTERGROWTH-21(st) Project ([link](https://pubmed.ncbi.nlm.nih.gov/25209487/)).
+The Z-score for each of these characteristics is automatically calculated in the `loadingSamples` function, and are based on the INTERGROWTH-21(st) Project ([link](https://pubmed.ncbi.nlm.nih.gov/25209487/)).
 
 ### Methylation data
 
@@ -102,7 +102,7 @@ If you closed prior R session, you can load list of the phenotype information by
 
 ```{r eval=FALSE}
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210330_Output")
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output")
 load("HEBC_20210618_Preprocessed.RData")
 
 ## load beta-values
@@ -136,7 +136,7 @@ table(phenodataframe$Smoke)
 table(phenodataframe$Ethnic)
 ```
 
-Double check the distribution of Z-scores - if they seem off, make sure your input in loadingSamples is correct (e.g. BWT is in grams). These Z-scores are automatically added to your dataset in the `loadingSamples` function
+Double check the distribution of Z-scores - if they seem off, make sure your input in `loadingSamples` is correct (e.g. BWT is in grams). These Z-scores are automatically added to your dataset in the `loadingSamples` function
 
 ```{r eval=FALSE}
 

@@ -1,10 +1,10 @@
 ---
 date: "2021-01-03T00:00:00+01:00"
 draft: false
-linktitle: Step 3. If single race/ethnicity in cohort
+linktitle: Step 5. Secondary analysis if single race/ethnicity in cohort
 menu:
   birthsize:
-    parent: Step 2. Site-Specific Analysis
+    parent: Step 4. Secondary Site-Specific Analysis
     weight: 3
 title: If single race/ethnicity in cohort
 toc: true
