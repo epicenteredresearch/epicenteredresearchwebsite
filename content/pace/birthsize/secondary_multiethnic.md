@@ -6,7 +6,7 @@ menu:
   birthsize:
     parent: Step 4. Secondary Site-Specific Analysis
     weight: 2
-title: If multiple race/ethnicities in cohort
+title: Secondary analysis if multiple race/ethnicities in cohort
 toc: true
 type: docs
 weight: 2

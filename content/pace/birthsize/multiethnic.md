@@ -4,7 +4,7 @@ draft: false
 linktitle: Step 3. If multiple race/ethnicities in cohort
 menu:
   birthsize:
-    parent: Step 2. Site-Specific Analysis
+    parent: Step 2. Main Site-Specific Analyses
     weight: 2
 title: If multiple race/ethnicities in cohort
 toc: true
