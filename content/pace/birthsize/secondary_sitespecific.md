@@ -14,7 +14,7 @@ weight: 4
 
 ## Analysis Plan
 
-The analysis plan for this secondary analysis is the same as the main analyses with the exception of the exclusion criteria.  
+The analysis plan for this secondary analysis is the same as the main analyses with the exception of the exclusion criteria and adjusting for pregnancy complications. 
 
 ### Exclusion criteria
 

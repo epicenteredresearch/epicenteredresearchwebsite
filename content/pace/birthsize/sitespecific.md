@@ -55,7 +55,17 @@ Analysis will be restricted to singleton births. If the DNA methylation data ste
 
 #### Main Analysis
 
-To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be restricted to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.
+To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be restricted to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.Here a suggested list of variables to consider for exclusion:
+
++	Pregnancy complications:
+    - gestational diabetes
+    - placental abruption 
+    - placenta previa
+    - pre-eclampsia/eclampsia
+    - polyhydramnios, oligohydramnios
+    - placental insufficiency
+    - cervical insufficiency, isoimmunization, 
+    - cervical cerclaje
 
 #### Secondary Analysis
 
@@ -88,6 +98,7 @@ If any of the categorical variables below have less than 10 individuals in one o
 +	**Maternal smoking status**: Preferred classification is into three groups: 1. No smoking in pregnancy, 2. Smoking, but stopped in early pregnancy (first trimester), 3. Smoking throughout pregnancy. If you want to use a different categorization, please contact the meta-analysis center to discuss.
 +	**Ancestry (optional)**: We will first run models adjusting for self-reported ancestry. We will then run models stratified by major ethnic groups (ie. European, African, Asian…). Within each major ethic group, additional adjustment for ethnic background is optional (ie. country, GWAS PCs, etc).
 +	**Selection factors (optional)**: If your study design includes an enrichment of cases of some condition, please include the case-control variable, or discuss with us. 
++	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `EDAresults` function. See below how to add this variable to your dataset
 
 ## Data Checking
 
@@ -111,6 +122,17 @@ load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
 phenodataframe<-as.data.frame(pData(processedOut$mset))
 
 ```
+We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `EDAresults` function.
+
+```{r eval=FALSE}
+
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output\\EDA")
+samplestoexclude<-read.csv("HEBC_20210618_Recommended_Samples_to_Remove.csv",header=TRUE)
+phenodataframe<-merge(phenodataframe,samplestoexclude,by=c("Basename","ID"))
+summary(phenodataframe$Meanlog2oddsContamination)
+
+```
+
 Remove samples that do not meet inclusion requirements. The main analysis restricts to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications. The variable `Gestage` is automatically added to the dataset if the `GESTvar` argument in `loadingSamples` is not NULL; it is assumed to be in days. If you subset the phenotype information data frame, the `dataAnalysis` function will automatically subset the beta-value function to the same samples. 
 
 ```{r eval=FALSE}

@@ -47,7 +47,11 @@ We provide an example description for reference (PACEPla_GA_Cohort_Methods_Date.
 
 ### Exclusion criteria
 
+### Main Analysis 
+
 Analysis will be restricted to singleton births. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.
+
+#### Sensitivity Analysis 
 
 As an extra sensitivity analysis, we ask you to run the gestational age model again among the subset of **term births (>=37 weeks gestation)** from mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
 +	Pre-existing medical conditions in the mother: 
@@ -103,22 +107,25 @@ Make sure that all categorical adjustment variables are coded as a factor; if th
 
 If you encounter any issues, please check out our troubleshooting guide to see if there is any guidance that may help: https://www.epicenteredresearch.com/pace/troubleshooting/
 
+If you closed prior R session, you can load list of the phenotype information by loading the RData file automatically saved by the `preprocessingofData` function. You can load the preprocessed beta-values with poor quality probes masked and outliers winsorized that is automatically saved by `outlierprocess`.
+
+
 ```{r eval=FALSE}
 
-## If you closed prior R session, you can load list of pre-processed objects 
-## that is automatically saved by the preprocessingofData function
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output")
+load("HEBC_20210618_Preprocessed.RData")
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210330_Output")
-load("HEBC_20210330_Preprocessed.RData")
+## load beta-values
+load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
 phenodataframe$PTB<-ifelse(phenodataframe$Gestage<259,1,0)
 
-## Make sure that you have sufficient numbers of samples between categories 
-## of exposure/outcome of interest as well as adjustment variables; 
-## you are assumed to have at least 10
+```
 
-## These variable names may be different in your cohort
+Make sure that you have sufficient numbers of samples between categories of exposure/outcome of interest as well as adjustment variables; you are assumed to have at least 10. Please note, these variable names may be different in your cohort
+
+```{r eval=FALSE}
 
 table(phenodataframe$PTB)
 table(phenodataframe$Sex)
@@ -128,8 +135,11 @@ table(phenodataframe$Smoke)
 table(phenodataframe$ModeDelivery)
 table(phenodataframe$Ethnic)
 
-## Make sure all categorical adjustment variables are coded as factors or characters
-## 'Sex' is already coded as a character
+```
+
+Make sure all categorical adjustment variables are coded as factors or characters; 'Sex' is already coded as a character
+
+```{r}
 
 phenodataframe$Parity<-as.factor(phenodataframe$Parity)
 phenodataframe$MaternalEd<-as.factor(phenodataframe$MaternalEd)
@@ -137,8 +147,10 @@ phenodataframe$Smoke<-as.factor(phenodataframe$Smoke)
 phenodataframe$Ethnic<-as.factor(phenodataframe$Ethnic)
 phenodataframe$ModeDelivery<-as.factor(phenodataframe$ModeDelivery)
 
+
 ```
 
 ### Now you can move on to Step 3
 
 Choose the appropriate Step 3, depending on whether or not you have multiple race/ethnicities in your cohort
+

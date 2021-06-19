@@ -106,7 +106,7 @@ exampledat<-loadingSamples(SamplePlacement=NULL,PhenoData=allphenodata,
                   IDATdir="H:\\UCLA\\PACE\\Birthweight-placenta\\IDATfiles",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330")
+                  cohort="HEBC",analysisdate="20210618")
 
 
 ```
@@ -177,12 +177,31 @@ The function also returns a list that includes:
 
 This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). For this analysis, please use the reference-based method for the placenta ([ref](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-07186-6)), which estimates cell composition using the constrained Houseman method. 
 
-To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See `?preprocessingofData` for more details. 
+To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See `?preprocessingofData` for more details. Also check out Association_between_Batch_and_Top_PCs_Raw_Data plot to see the association between the Batch indicator and the main components of the variation in the data.
 
+For this analysis, we recommend the removing the following samples (see [here](https://www.epicenteredresearch.com/pace/qcsteps/) for more details):
+
+  + **Samples with an estimated contamination score (`EDAresults$logOddsContamin`) that is greater than -1**: You can identify these samples based on the Meanlog2oddsContamination variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Heatmap_SNP_Outliers_Suggesting_Contamination plot. 
+  
+  + **Samples with the wrong predicted sex**: Check the Sex_Wrong variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. However, be careful with these exclusions, this information is just intended to help guide an appraisal of potential unintentional duplicates. Also see the Signal_Intensities_on_X_and_Y_Chromosomes_by_Sex plot and the Heatmap_of_Y_Chromosome_by_Sex plot.
+  
+  + **Unintentional replicates**: Check the Cluster variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. However, be careful with these exclusions, this information is just intended to help guide an appraisal of potential unintentional duplicates. Also see the Heatmap_of_SNPs plot and Dendrogram_based_on_Array_SNPs plot. 
+  
+  + **Samples with too many failed probes**: Check the TooManyFailedProbes variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Probes that are flagged as 'failed' depend on the DetectionPvalMethod, DetectionPvalCutoff, minNbeads=3, and FilterZeroIntensities arguments in the `ExploratoryDataAnalysis` function.
+  
+  + **Low signal intensity overall**: Check the IntensityCat variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Methyl_and_Unmethyl_Signal_Intensities plot. 
 
 ```r
+
+SexWrongRemove<-c("9630789136_R02C01","9630789048_R06C01","9630789238_R02C01")
+TooManyFailedProbes<-c("9630789216_R05C01","9630789238_R03C01","9630789098_R04C02")
+PossibleContamination<-c("9630789136_R01C01","9630789121_R06C02")
+Unintentionalreps<-c(9630789136_R01C01, 9630789121_R06C02)
+
+allsamplestoexclude<-c(SexWrongRemove,TooManyFailedProbes,PossibleContamination,Unintentionalreps)
+
 processedOut<-preprocessingofData(RGset=exampledat,
-                  SamplestoRemove=EDAresults$SamplestoRemove,
+                  SamplestoRemove=allsamplestoexclude,
                   ProbestoRemove=EDAresults$ProbestoRemove,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   compositeCellType="Placenta",
