@@ -82,7 +82,7 @@ install.packages("F:\\PACE\\PACEanalysis_0.1.6.tar.gz",
 
 ### Attaching package and running the first functions
 
-Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. library(PACEanalysis)), and entering ? followed by the function name in your R console, e.g. ?loadingSamples
+Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. library(PACEanalysis)), and entering ? followed by the function name in your R console, e.g. `?loadingSamples`
 
 ```r
 ## Attach package
