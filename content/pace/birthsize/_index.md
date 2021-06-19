@@ -14,7 +14,7 @@ type: docs
 weight: 1
 ---
 
-## Loading the IDAT files and performing exploratory data analysis
+## Loading the IDAT files 
 
 This part of the analysis can be used for multiple downstream site-specific analyses. If you have already run this part, you can skip to "Step 2. Site-Specific Analysis"
 
@@ -121,10 +121,26 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   
 ```
 
-
-### Examining the Exploratory Data Analysis
+## Performing exploratory data analysis
 
 #### **For more details on the quality control checks, see here: https://www.epicenteredresearch.com/pace/troubleshooting/**
+
+```r
+
+EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
+                  globalvarexplore=c("BWT","Sex"),
+                  DetectionPvalMethod="SeSAMe",
+                  DetectionPvalCutoff=0.05,
+                  minNbeads=3,
+                  FilterZeroIntensities=TRUE,
+                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
+                  savelog=TRUE,
+                  cohort="HEBC",analysisdate="20210330")
+                  
+                  
+```
+
+### Examining the Exploratory Data Analysis
 
 Before moving on to the next stage, check out the figures and csv files in the new "EDA" subfolder created by the function 'ExploratoryDataAnalysis'. As noted in the function documentation, output includes: 
 
