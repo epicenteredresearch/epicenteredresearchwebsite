@@ -5,11 +5,11 @@ linktitle: Tips 1-2
 menu:
   birthsize:
     name: Step 4. Secondary Site-Specific Analyses
-    weight: 1
+    weight: 4
 title: Secondary Site-Specific Analyses
 toc: true
 type: docs
-weight: 1
+weight: 4
 ---
 
 ## Analysis Plan

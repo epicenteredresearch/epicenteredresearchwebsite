@@ -5,11 +5,11 @@ linktitle: Step 5. Secondary analysis if multiple race/ethnicities in cohort
 menu:
   birthsize:
     parent: Step 4. Secondary Site-Specific Analysis
-    weight: 2
+    weight: 6
 title: Secondary analysis if multiple race/ethnicities in cohort
 toc: true
 type: docs
-weight: 2
+weight: 6
 ---
 
 This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
