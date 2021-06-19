@@ -14,40 +14,7 @@ weight: 4
 
 ## Analysis Plan
 
-If you do not have a copy of the full analysis plan, please email Alexandra Binder (ambinder@hawaii.edu) for a copy. The full analysis plan includes additional information regarding study background, downstream analyses, and study timeline.
-
-### Objective
-
-The overall aim is to investigate the association between birth size metrics and epigenome-wide placental DNA methylation.
-
-### Cohorts
-
-All PACE-placenta and PLACENTOMICS cohorts will be invited to participate 
-
-### Cohort description
-
-Before starting analyzing their data, we will ask for cohorts to fill out a [brief online form](https://forms.gle/HsgQbS6aRac1N1fUA) that will inform our guidance on potential cohort-specific modifications to the analysis plan. This form will solicit the following information:
-
-+ Anticipated number of eligible samples
-+ Whether these samples are from the maternal- or fetal-side of the placenta
-+ Number of participants in each self-reported race/ethnicity category
-+ Do you have genetic data to estimate genetic ancestry?
-+ Number of male and female infants
-+	Number of low birth weight infants
-+	Number of high birth weight infants
-
-If both fetal-side and maternal-side samples are available from the cohort, we will ask you to fill out the online form for both sides separately.
-Link to the online form: https://forms.gle/HsgQbS6aRac1N1fUA
-
-Together with the summary statistic files, all participating cohorts will be asked to provide a short description of:
-
-+ Their study population, and any important study-specific selection criteria
-+	Confirmation of informed consent and appropriate ethics approvals 
-+	Birth outcomes and covariate definitions
-+	Placenta collection and DNA extraction procedure
-+	DNA methylation assay processing in the laboratory
-
-We provide an example description for reference (PACEPla_BW_Cohort_Methods_Date.doc).  
+The analysis plan for this secondary analysis is the same as the main analyses with the exception of the exclusion criteria.  
 
 ### Exclusion criteria
 
@@ -55,26 +22,11 @@ Analysis will be restricted to singleton births. If the DNA methylation data ste
 
 #### Main Analysis
 
-To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be subset of children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.
+To evaluate fetal growth not linked to gestational age or pregnancy complications, in our main analyses we subset to children born at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.
 
 #### Secondary Analysis
 
-Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. 
-
-### Outcome
-
-The outcomes of interest are:
-
-1.	**Birthweight (BWT) Z-score**: Continuous 
-2.	**Birthlength (BL) Z-score**: Continuous (cm)
-3.	**Birthweight-for-length (BWL) Z-score** - an indicator of adiposity under 2 years:  Continuous (kg/cm)
-4.	**Head circumference (HC) Z-score**: Continuous (cm)
-
-The Z-score for each of these characteristics is automatically calculated in the `loadingSamples` function, and are based on the INTERGROWTH-21(st) Project ([link](https://pubmed.ncbi.nlm.nih.gov/25209487/)).
-
-### Methylation data
-
-Placental DNA methylation from the fetal-side or maternal-side assessed with the Illumina Infinium450k BeadChip or the Illumina Infinium EPIC BeadChip (if you have both fetal-side and maternal-side samples, we will ask you to run these analyses separately). We will use beta values, from 0 to 1.  We are providing a package (**PACEanalysis**) that enables each cohort to run all required pre-processing and EWAS in a few lines of code. You will have the option to adjust for batch effects with the ComBat method in the pre-processing if you have an indicator for batch in your dataset. Please see the **PACEanalysis** help manual for details about each function, and the package vignette for example code. 
+For this secondary analyses, we will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. If you do not have more than 10 infants with pregnancy complications, you do not need to run these analyses. Please contact us if you have any questions regarding this guidance. 
 
 ### Covariates
 
@@ -88,6 +40,7 @@ If any of the categorical variables below have less than 10 individuals in one o
 +	**Maternal smoking status**: Preferred classification is into three groups: 1. No smoking in pregnancy, 2. Smoking, but stopped in early pregnancy (first trimester), 3. Smoking throughout pregnancy. If you want to use a different categorization, please contact the meta-analysis center to discuss.
 +	**Ancestry (optional)**: We will first run models adjusting for self-reported ancestry. We will then run models stratified by major ethnic groups (ie. European, African, Asian…). Within each major ethic group, additional adjustment for ethnic background is optional (ie. country, GWAS PCs, etc).
 +	**Selection factors (optional)**: If your study design includes an enrichment of cases of some condition, please include the case-control variable, or discuss with us. 
++ **Pregnancy complications**: Include a separate indicator variable for each pregnancy complication.
 
 ## Data Checking
 
@@ -112,21 +65,7 @@ phenodataframe<-as.data.frame(pData(processedOut$mset))
 
 ```
 
-Remove samples that do not meet inclusion requirements. The main analysis restricting to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications. The variable `Gestage` is automatically added to the dataset if the `GESTvar` argument in `loadingSamples` is not NULL; it is assumed to be in days.
-
-```{r eval=FALSE}
-
-## Restricting to term
-phenodataframe$GestageWeeks<-phenodataframe$Gestage/7
-phenodataframe<-phenodataframe[which(phenodataframe$GestageWeeks>=37 & phenodataframe$GestageWeeks < 43),]
-
-## Removing pregnancy complications (this will depend on your dataset)
-phenodataframe<-phenodataframe[which(phenodataframe$GDM=="No"),]
-phenodataframe<-phenodataframe[which(phenodataframe$PE=="No"),]
-
-```
-
-Make sure that you have sufficient numbers of samples between categories of exposure/outcome of interest as well as adjustment variables; you are assumed to have at least 10. Please note, these variable names may be different in your cohort
+Make sure that you have sufficient numbers of samples between categories of exposure/outcome of interest as well as adjustment variables; you are assumed to have at least 10. Please note, these variable names may be different in your cohort. These numbers may be different from your main analyses.
 
 ```{r eval=FALSE}
 table(phenodataframe$Sex)
@@ -134,24 +73,6 @@ table(phenodataframe$Parity)
 table(phenodataframe$MaternalEd)
 table(phenodataframe$Smoke)
 table(phenodataframe$Ethnic)
-```
-
-Double check the distribution of Z-scores - if they seem off, make sure your input in `loadingSamples` is correct (e.g. BWT is in grams). These Z-scores are automatically added to your dataset in the `loadingSamples` function
-
-```{r eval=FALSE}
-
-## Automatically added to dataset by loadingSamples if BWTvar and GESTvar are not NULL 
-summary(phenodataframe$BWT_Zscore)
-
-## Automatically added to dataset by loadingSamples if BIRTHLENGTHvar and GESTvar are not NULL
-summary(phenodataframe$BirthLength_Zscore)
-
-## Automatically added to dataset by loadingSamples if BWTvar, BIRTHLENGTHvar, and GESTvar are not NULL
-summary(phenodataframe$HeadCircum_Zscore)
-
-## Automatically added to dataset by loadingSamples if HEADCIRCUMvar and GESTvar are not NULL
-summary(phenodataframe$wlr_Zscore)
-
 ```
 
 Make sure all categorical adjustment variables are coded as factors or characters; 'Sex' is already coded as a character

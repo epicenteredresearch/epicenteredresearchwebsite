@@ -12,9 +12,22 @@ type: docs
 weight: 2
 ---
 
-This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
+This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the `phenofinal` argument of the `dataAnalysis` function. 
 
-If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestrictToSubset is TRUE), the data.frame specified by the phenofinal argument must include the column specified by the argument RestrictionVar, which is assumed to be a categorical variable for race/ethnicity. Be sure to update RestrictToIndicator to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
+If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument `RestrictToSubset=TRUE`), the data.frame specified by the `phenofinal` argument must include the column specified by the argument `RestrictionVar`, which is assumed to be a categorical variable for race/ethnicity. Be sure to update `RestrictToIndicator` to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
+
+A few important specifications to note in the `dataAnalysis` function:
+
+   - By specifying `vartype="ExposureCont"`, the birth size characteristic is modeled as a continuous exposure and assumed to be numeric
+   - By specifying `robust=TRUE`, analyses are run via robust regression using iterated re-weighted least squares (Huber weights), and White's estimator for the variance
+   - By specifying `adjustmentvariables=c("Sex","Age","Parity","MaternalEd","Smoke","preBMI","Ethnic")`, we adjust our models for these variables
+   - `RunUnadjusted=TRUE`, indicates to run unadjusted models
+   - `RunAdjusted=TRUE`, indicates to also run adjusted models
+   - `RunCellTypeAdjusted=TRUE`, indicates to also run adjusted models, further adjusting for estimated cell composition
+   - `RunSexSpecific=TRUE`, indicates to also run the models stratified by infant sex
+   - `RunCellTypeInteract=TRUE`, indicates to evaluate interactions with cell compositions
+
+Additional details regarding the `dataAnalysis` function can be found by running `?dataAnalysis`
 
 ### Quick check to make sure the function runs in your cohort
 
@@ -97,9 +110,9 @@ for (i in 1:length(allvarsofinterest)){
 Now running the models for all CpG loci
 
 ```r
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Outcome:",allvarsofinterest[i],"\n")
   
   ## analysis across all race/ethnicities, adjusting for race/ethnicity
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
@@ -108,13 +121,13 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
@@ -126,7 +139,7 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
   
     ## restricting to the most prevalent race/ethnicity
@@ -136,14 +149,14 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI"),
+                                   "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -154,7 +167,7 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
   
 }
@@ -167,7 +180,7 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 ```r
 
-baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210330_Output"
+baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210618_Output"
 
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
@@ -182,14 +195,14 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main/Ethnic_1",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))

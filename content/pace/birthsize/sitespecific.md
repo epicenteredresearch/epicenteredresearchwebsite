@@ -59,7 +59,7 @@ To evaluate fetal growth not linked to gestational age or pregnancy complication
 
 #### Secondary Analysis
 
-Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. 
+Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. This secondary analyses will be restricted to cohorts with at least 10 pregnancy complications in their dataset. 
 
 ### Outcome
 

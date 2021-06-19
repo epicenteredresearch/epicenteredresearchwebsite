@@ -20,35 +20,30 @@ Given the modeling approaches used, the dataAnalysis function requires a good de
 
 ```{r eval=FALSE}
 
-modelstorun<-data.frame(varofinterest=c("BWT","LBWbin","HBWbin","BirthLength",
-                                        "WeightLengthRatio","HeadCircum"))
-modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
-modelstorun$vartype<-"OutcomeCont"
-modelstorun$vartype[modelstorun$varofinterest %in% c("LBWbin","HBWbin")]<-"OutcomeBin"
+allvarsofinterest=c("BWT_Zscore","BirthLength_Zscore","HeadCircum_Zscore","wlr_Zscore")
 
 ## You can reduce this dataframe to whatever variables you have.
 ## For example, if you only have birthweight, you would specify:
-## modelstorun<-data.frame(varofinterest=c("BWT","LBWbin","HBWbin"))
+## allvarsofinterest=c("BWT_Zscore")
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Outcome:",allvarsofinterest[i],"\n")
   
-  ## analysis across all race/ethnicities, adjusting for race/ethnicity
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=Betasnooutliers[1:100,],
                   array="450K",
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI"),
+                                   "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -59,8 +54,9 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
+  
   
 }
 
@@ -72,23 +68,24 @@ Now running the models for all CpG loci
 
 ```{r eval=FALSE}
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Outcome:",allvarsofinterest[i],"\n")
+  
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=Betasnooutliers,
                   array="450K",
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI"),
+                                   "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -99,8 +96,9 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
+  
   
 }
 
@@ -111,7 +109,7 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 ```{r eval=FALSE}
 
-baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210330_Output"
+baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210618_Output"
 
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
@@ -123,7 +121,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
