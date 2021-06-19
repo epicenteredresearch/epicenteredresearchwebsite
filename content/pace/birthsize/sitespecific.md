@@ -55,7 +55,7 @@ Analysis will be restricted to singleton births. If the DNA methylation data ste
 
 #### Main Analysis
 
-To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be restricted to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.Here a suggested list of variables to consider for exclusion:
+To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be restricted to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications. Here is a suggested list of variables to consider for exclusion:
 
 +	Pregnancy complications:
     - gestational diabetes

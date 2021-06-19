@@ -196,7 +196,7 @@ For this analysis, we recommend the removing the following samples (see [here](h
 SexWrongRemove<-c("9630789136_R02C01","9630789048_R06C01","9630789238_R02C01")
 TooManyFailedProbes<-c("9630789216_R05C01","9630789238_R03C01","9630789098_R04C02")
 PossibleContamination<-c("9630789136_R01C01","9630789121_R06C02")
-Unintentionalreps<-c(9630789136_R01C01, 9630789121_R06C02)
+Unintentionalreps<-c("9630789136_R01C01", "9630789121_R06C02")
 
 allsamplestoexclude<-c(SexWrongRemove,TooManyFailedProbes,PossibleContamination,Unintentionalreps)
 
