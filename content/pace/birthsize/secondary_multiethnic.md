@@ -4,7 +4,7 @@ draft: false
 linktitle: Step 5. Secondary analysis if multiple race/ethnicities in cohort
 menu:
   birthsize:
-    parent: Step 4. Secondary Site-Specific Analysis
+    parent: Step 4. Secondary Site-Specific Analyses
     weight: 6
 title: Secondary analysis if multiple race/ethnicities in cohort
 toc: true

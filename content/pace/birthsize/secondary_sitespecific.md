@@ -1,7 +1,7 @@
 ---
 date: "2019-05-05T00:00:00+01:00"
 draft: false
-linktitle: Tips 1-2
+linktitle: Step 4. Secondary Site-Specific Analyses
 menu:
   birthsize:
     name: Step 4. Secondary Site-Specific Analyses
