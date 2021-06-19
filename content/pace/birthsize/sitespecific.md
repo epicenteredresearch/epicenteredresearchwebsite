@@ -4,9 +4,9 @@ draft: false
 linktitle: Tips 1-2
 menu:
   birthsize:
-    name: Step 2. Site-Specific Analysis
+    name: Step 2. Main Site-Specific Analyses
     weight: 1
-title: Site-Specific Analysis
+title: Main Site-Specific Analyses
 toc: true
 type: docs
 weight: 1
@@ -59,7 +59,7 @@ To evaluate fetal growth not linked to gestational age or pregnancy complication
 
 #### Secondary Analysis
 
-All children at term (between >=37 and <43 weeks of gestation) and adjusting for pregnancy complications.
+Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. 
 
 ### Outcome
 
@@ -97,30 +97,47 @@ Make sure that all categorical adjustment variables are coded as a factor; if th
 
 If you encounter any issues, please check out our troubleshooting guide to see if there is any guidance that may help: https://www.epicenteredresearch.com/pace/troubleshooting/
 
+If you closed prior R session, you can load list of the phenotype information by loading the RData file automatically saved by the `preprocessingofData` function. You can load the preprocessed beta-values with poor quality probes masked and outliers winsorized that is automatically saved by `outlierprocess`.
+
 
 ```{r eval=FALSE}
 
-## If you closed prior R session, you can load list of pre-processed objects 
-## that is automatically saved by the preprocessingofData function
-
 setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210330_Output")
-load("HEBC_20210330_Preprocessed.RData")
+load("HEBC_20210618_Preprocessed.RData")
+
+## load beta-values
+load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
 
-## Make sure that you have sufficient numbers of samples between categories 
-## of exposure/outcome of interest as well as adjustment variables; 
-## you are assumed to have at least 10
+```
+Remove samples that do not meet inclusion requirements. The main analysis restricts to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications. The variable `Gestage` is automatically added to the dataset if the `GESTvar` argument in `loadingSamples` is not NULL; it is assumed to be in days. If you subset the phenotype information data frame, the `dataAnalysis` function will automatically subset the beta-value function to the same samples. 
 
-## These variable names may be different in your cohort
+```{r eval=FALSE}
 
+## Restricting to term
+phenodataframe$GestageWeeks<-phenodataframe$Gestage/7
+phenodataframe<-phenodataframe[which(phenodataframe$GestageWeeks>=37 & phenodataframe$GestageWeeks < 43),]
+
+## Removing pregnancy complications (this will depend on your dataset)
+phenodataframe<-phenodataframe[which(phenodataframe$GDM=="No"),]
+phenodataframe<-phenodataframe[which(phenodataframe$PE=="No"),]
+
+```
+
+Make sure that you have sufficient numbers of samples between categories of exposure/outcome of interest as well as adjustment variables; you are assumed to have at least 10. Please note, these variable names may be different in your cohort
+
+```{r eval=FALSE}
 table(phenodataframe$Sex)
 table(phenodataframe$Parity)
 table(phenodataframe$MaternalEd)
 table(phenodataframe$Smoke)
 table(phenodataframe$Ethnic)
+```
 
-## Double check the distribution of Z-scores - if they seem off, make sure your input in loadingSamples is correct (e.g. BWT is in grams)
+Double check the distribution of Z-scores - if they seem off, make sure your input in loadingSamples is correct (e.g. BWT is in grams). These Z-scores are automatically added to your dataset in the `loadingSamples` function
+
+```{r eval=FALSE}
 
 ## Automatically added to dataset by loadingSamples if BWTvar and GESTvar are not NULL 
 summary(phenodataframe$BWT_Zscore)
@@ -134,8 +151,11 @@ summary(phenodataframe$HeadCircum_Zscore)
 ## Automatically added to dataset by loadingSamples if HEADCIRCUMvar and GESTvar are not NULL
 summary(phenodataframe$wlr_Zscore)
 
-## Make sure all categorical adjustment variables are coded as factors or characters
-## 'Sex' is already coded as a character
+```
+
+Make sure all categorical adjustment variables are coded as factors or characters; 'Sex' is already coded as a character
+
+```{r}
 
 phenodataframe$Parity<-as.factor(phenodataframe$Parity)
 phenodataframe$MaternalEd<-as.factor(phenodataframe$MaternalEd)

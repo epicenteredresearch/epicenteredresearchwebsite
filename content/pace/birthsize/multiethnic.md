@@ -73,7 +73,7 @@ for (i in 1:length(allvarsofinterest)){
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
