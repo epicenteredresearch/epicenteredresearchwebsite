@@ -52,29 +52,34 @@ We provide an example description for reference (PACEPla_BW_Cohort_Methods_Date.
 ### Exclusion criteria
 
 Analysis will be restricted to singleton births. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.
-We will not exclude participants based on the incidence of maternal conditions, such as gestational diabetes and preeclampsia, or preterm birth. If placenta DNA methylation and birth size influence the risk of any of these outcomes, adjusting for these factors may introduce collider bias (selection bias), and make it appear there is a relationship between DNA methylation and birth size that is not a true direct effect. 
+
+#### Main Analysis
+
+To evaluate fetal growth not linked to gestational age or pregnancy complications, our main analyses will be subset of children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications.
+
+#### Secondary Analysis
+
+All children at term (between >=37 and <43 weeks of gestation) and adjusting for pregnancy complications.
 
 ### Outcome
 
 The outcomes of interest are:
-1.	**Birthweight (BW)**: 
-    +	Continuous (grams)
-    +	Categorical:
-        -	Low birth weight (LBW): Binary, LBW (<2500g) versus normal BW (2500-4000g
-        -	High birth weight (HBW): Binary, HBW (>4000g) versus normal BW (2500-4000g)
-2.	**Birthlength (BL)**: Continuous (cm)
-3.	**Birthweight-for-length (BWL)** - an indicator of adiposity under 2 years:  Continuous (kg/cm)
-4.	**Head circumference (HC)**: Continuous (cm)
+
+1.	**Birthweight (BWT) Z-score**: Continuous 
+2.	**Birthlength (BL) Z-score**: Continuous (cm)
+3.	**Birthweight-for-length (BWL) Z-score** - an indicator of adiposity under 2 years:  Continuous (kg/cm)
+4.	**Head circumference (HC) Z-score**: Continuous (cm)
+
+The Z-score for each of these characteristics is automatically calculated in the loadingSamples function, and are based on the INTERGROWTH-21(st) Project ([link](https://pubmed.ncbi.nlm.nih.gov/25209487/)).
 
 ### Methylation data
 
-Placental DNA methylation from the fetal-side or maternal-side assessed with the Illumina Infinium450k BeadChip or the Illumina Infinium EPIC BeadChip. We will use beta values, from 0 to 1.  We are providing a package (**PACEanalysis**) that enables each cohort to run all required pre-processing and EWAS in a few lines of code. You will have the option to adjust for batch effects with the ComBat method in the pre-processing if you have an indicator for batch in your dataset. Please see the **PACEanalysis** help manual for details about each function, and the package vignette for example code. 
+Placental DNA methylation from the fetal-side or maternal-side assessed with the Illumina Infinium450k BeadChip or the Illumina Infinium EPIC BeadChip (if you have both fetal-side and maternal-side samples, we will ask you to run these analyses separately). We will use beta values, from 0 to 1.  We are providing a package (**PACEanalysis**) that enables each cohort to run all required pre-processing and EWAS in a few lines of code. You will have the option to adjust for batch effects with the ComBat method in the pre-processing if you have an indicator for batch in your dataset. Please see the **PACEanalysis** help manual for details about each function, and the package vignette for example code. 
 
 ### Covariates
 
 If any of the categorical variables below have less than 10 individuals in one of the categories, please let us know and we can decide whether to combine categories or restrict the analysis. In the case of ancestry, if there are more than two ancestry categories in your cohort with less than 10 individuals, we will discuss combining these categories into one “other” classification.  If you don’t have one of these variables, let us know, and we can discuss the best approach to take with your data. More generally, if you want to use different categorization of the below covariates, please contact Alexandra Binder (ambinder@hawaii.edu) to discuss. 
 
-+	**Gestational age**: Continuous (days)
 +	**Infant sex**: Categorical: "Female", "Male". 
 +	**Maternal age**: Continuous (years)
 +	**Maternal pre-pregnancy BMI**: Continuous (kg/m2)
@@ -102,8 +107,6 @@ setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210330_Output")
 load("HEBC_20210330_Preprocessed.RData")
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
-phenodataframe$LBWbin<-ifelse(phenodataframe$BWT<2500,1,0)
-phenodataframe$HBWbin<-ifelse(phenodataframe$BWT>4000,1,0)
 
 ## Make sure that you have sufficient numbers of samples between categories 
 ## of exposure/outcome of interest as well as adjustment variables; 
@@ -111,13 +114,25 @@ phenodataframe$HBWbin<-ifelse(phenodataframe$BWT>4000,1,0)
 
 ## These variable names may be different in your cohort
 
-table(phenodataframe$LBWbin)
-table(phenodataframe$HBWbin)
 table(phenodataframe$Sex)
 table(phenodataframe$Parity)
 table(phenodataframe$MaternalEd)
 table(phenodataframe$Smoke)
 table(phenodataframe$Ethnic)
+
+## Double check the distribution of Z-scores - if they seem off, make sure your input in loadingSamples is correct (e.g. BWT is in grams)
+
+## Automatically added to dataset by loadingSamples if BWTvar and GESTvar are not NULL 
+summary(phenodataframe$BWT_Zscore)
+
+## Automatically added to dataset by loadingSamples if BIRTHLENGTHvar and GESTvar are not NULL
+summary(phenodataframe$BirthLength_Zscore)
+
+## Automatically added to dataset by loadingSamples if BWTvar, BIRTHLENGTHvar, and GESTvar are not NULL
+summary(phenodataframe$HeadCircum_Zscore)
+
+## Automatically added to dataset by loadingSamples if HEADCIRCUMvar and GESTvar are not NULL
+summary(phenodataframe$wlr_Zscore)
 
 ## Make sure all categorical adjustment variables are coded as factors or characters
 ## 'Sex' is already coded as a character

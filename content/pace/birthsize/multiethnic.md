@@ -22,20 +22,15 @@ Given the modeling approaches used, the dataAnalysis function requires a good de
 
 ```r
 
-modelstorun<-data.frame(varofinterest=c("BWT","LBWbin","HBWbin","BirthLength",
-                                        "WeightLengthRatio","HeadCircum"))
-modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
-modelstorun$vartype<-"OutcomeCont"
-modelstorun$vartype[modelstorun$varofinterest %in% c("LBWbin","HBWbin")]<-"OutcomeBin"
-
+allvarsofinterest=c("BWT_Zscore","BirthLength_Zscore","HeadCircum_Zscore","wlr_Zscore")
 
 ## You can reduce this dataframe to whatever variables you have.
 ## For example, if you only have birthweight, you would specify:
-## modelstorun<-data.frame(varofinterest=c("BWT","LBWbin","HBWbin"))
+## allvarsofinterest=c("BWT_Zscore")
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Outcome:",allvarsofinterest[i],"\n")
   
   ## analysis across all race/ethnicities, adjusting for race/ethnicity
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
@@ -44,13 +39,13 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("Gestage","Sex","Age","Parity","MaternalEd",
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
@@ -62,7 +57,7 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
   
     ## restricting to the most prevalent race/ethnicity
@@ -72,8 +67,8 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic"),
                   StratifyTable1=FALSE,
@@ -90,7 +85,7 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
   
 }
