@@ -228,7 +228,7 @@ The `outlierprocess` function is used to reduce the influence of outliers by one
 ```r
 Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
                                   quantilemethod="EmpiricalBeta",
-                                  trimming=TRUE,
+                                  trimming=FALSE,
                                   pct=0.005,
                                   destinationfolder="H:\\UCLA\\PACE\\Gestage-placenta",
                                   cohort="HEBC",analysisdate="20210618")

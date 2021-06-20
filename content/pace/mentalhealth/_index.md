@@ -245,13 +245,13 @@ betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
 
 ```
 
-The `outlierprocess` function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. If `trimming=TRUE`, remove extreme outliers based on gaps that must be at least 3*IQR; the cutoff for the number of outliers in a group is either a maximum of 5 or 0.0025 of the total number of samples (whichever is larger). Detected outliers are recoded as `NA`. If `trimming=FALSE`, winsorize outliers based on the specified percentile (default is 1%, 0.5% on each side, corresponding to `pct=0.005`). Percentiles can be estimated based on the quantile function or the empirical beta-distribution. For this analysis, winsorizing 1%. See `?outlierprocess` for more details.
+The `outlierprocess` function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. If `trimming=TRUE`, remove extreme outliers based on gaps that must be at least 3*IQR; the cutoff for the number of outliers in a group is either a maximum of 5 or 0.0025 of the total number of samples (whichever is larger). Detected outliers are recoded as `NA`. If `trimming=FALSE`, winsorize outliers based on the specified percentile (default is 1%, 0.5% on each side, corresponding to `pct=0.005`). Percentiles can be estimated based on the quantile function or the empirical beta-distribution. See `?outlierprocess` for more details.
 
 ```r
 Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
-                                  quantilemethod="EmpiricalBeta",
+                                  quantilemethod="Quantile",
                                   trimming=TRUE,
-                                  pct=0.005,
+                                  pct=0.25,
                                   destinationfolder="C:/methylation_placenta",
                                   cohort="ITU",analysisdate="20210401")
 
