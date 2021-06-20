@@ -12,40 +12,49 @@ type: docs
 weight: 2
 ---
 
-This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the gestational age project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the phenofinal argument of the dataAnalysis function. 
+This stage of the analysis is specific to the chosen exposure/outcome and the specified adjustment variables. Below is the code for all of the analyses to run for the birth size project. Please be sure to update the cohort and date information in the below code for your analysis, as well as the destination path. Finally, be sure to update the column names of the exposure/outcome(s) of interest, the adjustment variables, and the table 1 variables. These should correspond to column names in the dataframe specified in the `phenofinal` argument of the `dataAnalysis` function. 
 
-If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument RestrictToSubset is TRUE), the data.frame specified by the phenofinal argument must include the column specified by the argument RestrictionVar, which is assumed to be a categorical variable for race/ethnicity. Be sure to update RestrictToIndicator to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
+If you have multiple race/ethnicities in your cohort, run the below code. In the analysis restricting to the most prevalent race/ethnicity (i.e. the argument `RestrictToSubset=TRUE`), the data.frame specified by the `phenofinal` argument must include the column specified by the argument `RestrictionVar`, which is assumed to be a categorical variable for race/ethnicity. Be sure to update `RestrictToIndicator` to the indicator for the most prevalent race/ethnicity in your cohort. For example, if one of your race/ethnicity categories is “White” for individuals of European descent, use that instead of “1”.
 
-First, we will run the models adjusting for birth weight, and then we will run the models without adjusting for birth weight. Be sure to use different analysisname arguments when running the model with and without adjustment for birth weight so that the results are written into separate subfolder directories. 
+A few important specifications to note in the `dataAnalysis` function:
+
+   - By specifying `vartype="ExposureCont"`, the gestational age characteristic is modeled as a continuous exposure and assumed to be numeric; this specification also works when the exposure is a binary indicator (0 or 1)
+   - By specifying `robust=TRUE`, analyses are run via robust regression using iterated re-weighted least squares (Huber weights), and White's estimator for the variance
+   - The `Table1vars` argument is used to specify the variables to include in our descriptive Table 1
+   - The `adjustmentvariables` argument specifies the variables we will adjust for in our models
+   - `RunUnadjusted=TRUE`, indicates to run unadjusted models
+   - `RunAdjusted=TRUE`, indicates to also run adjusted models
+   - `RunCellTypeAdjusted=TRUE`, indicates to also run adjusted models, further adjusting for estimated cell composition
+   - `RunSexSpecific=TRUE`, indicates to also run the models stratified by infant sex
+   - `RunCellTypeInteract=TRUE`, indicates to evaluate interactions with cell compositions
+
+Additional details regarding the `dataAnalysis` function can be found by running `?dataAnalysis`
 
 ### Quick check to make sure the function runs in your cohort
 
-Given the modeling approaches used, the dataAnalysis function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
+Given the modeling approaches used, the `dataAnalysis` function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
 
 ```{r eval=FALSE}
 
-modelstorun<-data.frame(varofinterest=c("Gestage","PTB"),
-                        vartype=c("OutcomeCont","OutcomeBin"))
-modelstorun$varofinterest<-as.character(modelstorun$varofinterest)
-modelstorun$vartype<-as.character(modelstorun$vartype)
+allvarsofinterest=c("Gestage","PTB")
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Exposure:",allvarsofinterest[i],"\n")
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=Betasnooutliers[1:100,],
                   array="450K",
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
+                  Table1vars=c("BWT","Gestage","PTB","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -56,7 +65,7 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
                   
   robust=TRUE,tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
@@ -65,14 +74,14 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery"),
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
+                  Table1vars=c("BWT","Gestage","PTB","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -83,73 +92,10 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
   
 }
-
-## Then we run the models without adjusting for birth weight
-## be sure to change the analysisname argument to create a new directory for the results
-
-for (i in 1:nrow(modelstorun)){
-  
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
-  tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=Betasnooutliers[1:100,],
-                  array="450K",
-                  maxit=100,
-                  robust=TRUE,
-                  Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
-                  StratifyTable1=FALSE,
-                  StratifyTable1var=NULL,
-                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
-                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
-                  RunAdjusted=TRUE,
-                  RunCellTypeAdjusted=TRUE,
-                  RunSexSpecific=TRUE,
-                  RunCellTypeInteract=TRUE,
-                  RestrictToSubset=FALSE,
-                  RestrictionVar=NULL,
-                  RestrictToIndicator=NULL,
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
-                  savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
-                  analysisname="main_nobwtadjustment")
-                  
-  tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=Betasnooutliers[1:100,],
-                  array="450K",
-                  maxit=100,
-                  robust=TRUE,
-                  Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery"),
-                  StratifyTable1=FALSE,
-                  StratifyTable1var=NULL,
-                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery"),
-                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
-                  RunAdjusted=TRUE,
-                  RunCellTypeAdjusted=TRUE,
-                  RunSexSpecific=TRUE,
-                  RunCellTypeInteract=TRUE,
-                  RestrictToSubset=TRUE,
-                  RestrictionVar="Ethnic",
-                  RestrictToIndicator="1",
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
-                  savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
-                  analysisname="main_nobwtadjustment")
-  
-}
-
 
 ```
 
@@ -159,26 +105,25 @@ Now running the models for all CpG loci
 
 ```{r eval=FALSE}
 
-## First we run the models adjusting for birth weight 
-## (we refer to adjustmentvariablesV1, which includes birth weight)
+allvarsofinterest=c("Gestage","PTB")
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Exposure:",allvarsofinterest[i],"\n")
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=Betasnooutliers,
                   array="450K",
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
+                  Table1vars=c("BWT","Gestage","PTB","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -189,7 +134,7 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator=NULL,
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
   
     tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
@@ -198,14 +143,14 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
+                  Table1vars=c("BWT","Gestage","PTB","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   StratifyTable1=FALSE,
                   StratifyTable1var=NULL,
-                  adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
+                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                   RunUnadjusted=TRUE,
                   RunAdjusted=TRUE,
                   RunCellTypeAdjusted=TRUE,
@@ -216,70 +161,8 @@ for (i in 1:nrow(modelstorun)){
                   RestrictToIndicator="1",
                   destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
+                  cohort="HEBC",analysisdate="20210618",
                   analysisname="main")
-  
-}
-
-## Then we run the models without adjusting for birth weight
-## be sure to change the analysisname argument to create a new directory for the results
-
-for (i in 1:nrow(modelstorun)){
-  
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
-  tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=Betasnooutliers,
-                  array="450K",
-                  maxit=100,
-                  robust=TRUE,
-                  Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
-                  StratifyTable1=FALSE,
-                  StratifyTable1var=NULL,
-                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
-                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
-                  RunAdjusted=TRUE,
-                  RunCellTypeAdjusted=TRUE,
-                  RunSexSpecific=TRUE,
-                  RunCellTypeInteract=TRUE,
-                  RestrictToSubset=FALSE,
-                  RestrictionVar=NULL,
-                  RestrictToIndicator=NULL,
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
-                  savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
-                  analysisname="main_nobwtadjustment")
-  
-    tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                  betafinal=Betasnooutliers,
-                  array="450K",
-                  maxit=100,
-                  robust=TRUE,
-                  Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
-                  Table1vars=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
-                  StratifyTable1=FALSE,
-                  StratifyTable1var=NULL,
-                  adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
-                                   "Smoke","preBMI","ModeDelivery","Ethnic"),
-                  RunUnadjusted=FALSE, ## don't have to run unadjusted analysis again
-                  RunAdjusted=TRUE,
-                  RunCellTypeAdjusted=TRUE,
-                  RunSexSpecific=TRUE,
-                  RunCellTypeInteract=TRUE,
-                  RestrictToSubset=TRUE,
-                  RestrictionVar="Ethnic",
-                  RestrictToIndicator="1",
-                  destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
-                  savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210330",
-                  analysisname="main_nobwtadjustment")
   
 }
 
@@ -287,129 +170,43 @@ for (i in 1:nrow(modelstorun)){
 
 ### Check model convergence 
 
-The function dataAnalysis includes an indicator of whether each site-specific model converged. If the models are not converging, you can increase the number of specified iterations for the robust regression models using the argument maxit in the dataAnalysis function. The current default number of iterations is 100; increasing this number will make the function slower.
+The function `dataAnalysis` includes an indicator of whether each site-specific model converged. If the models are not converging, you can increase the number of specified iterations for the robust regression models using the argument `maxit` in the `dataAnalysis` function. The current default number of iterations is 100; increasing this number will make the function slower.
 
 ```{r eval=FALSE}
 
-baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210330_Output"
+baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-placenta/HEBC_20210618_Output"
 
 listchecking<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking)<-modelstorun$varofinterest
 
-listchecking_nobwt<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_nobwt)<-modelstorun$varofinterest
-
 listchecking_Ethnic_1<-as.list(rep(NA,nrow(modelstorun)))
 names(listchecking_Ethnic_1)<-modelstorun$varofinterest
-
-listchecking_nobwt_Ethnic_1<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_nobwt_Ethnic_1)<-modelstorun$varofinterest
 
 for (i in 1:nrow(modelstorun)){
 
   tempvarofinterest<-modelstorun$varofinterest[i]
 
-  cat("Outcome:",tempvarofinterest,"\n")
+  cat("Exposure:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
-  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment",sep="")
-  setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
-  load(tempfilename)
-  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
-  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-  
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main/Ethnic_1",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
-  tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main_nobwtadjustment/Ethnic_1",sep="")
-  setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210330_",tempvarofinterest,"_main_nobwtadjustment_allanalyses.RData",sep="")
-  load(tempfilename)
-  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
-  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-  
-
 }
 
 ## Check them out
 listchecking
-listchecking_nobwt
 listchecking_Ethnic_1
-listchecking_nobwt_Ethnic_1
 
-
-
-
-
-
-for (i in 1:nrow(modelstorun)){
-
-  tempvarofinterest<-modelstorun$varofinterest[i]
-
-  cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
-  tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
-  setwd(tempdirectory)
-  load("HEBC_20210330_allanalyses.RData")
-  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
-  if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
-  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
-  tempdirectory<-paste(tempdirectory,"Ethnic_1",sep="/")
-  setwd(tempdirectory)
-  load("HEBC_20210330_allanalyses.RData")
-  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
-  if("warnings" %in% colnames(alldataout[[1]])) listchecking_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
-}
-
-## Check them out
-
-listchecking
-listchecking_race1
-
-
-baseoutputdirectory<-"H:/UCLA/PACE/Gestationalage-noBWT-placenta/HEBC_20210103_Output"
-
-listchecking_nobwt<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_nobwt)<-modelstorun$varofinterest
-
-listchecking_nobwt_race1<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_nobwt_race1)<-modelstorun$varofinterest
-
-for (i in 1:nrow(modelstorun)){
-
-  tempvarofinterest<-modelstorun$varofinterest[i]
-
-  cat("Outcome among all race/ethnicities:",tempvarofinterest,"\n")
-  tempdirectory<-paste(baseoutputdirectory,tempvarofinterest,sep="/")
-  setwd(tempdirectory)
-  load("HEBC_20210330_allanalyses.RData")
-  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
-  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
-  cat("Outcome among most prevalent race/ethnicity:",tempvarofinterest,"\n")
-  tempdirectory<-paste(tempdirectory,"Ethnic_1",sep="/")
-  setwd(tempdirectory)
-  load("HEBC_20210330_allanalyses.RData")
-  if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
-  if("warnings" %in% colnames(alldataout[[1]])) listchecking_nobwt_race1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
-
-}
-
-## Check them out
-
-listchecking_nobwt
-listchecking_nobwt_race1
 
 
 ```

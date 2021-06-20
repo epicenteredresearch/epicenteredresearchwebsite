@@ -44,13 +44,17 @@ Re-run the models in Step 3 among the specified subset. Be sure to change the de
 ```{r eval=FALSE}
 
 ## The exclusions is going to depend on your cohort
+## Gestage is expected to be in days
+
+phenodataframe$GestageWeeks<-phenodataframe$Gestage/7
+
 phenodataframe$NoPregnancyComplications<-"Yes"
 phenodataframe$NoPregnancyComplications[which(phenodataframe$GDM == 0 &
                                                 phenodataframe$PE == 0 &
                                                 phenodataframe$Diabetes == 0 &
                                                 phenodataframe$Hypertension == 0 &
                                                 phenodataframe$Previa == 0 &
-                                                phenodataframe$Gestage>=37)]<-"No"
+                                                phenodataframe$GestageWeeks>=37)]<-"No"
 
 
 ## Creating a category based on those without complications and that are among the most prevalent race/ethnicity
@@ -62,103 +66,53 @@ tempresults<-dataAnalysis(phenofinal=phenodataframe,
                           betafinal=Betasnooutliers,
                           array="450K",
                           maxit=100,
+                          robust=TRUE,
                           Omega=processedOut$Omega,
-                          vartype="OutcomeCont",
+                          vartype="ExposureCont",
                           varofinterest="Gestage",
-                          Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
-                                       "Smoke","preBMI","ModeDelivery","Ethnic"),
+                          Table1vars=c("BWT","Gestage","PTB","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                           StratifyTable1=FALSE,
                           StratifyTable1var=NULL,
-                          adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
-                                                "Smoke","preBMI","ModeDelivery","Ethnic"),
+                          adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                           RunUnadjusted=TRUE,
                           RunAdjusted=TRUE,
                           RunCellTypeAdjusted=TRUE,
                           RunSexSpecific=TRUE,
+                          RunCellTypeInteract=TRUE,
                           RestrictToSubset=TRUE,
                           RestrictionVar="NoPregnancyComplications",
                           RestrictToIndicator="Yes",
                           destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103",
+                          cohort="HEBC",analysisdate="20210618",
                           analysisname="sensitivtyanalysis")
-
+                          
 tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                           betafinal=Betasnooutliers,
                           array="450K",
                           maxit=100,
                           Omega=processedOut$Omega,
-                          vartype="OutcomeCont",
+                          vartype="ExposureCont",
                           varofinterest="Gestage",
-                          Table1vars=c("BWT","Sex","Age","Parity","MaternalEd",
-                                       "Smoke","preBMI","ModeDelivery"),
+                          Table1vars=c("BWT","Gestage","PTB","Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                           StratifyTable1=FALSE,
                           StratifyTable1var=NULL,
-                          adjustmentvariables=c("BWT","Sex","Age","Parity","MaternalEd",
-                                                "Smoke","preBMI","ModeDelivery"),
+                          adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
+                                   "Smoke","preBMI","ModeDelivery","Ethnic","Meanlog2oddsContamination"),
                           RunUnadjusted=TRUE,
                           RunAdjusted=TRUE,
                           RunCellTypeAdjusted=TRUE,
                           RunSexSpecific=TRUE,
+                          RunCellTypeInteract=TRUE,
                           RestrictToSubset=TRUE,
                           RestrictionVar="NoPregnancyComplicationsandWhite",
                           RestrictToIndicator="Yes",
                           destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103",
+                          cohort="HEBC",analysisdate="20210618",
                           analysisname="sensitivtyanalysis")
-                  
-
-tempresults<-dataAnalysis(phenofinal=phenodataframe,
-                          betafinal=Betasnooutliers,
-                          array="450K",
-                          maxit=100,
-                          Omega=processedOut$Omega,
-                          vartype="OutcomeCont",
-                          varofinterest="Gestage",
-                          Table1vars=c("Sex","Age","Parity","MaternalEd",
-                                       "Smoke","preBMI","ModeDelivery","Ethnic"),
-                          StratifyTable1=FALSE,
-                          StratifyTable1var=NULL,
-                          adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
-                                                "Smoke","preBMI","ModeDelivery","Ethnic"),
-                          RunUnadjusted=TRUE,
-                          RunAdjusted=TRUE,
-                          RunCellTypeAdjusted=TRUE,
-                          RunSexSpecific=TRUE,
-                          RestrictToSubset=TRUE,
-                          RestrictionVar="NoPregnancyComplications",
-                          RestrictToIndicator="Yes",
-                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
-                          savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103",
-                          analysisname="sensitivtyanalysis_nobwtadjustment")
-
-tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
-                          betafinal=Betasnooutliers,
-                          array="450K",
-                          maxit=100,
-                          Omega=processedOut$Omega,
-                          vartype="OutcomeCont",
-                          varofinterest="Gestage",
-                          Table1vars=c("Sex","Age","Parity","MaternalEd",
-                                       "Smoke","preBMI","ModeDelivery"),
-                          StratifyTable1=FALSE,
-                          StratifyTable1var=NULL,
-                          adjustmentvariables=c("Sex","Age","Parity","MaternalEd",
-                                                "Smoke","preBMI","ModeDelivery"),
-                          RunUnadjusted=TRUE,
-                          RunAdjusted=TRUE,
-                          RunCellTypeAdjusted=TRUE,
-                          RunSexSpecific=TRUE,
-                          RestrictToSubset=TRUE,
-                          RestrictionVar="NoPregnancyComplicationsandWhite",
-                          RestrictToIndicator="Yes",
-                          destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
-                          savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210103",
-                          analysisname="sensitivtyanalysis_nobwtadjustment")
-
-
 
 ```

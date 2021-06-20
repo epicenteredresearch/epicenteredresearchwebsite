@@ -42,7 +42,7 @@ allvarsofinterest=c("BWT_Zscore","BirthLength_Zscore","HeadCircum_Zscore","wlr_Z
 
 for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",allvarsofinterest[i],"\n")
+  cat("Exposure:",allvarsofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=Betasnooutliers[1:100,],
@@ -84,7 +84,7 @@ Now running the models for all CpG loci
 
 for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",allvarsofinterest[i],"\n")
+  cat("Exposure:",allvarsofinterest[i],"\n")
   
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
                   betafinal=Betasnooutliers,
@@ -132,7 +132,7 @@ for (i in 1:nrow(modelstorun)){
 
   tempvarofinterest<-modelstorun$varofinterest[i]
 
-  cat("Outcome:",tempvarofinterest,"\n")
+  cat("Exposure:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
   tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")

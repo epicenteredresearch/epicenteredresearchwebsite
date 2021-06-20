@@ -88,7 +88,7 @@ Placental DNA methylation from fetal-side or maternal-side assessed with the Ilu
 ### Covariates
 
 If any of the categorical variables below have less than 10 individuals in one of the categories, please let us know and we can decide whether to combine categories or restrict the analysis. In the case of ancestry, if there are more than two ancestry categories in your cohort with less than 10 individuals, we will discuss combining these categories into the “other” classification. If you do not have one of these variables, let us know, and we can discuss the best approach to take with your data. More generally, if you want to use different categorization of the below covariates, please contact Sofía Aguilar Lacasaña (sofia.aguilar@isglobal.org) to discuss.
-+	**Birth weight**: continuous (grams)
+
 +	**Infant sex**: categorical: "Female", "Male". 
 +	**Maternal age**: continuous (years)
 +	**Maternal pre-pregnancy BMI**: continuous (kg/m2)
@@ -98,6 +98,7 @@ If any of the categorical variables below have less than 10 individuals in one o
 +	**Mode of delivery**: categorical into 2 groups: 1=spontaneous, 2=induced.
 +	**Ancestry (optional)**: We will first run models adjusting for self-reported ancestry. We will then run models stratified by major ethnic groups (ie. European, African, Asian…). Within each major ethnic group, additional adjustment for ethnic background is optional (ie. Country, GWAS PCs, etc). 
 +	**Selection factors (optional)**: If your study design includes an enrichment of cases of some condition, please include the case-control variable in the models, or discuss with us.
++	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `EDAresults` function. See below how to add this variable to your dataset
 
 ## Data Checking
 
@@ -112,7 +113,7 @@ If you closed prior R session, you can load list of the phenotype information by
 
 ```{r eval=FALSE}
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output")
+setwd("H:\\UCLA\\PACE\\Gestage-placenta\\HEBC_20210618_Output")
 load("HEBC_20210618_Preprocessed.RData")
 
 ## load beta-values
@@ -122,6 +123,17 @@ phenodataframe<-as.data.frame(pData(processedOut$mset))
 phenodataframe$PTB<-ifelse(phenodataframe$Gestage<259,1,0)
 
 ```
+We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `EDAresults` function.
+
+```{r eval=FALSE}
+
+setwd("H:\\UCLA\\PACE\\Gestage-placenta\\HEBC_20210618_Output\\EDA")
+samplestoexclude<-read.csv("HEBC_20210618_Recommended_Samples_to_Remove.csv",header=TRUE)
+phenodataframe<-merge(phenodataframe,samplestoexclude,by=c("Basename","ID"))
+summary(phenodataframe$Meanlog2oddsContamination)
+
+```
+
 
 Make sure that you have sufficient numbers of samples between categories of exposure/outcome of interest as well as adjustment variables; you are assumed to have at least 10. Please note, these variable names may be different in your cohort
 
