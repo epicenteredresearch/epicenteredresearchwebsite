@@ -28,14 +28,14 @@ To evaluate fetal growth not linked to gestational age or pregnancy complication
 
 For this secondary analyses, we will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. If you do not have more than 10 infants with pregnancy complications, you do not need to run these analyses. Please contact us if you have any questions regarding this guidance. Some pregnancy complications that may be considered for adjustment:
 
-    - gestational diabetes
-    - placental abruption 
-    - placenta previa
-    - pre-eclampsia/eclampsia
-    - polyhydramnios, oligohydramnios
-    - placental insufficiency
-    - cervical insufficiency, isoimmunization, 
-    - cervical cerclaje
+  - gestational diabetes
+  - placental abruption 
+  - placenta previa
+  - pre-eclampsia/eclampsia
+  - polyhydramnios, oligohydramnios
+  - placental insufficiency
+  - cervical insufficiency, isoimmunization, 
+  - cervical cerclaje
 
 ### Covariates
 
