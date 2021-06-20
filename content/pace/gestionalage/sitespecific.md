@@ -98,7 +98,7 @@ If any of the categorical variables below have less than 10 individuals in one o
 +	**Mode of delivery**: categorical into 2 groups: 1=spontaneous, 2=induced.
 +	**Ancestry (optional)**: We will first run models adjusting for self-reported ancestry. We will then run models stratified by major ethnic groups (ie. European, African, Asian…). Within each major ethnic group, additional adjustment for ethnic background is optional (ie. Country, GWAS PCs, etc). 
 +	**Selection factors (optional)**: If your study design includes an enrichment of cases of some condition, please include the case-control variable in the models, or discuss with us.
-+	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `EDAresults` function. See below how to add this variable to your dataset
++	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `ExploratoryDataAnalysis` function. See below how to add this variable to your dataset
 
 ## Data Checking
 
