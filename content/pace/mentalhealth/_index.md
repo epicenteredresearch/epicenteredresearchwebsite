@@ -135,7 +135,7 @@ exampledat<-loadingSamples(
 
 ## Performing exploratory data analysis
 
-To perform initial exploratory data analysis, run the function `ExploratoryDataAnalysis`. For this analysis, we are estimating the detection p-values using the method applied in the SeSAMe package (`DetectionPvalMethod="SeSAMe"`), using a cut-off of 0.05 (`DetectionPvalCutoff=0.05`). We are also suggesting to filter out probes with less than 3 beads (`minNbeads=3`) and with intensity values of zero (`FilterZeroIntensities=TRUE`). The `globalvarexplore` argument is used to specify a vector of characteristic column names to explore in association with the first 12 principle components. See `?ExploratoryDataAnalysis` for more details.
+To perform initial exploratory data analysis, run the function `ExploratoryDataAnalysis`. For this analysis, we are estimating the detection p-values using the method applied in the SeSAMe package (`DetectionPvalMethod="SeSAMe"`), using a cut-off of 0.05 (`DetectionPvalCutoff=0.05`). The `globalvarexplore` argument is used to specify a vector of characteristic column names to explore in association with the first 12 principle components. See `?ExploratoryDataAnalysis` for more details.
 
 ```r
 
@@ -145,8 +145,8 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   globalvarexplore=c("BWT","Sex"),  # We don't need these in the Mental Health project, but other projects might use these. 
                   DetectionPvalMethod="SeSAMe",
                   DetectionPvalCutoff=0.05,
-                  minNbeads=3,
-                  FilterZeroIntensities=TRUE,
+                  minNbeads=0,
+                  FilterZeroIntensities=FALSE,
                   destinationfolder="C:/methylation_placenta", # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20210401_Output/EDA
                   savelog=TRUE, 
                   cohort="ITU",analysisdate="20210401")
@@ -233,13 +233,13 @@ processedOut<-preprocessingofData(RGset=exampledat,
 
 ```
 
-We will use the SeSAMe method to estimate the detection p-values (specified by the `DetectionPvalMethod` in the `ExploratoryDataAnalysis`). The `detectionMask` function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by `DetectionPvalCutoff=0.05` in the `detectionMask` function) and a matrix that indicates other poor intensity values, which is output by the `ExploratoryDataAnalysis` function. Other poor intensity values that are masked include those having less than three beads per probe (specified by `minNbeads=3` in the `ExploratoryDataAnalysis` function) and intensity values of zero (`FilterZeroIntensities` is `TRUE` in the `ExploratoryDataAnalysis`). The `detectionMask` function outputs a beta-value matrix after masking (with `NA`) of all of these indicators of poor intensity values. See `?detectionMask` for more details.
+We will use the SeSAMe method to estimate the detection p-values (specified by the `DetectionPvalMethod` in the `ExploratoryDataAnalysis`). The `detectionMask` function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by `DetectionPvalCutoff=0.05` in the `detectionMask` function) and a matrix that indicates other poor intensity values, which is output by the `ExploratoryDataAnalysis` function. See `?detectionMask` for more details.
 
 ```r
 betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   DetectionPvals=EDAresults$DetectionPval,
                                   DetectionPvalCutoff=0.05,
-                                  IndicatorGoodIntensity=EDAresults$IndicatorGoodIntensity,
+                                  IndicatorGoodIntensity=NULL,
                                   destinationfolder="C:/methylation_placenta",
                                   cohort="ITU",analysisdate="20210401")
 
