@@ -78,12 +78,11 @@ sesameData::sesameDataCacheAll()
 ## Need to then install package, specifying path to the source package
 install.packages("F:\\PACE\\PACEanalysis_0.1.6.tar.gz",
                  repos = NULL, type="source")
-
 ```
 
-### Attaching package and running the first functions
+### Attaching package and loading the samples
 
-Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. library(PACEanalysis)), and entering ? followed by the function name in your R console, e.g. ?loadingSamples
+Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. `library(PACEanalysis)`), and entering `?` followed by the function name in your R console, e.g. `?loadingSamples`
 
 ```r
 
@@ -126,7 +125,19 @@ exampledat<-loadingSamples(
   destinationfolder="C:/methylation_placenta",     
   savelog=TRUE,                             # A subfolder will be created in this case C:/methylation_placenta/ITU_20210401_Output
   cohort="ITU",
-  analysisdate = "20210331")    
+  analysisdate = "20210401")    
+
+
+```
+
+<p>&nbsp;</p>
+
+
+## Performing exploratory data analysis
+
+To perform initial exploratory data analysis, run the function `ExploratoryDataAnalysis`. For this analysis, we are estimating the detection p-values using the method applied in the SeSAMe package (`DetectionPvalMethod="SeSAMe"`), using a cut-off of 0.05 (`DetectionPvalCutoff=0.05`). We are also suggesting to filter out probes with less than 3 beads (`minNbeads=3`) and with intensity values of zero (`FilterZeroIntensities=TRUE`). The `globalvarexplore` argument is used to specify a vector of characteristic column names to explore in association with the first 12 principle components. See `?ExploratoryDataAnalysis` for more details.
+
+```r
 
 ## Please note that the following ExploratoryDataAnalysis will take several hours
 
@@ -136,15 +147,15 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   DetectionPvalCutoff=0.05,
                   minNbeads=3,
                   FilterZeroIntensities=TRUE,
-                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                  savelog=TRUE, # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20210401_Output/EDA
-                  cohort="HEBC",analysisdate="20210331")
+                  destinationfolder="C:/methylation_placenta", # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20210401_Output/EDA
+                  savelog=TRUE, 
+                  cohort="ITU",analysisdate="20210401")
 
 ## You may want to save your data at this point, e.g
 ## save(exampledat,EDAresults,file="C:/methylation_placenta/exampledat_EDAresults.Rdata")
-
+                  
+                  
 ```
-
 
 ### Examining the Exploratory Data Analysis
 
@@ -180,47 +191,75 @@ The function also returns a list that includes:
 
 - *logOddsContamin* : The average log odds from the SNP posterior probabilities from the outlier component; capturing how irregular the SNP beta-values deviate from the ideal trimodal distribution. Values greater than -4 are suggest potentially contaminated samples
 
+<p>&nbsp;</p>
+
 ## Pre-processing the data
 
-This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See ?preprocessingofData for more details.
+#### For more details on the quality control checks, see here: [link](https://www.epicenteredresearch.com/pace/qcsteps/)
 
-The detectionMask function masks the beta-values based on a specified detection p-value (default is 0.05) and/or poor intensity values based on the number of beads (specified by minNbeads in the ExploratoryDataAnalysis function; default minimum is zero, meaning no filtering) and/or intensity values of zero (if FilterZeroIntensities is TRUE in the ExploratoryDataAnalysis). It provides the beta-value matrix after this masking. See ?detectionMask for more details.
+This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). For this analysis, please use the reference-based method for the placenta ([ref](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-07186-6)), which estimates cell composition using the constrained Houseman method. 
 
-The outlierprocess function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. See ?outlierprocess for more details.
+To adjust for batch effects using ComBat, the pData for the specified RGset argument must include the column 'Batch'. See `?preprocessingofData` for more details. Also check out Association_between_Batch_and_Top_PCs_Raw_Data plot to see the association between the Batch indicator and the main components of the variation in the data.
+
+For this analysis, we recommend the removing the following samples (see [here](https://www.epicenteredresearch.com/pace/qcsteps/) for more details):
+
+  + **Samples with an estimated contamination score (`EDAresults$logOddsContamin`) that is greater than -1**: You can identify these samples based on the Meanlog2oddsContamination variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Heatmap_SNP_Outliers_Suggesting_Contamination plot. 
+  
+  + **Samples with the wrong predicted sex**: Check the Sex_Wrong variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. However, be careful with these exclusions, this information is just intended to help guide an appraisal of potential unintentional duplicates. Also see the Signal_Intensities_on_X_and_Y_Chromosomes_by_Sex plot and the Heatmap_of_Y_Chromosome_by_Sex plot.
+  
+  + **Unintentional replicates**: Check the Cluster variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. However, be careful with these exclusions, this information is just intended to help guide an appraisal of potential unintentional duplicates. Also see the Heatmap_of_SNPs plot and Dendrogram_based_on_Array_SNPs plot. 
+  
+  + **Samples with too many failed probes**: Check the TooManyFailedProbes variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Probes that are flagged as 'failed' depend on the DetectionPvalMethod, DetectionPvalCutoff, minNbeads=3, and FilterZeroIntensities arguments in the `ExploratoryDataAnalysis` function.
+  
+  + **Low signal intensity overall**: Check the IntensityCat variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Methyl_and_Unmethyl_Signal_Intensities plot. 
 
 ```r
 
-## Please note that this step will take substantially longer than the previous ExploratoryDataAnalysis
+SexWrongRemove<-c("9630789136_R02C01","9630789048_R06C01","9630789238_R02C01")
+TooManyFailedProbes<-c("9630789216_R05C01","9630789238_R03C01","9630789098_R04C02")
+PossibleContamination<-c("9630789136_R01C01","9630789121_R06C02")
+Unintentionalreps<-c("9630789136_R01C01", "9630789121_R06C02")
+
+allsamplestoexclude<-c(SexWrongRemove,TooManyFailedProbes,PossibleContamination,Unintentionalreps)
 
 processedOut<-preprocessingofData(RGset=exampledat,
-                  SamplestoRemove=EDAresults$SamplestoRemove,
+                  SamplestoRemove=allsamplestoexclude,
                   ProbestoRemove=EDAresults$ProbestoRemove,
-                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
+                  destinationfolder="C:/methylation_placenta",
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="ITU",analysisdate="20210331") # If analysisdate is unchanged, output will be saved to the same subfolder than in previous steps
-                  
+                  cohort="ITU",analysisdate="20210401")
+
+```
+
+We will use the SeSAMe method to estimate the detection p-values (specified by the `DetectionPvalMethod` in the `ExploratoryDataAnalysis`). The `detectionMask` function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by `DetectionPvalCutoff=0.05` in the `detectionMask` function) and a matrix that indicates other poor intensity values, which is output by the `ExploratoryDataAnalysis` function. Other poor intensity values that are masked include those having less than three beads per probe (specified by `minNbeads=3` in the `ExploratoryDataAnalysis` function) and intensity values of zero (`FilterZeroIntensities` is `TRUE` in the `ExploratoryDataAnalysis`). The `detectionMask` function outputs a beta-value matrix after masking (with `NA`) of all of these indicators of poor intensity values. See `?detectionMask` for more details.
+
+```r
 betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   DetectionPvals=EDAresults$DetectionPval,
                                   DetectionPvalCutoff=0.05,
                                   IndicatorGoodIntensity=EDAresults$IndicatorGoodIntensity,
-                                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                                  cohort="HEBC",analysisdate="20210331")
+                                  destinationfolder="C:/methylation_placenta",
+                                  cohort="ITU",analysisdate="20210401")
 
+```
+
+The `outlierprocess` function is used to reduce the influence of outliers by one of two methods: trimming or winsorizing. If `trimming=TRUE`, remove extreme outliers based on gaps that must be at least 3*IQR; the cutoff for the number of outliers in a group is either a maximum of 5 or 0.0025 of the total number of samples (whichever is larger). Detected outliers are recoded as `NA`. If `trimming=FALSE`, winsorize outliers based on the specified percentile (default is 1%, 0.5% on each side, corresponding to `pct=0.005`). Percentiles can be estimated based on the quantile function or the empirical beta-distribution. For this analysis, winsorizing 1%. See `?outlierprocess` for more details.
+
+```r
 Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
-                                  quantilemethod="Quantile",
+                                  quantilemethod="EmpiricalBeta",
                                   trimming=TRUE,
-                                  pct=0.25,
-                                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                                  cohort="HEBC",analysisdate="20210331")
-
+                                  pct=0.005,
+                                  destinationfolder="C:/methylation_placenta",
+                                  cohort="ITU",analysisdate="20210401")
 
 ```
 
 ### Further quality checking the data
 
-If using a reference-free method to estimate Omega (matrix of cell composition estimates), examine OutlierScreening plots generated by this function to ensure no extreme outliers are being generated. If you see extreme outliers driving the number of cell types, reduce Kchoose value by 1 using the argument KchooseManual, re-run the function preprocessingofData, and re-examine outlier plots. Reduce KchooseManual until extreme outliers are gone. This function will also generate figures (PDFs/PNGs) of associations between top PCs and indicators of batch before and after ComBat (if an indicator for batch was included in the dataset).
+If using a reference-free method to estimate Omega (matrix of cell composition estimates), examine OutlierScreening plots generated by this function to ensure no extreme outliers are being generated. If you see extreme outliers driving the number of cell types, reduce `Kchoose` value by 1 using the argument `KchooseManual`, re-run the function `preprocessingofData`, and re-examine outlier plots. Reduce `KchooseManual` until extreme outliers are gone. This function will also generate figures (PDFs/PNGs) of associations between top PCs and indicators of batch before and after ComBat (if an indicator for batch was included in the dataset).
 
 ### Looking at cell composition distribution
 
