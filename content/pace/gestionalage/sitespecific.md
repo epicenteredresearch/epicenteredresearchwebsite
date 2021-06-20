@@ -56,14 +56,14 @@ Analysis will be restricted to singleton births. If the DNA methylation data ste
 As an extra sensitivity analysis, we ask you to run the gestational age model again among the subset of **term births (>=37 weeks gestation)** from mothers without pregnancy complications or physician initiated delivery that might affect gestational age.  Here a suggested list of variables to consider for exclusion:
 +	Pre-existing medical conditions in the mother: 
     - diabetes (type 1, type 2)
-    - hypertension
+    - chronic hypertension
     - autoimmunediseases (including SLE, RA, and sclerodermia)
     - immuno-compromised patients
 +	Pregnancy complications:
     - gestational diabetes
     - placental abruption 
     - placenta previa
-    - pre-eclampsia/eclampsia
+    - pre-eclampsia/eclampsia and gestational hypertension
     - polyhydramnios, oligohydramnios
     - placental insufficiency
     - cervical insufficiency, isoimmunization, 

@@ -61,7 +61,7 @@ To evaluate fetal growth not linked to gestational age or pregnancy complication
     - gestational diabetes
     - placental abruption 
     - placenta previa
-    - pre-eclampsia/eclampsia
+    - pre-eclampsia/eclampsia and gestational hypertension
     - polyhydramnios, oligohydramnios
     - placental insufficiency
     - cervical insufficiency, isoimmunization, 

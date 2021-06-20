@@ -31,7 +31,7 @@ For this secondary analyses, we will include all children at term (between >=37 
   - gestational diabetes
   - placental abruption 
   - placenta previa
-  - pre-eclampsia/eclampsia
+  - pre-eclampsia/eclampsia and gestational hypertension
   - polyhydramnios, oligohydramnios
   - placental insufficiency
   - cervical insufficiency, isoimmunization, 
