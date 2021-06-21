@@ -208,7 +208,7 @@ phenodataframe <- na.omit(phenodata)
 
 #### Adding contamination score
 
-We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `EDAresults` function.
+We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function.
 
 ```{r eval=FALSE}
 
