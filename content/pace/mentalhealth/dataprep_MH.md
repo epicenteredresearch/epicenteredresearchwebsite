@@ -99,6 +99,7 @@ For information on classifying education, please see https://ec.europa.eu/eurost
 + **GESTA**: Gestational age at birth in weeks, continuous. Use the most accurate estimate. The priority is: medical record (ultrasound-confirmed) > medical record (last menstrual period) > self-reported (ultrasound) > self-reported (last menstrual period). 
 + **PCA1, PCA2, PCA3...** : Ancestry covariates. These are continuous GWAS-based principal components, which capture ethnicity/ancestry. If GWAS data are not available, use self-reported ethnicity: in this case, create a categorical factor variable called ETHNIC (which will be treated as a dummy-coded covariate by the R package). If you feel another way to address ethnicity/race/ancestry would be more appropriate for your cohort (e.g., stratification, methylation-based estimates...), please contact us first and let's discuss how to proceed.
 + **Selection factors (optional covariate)**: Please include if relevant for your study. For example, if your sample contains cases and controls for some condition, please include the case/control variable in all models. 
++	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `ExploratoryDataAnalysis` function. See below how to add this variable to your dataset
 
 Batch effects are dealt with using Combat in the pre-processing phase: batch covariates are not needed in the EWAS phase models, as shown in the example script using the R package provided. Estimated cell types are estimated in the pre-processing phase using the R package: they are included in the analysis, as shown in the example script using the R package provided.
 
@@ -203,6 +204,19 @@ phenodataframe <- na.omit(phenodata)
 # finally, check that you have done the possible exclusions - check Analysis plan or above
 # (for example, if you have index variable in which INDEX=1 means that sample must be excluded
 # phenodataframe <- phenodataframe[phenodataframe$INDEX !=1,] 
+```
+
+#### Adding contamination score
+
+We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `EDAresults` function.
+
+```{r eval=FALSE}
+
+setwd("C:/methylation_placenta/ITU_20210401_Output/EDA")
+samplestoexclude<-read.csv("ITU_20210401_Recommended_Samples_to_Remove.csv",header=TRUE)
+phenodataframe<-merge(phenodataframe,samplestoexclude,by=c("Basename","ID"))
+summary(phenodataframe$Meanlog2oddsContamination)
+
 ```
 
 #### If you don't have all necessary variables in phenodata, you can just load another phenodata and merge them by ID-variable
