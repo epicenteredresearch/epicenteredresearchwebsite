@@ -76,7 +76,7 @@ moveFiles(package)
 sesameData::sesameDataCacheAll()
 
 ## Need to then install package, specifying path to the source package
-install.packages("F:\\PACE\\PACEanalysis_0.1.6.tar.gz",
+install.packages("F:\\PACE\\PACEanalysis_0.1.7.tar.gz",
                  repos = NULL, type="source")
 ```
 
@@ -205,7 +205,7 @@ For this analysis, we recommend the removing the following samples (see [here](h
 
   + **Samples with an estimated contamination score (`EDAresults$logOddsContamin`) that is greater than -1**: You can identify these samples based on the Meanlog2oddsContamination variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Heatmap_SNP_Outliers_Suggesting_Contamination plot. 
   
-  + **Samples with the wrong predicted sex**: Check the Sex_Wrong variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. However, be careful with these exclusions, this information is just intended to help guide an appraisal of potential unintentional duplicates. Also see the Signal_Intensities_on_X_and_Y_Chromosomes_by_Sex plot and the Heatmap_of_Y_Chromosome_by_Sex plot.
+  + **Samples with the wrong predicted sex**: Check the Sex_Wrong variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Signal_Intensities_on_X_and_Y_Chromosomes_by_Sex plot and the Heatmap_of_Y_Chromosome_by_Sex plot.
   
   + **Unintentional replicates**: Check the Cluster variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. However, be careful with these exclusions, this information is just intended to help guide an appraisal of potential unintentional duplicates. Also see the Heatmap_of_SNPs plot and Dendrogram_based_on_Array_SNPs plot. 
   
