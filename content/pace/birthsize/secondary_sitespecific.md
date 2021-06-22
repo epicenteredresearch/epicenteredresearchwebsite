@@ -70,6 +70,7 @@ load("HEBC_20210618_Preprocessed.RData")
 
 ## load beta-values
 load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
+Betasnooutliers<-betafinal.nooutlier ## name of the object saved in the RData file
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
 
