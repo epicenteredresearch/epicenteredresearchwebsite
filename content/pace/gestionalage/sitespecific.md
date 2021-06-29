@@ -130,7 +130,10 @@ We also want to adjust for estimated contamination. To do this, we want to add i
 
 setwd("H:\\UCLA\\PACE\\Gestage-placenta\\HEBC_20210618_Output\\EDA")
 samplestoexclude<-read.csv("HEBC_20210618_Recommended_Samples_to_Remove.csv",header=TRUE)
-phenodataframe<-merge(phenodataframe,samplestoexclude,by=c("Basename","ID"))
+samplestoexclude<-samplestoexclude[,c("Basename","Meanlog2oddsContamination")]
+samplestoexclude<-unique(samplestoexclude)
+
+phenodataframe<-merge(phenodataframe,samplestoexclude,by="Basename")
 summary(phenodataframe$Meanlog2oddsContamination)
 
 ```
