@@ -110,6 +110,8 @@ If you encounter any issues, please check out our troubleshooting guide to see i
 
 If you closed prior R session, you can load list of the phenotype information by loading the RData file automatically saved by the `preprocessingofData` function. You can load the preprocessed beta-values with poor quality probes masked and outliers winsorized that is automatically saved by `outlierprocess`.
 
+The variable `Gestage` is automatically added to the dataset if the `GESTvar` argument in `loadingSamples` is not NULL; it is assumed to be in weeks. 
+
 
 ```{r eval=FALSE}
 
@@ -121,7 +123,7 @@ load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
 Betasnooutliers<-betafinal.nooutlier ## name of the object saved in the RData file
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
-phenodataframe$PTB<-ifelse(phenodataframe$Gestage<259,1,0)
+phenodataframe$PTB<-ifelse(phenodataframe$Gestage*7<259,1,0)
 
 ```
 We also want to adjust for estimated contamination. To do this, we want to add in our contamination score to our phenotype dataframe; this information is in the Recommended_Samples_to_Remove csv output by the `EDAresults` function.

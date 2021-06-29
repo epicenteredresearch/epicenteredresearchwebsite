@@ -137,13 +137,12 @@ summary(phenodataframe$Meanlog2oddsContamination)
 
 ```
 
-Remove samples that do not meet inclusion requirements. The main analysis restricts to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications. The variable `Gestage` is automatically added to the dataset if the `GESTvar` argument in `loadingSamples` is not NULL; it is assumed to be in days. If you subset the phenotype information data frame, the `dataAnalysis` function will automatically subset the beta-value function to the same samples. 
+Remove samples that do not meet inclusion requirements. The main analysis restricts to children at term (between >=37 and <43 weeks of gestation) & without pregnancy complications. The variable `Gestage` is automatically added to the dataset if the `GESTvar` argument in `loadingSamples` is not NULL; it is assumed to be in weeks. If you subset the phenotype information data frame, the `dataAnalysis` function will automatically subset the beta-value function to the same samples. 
 
 ```{r eval=FALSE}
 
 ## Restricting to term
-phenodataframe$GestageWeeks<-phenodataframe$Gestage/7
-phenodataframe<-phenodataframe[which(phenodataframe$GestageWeeks>=37 & phenodataframe$GestageWeeks < 43),]
+phenodataframe<-phenodataframe[which(phenodataframe$Gestage>=37 & phenodataframe$Gestage < 43),]
 
 ## Removing pregnancy complications (this will depend on your dataset)
 phenodataframe<-phenodataframe[which(phenodataframe$GDM=="No"),]
