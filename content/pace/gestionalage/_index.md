@@ -82,7 +82,7 @@ install.packages("F:\\PACE\\PACEanalysis_0.1.7.tar.gz",
 
 ### Attaching package and loading the samples
 
-Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. `library(PACEanalysis)`), and entering `?` followed by the function name in your R console, e.g. `?loadingSamples`
+Extensive details regarding the input arguments and outputs for these functions are provided in the function documentation. The function documentation can be viewed after attaching the package (i.e. `library(PACEanalysis)`), and entering `?` followed by the function name in your R console, e.g. `?loadingSamples`. NOTE: the column specified by the argument for gestational age (`GESTvar`) should be in weeks (the help document has a typo and says days).
 
 ```r
 ## Attach package
