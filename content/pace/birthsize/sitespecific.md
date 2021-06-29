@@ -171,10 +171,10 @@ summary(phenodataframe$BWT_Zscore)
 summary(phenodataframe$BirthLength_Zscore)
 
 ## Automatically added to dataset by loadingSamples if BWTvar, BIRTHLENGTHvar, and GESTvar are not NULL
-summary(phenodataframe$HeadCircum_Zscore)
+summary(phenodataframe$wlr_Zscore)
 
 ## Automatically added to dataset by loadingSamples if HEADCIRCUMvar and GESTvar are not NULL
-summary(phenodataframe$wlr_Zscore)
+summary(phenodataframe$HeadCircum_Zscore)
 
 ```
 
