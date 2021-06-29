@@ -178,6 +178,30 @@ summary(phenodataframe$HeadCircum_Zscore)
 
 ```
 
+Adding the Z-scores if you don't already have them or if they need to be corrected
+
+```{r}
+
+## Birthweight Z-score (BWT must be in kg, and gestational age must be in days)
+phenodataframe$BWTkg<-phenodataframe$BWT/1000
+phenodataframe$BWT_Zscore<-growthstandards::igb_wtkg2zscore(gagebrth=phenodataframe$Gestage*7, wtkg=phenodataframe$BWTkg, sex = as.character(phenodataframe$Sex))
+summary(phenodataframe$BWT_Zscore)
+
+## Birth length Z-score (length must be in cm, and gestational age must be in days)
+phenodataframe$BirthLength_Zscore<-growthstandards::igb_lencm2zscore(gagebrth=phenodataframe$Gestage*7, lencm=phenodataframe$BirthLength, sex = as.character(phenodataframe$Sex))
+summary(phenodataframe$BirthLength_Zscore)
+
+## Head circumference Z-score (circumference must be in cm, and gestational age must be in days)
+phenodataframe$HeadCircum_Zscore<-growthstandards::igb_hcircm2zscore(gagebrth=phenodataframe$Gestage*7, hcircm=phenodataframe$HeadCircum, sex = as.character(phenodataframe$Sex))
+summary(phenodataframe$HeadCircum_Zscore)
+
+## Weight to length ratio Z-score
+phenodataframe$wlr<-phenodataframe$BWTkg/(phenodataframe$BirthLength/100) ## must be kg/m
+phenodataframe$wlr_Zscore<-growthstandards::igb_wlr2zscore(gagebrth=phenodataframe$Gestage*7, wlr=phenodataframe$wlr, sex = as.character(phenodataframe$Sex))
+summary(phenodataframe$wlr_Zscore)
+
+```
+
 Make sure all categorical adjustment variables are coded as factors or characters; 'Sex' is already coded as a character
 
 ```{r}
