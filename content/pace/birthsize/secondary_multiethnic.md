@@ -95,9 +95,9 @@ for (i in 1:length(allvarsofinterest)){
 Now running the models for all CpG loci
 
 ```r
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
   
-  cat("Outcome:",modelstorun$varofinterest[i],"\n")
+  cat("Outcome:",allvarsofinterest[i],"\n")
   
   ## analysis across all race/ethnicities, adjusting for race/ethnicity
   tempresults<-dataAnalysis(phenofinal=phenodataframe,
@@ -106,8 +106,8 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("BWT","Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","Ethnic","GDM","Meanlog2oddsContamination"),
                   StratifyTable1=FALSE,
@@ -134,8 +134,8 @@ for (i in 1:nrow(modelstorun)){
                   maxit=100,
                   robust=TRUE,
                   Omega=processedOut$Omega,
-                  vartype=modelstorun$vartype[i],
-                  varofinterest=modelstorun$varofinterest[i],
+                  vartype="ExposureCont",
+                  varofinterest=allvarsofinterest[i],
                   Table1vars=c("BWT","Gestage","Sex","Age","Parity","MaternalEd",
                                    "Smoke","preBMI","GDM","Meanlog2oddsContamination"),
                   StratifyTable1=FALSE,
@@ -167,15 +167,15 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210618_Output"
 
-listchecking<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking)<-modelstorun$varofinterest
+listchecking<-as.list(rep(NA,length(allvarsofinterest)))
+names(listchecking)<-allvarsofinterest
 
-listchecking_Ethnic_1<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking_Ethnic_1)<-modelstorun$varofinterest
+listchecking_Ethnic_1<-as.list(rep(NA,length(allvarsofinterest)))
+names(listchecking_Ethnic_1)<-allvarsofinterest
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
 
-  tempvarofinterest<-modelstorun$varofinterest[i]
+  tempvarofinterest<-allvarsofinterest[i]
 
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_secondary",sep="")

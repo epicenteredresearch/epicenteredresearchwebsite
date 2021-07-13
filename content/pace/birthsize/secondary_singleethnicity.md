@@ -111,12 +111,12 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210618_Output"
 
-listchecking<-as.list(rep(NA,nrow(modelstorun)))
-names(listchecking)<-modelstorun$varofinterest
+listchecking<-as.list(rep(NA,length(allvarsofinterest)))
+names(listchecking)<-allvarsofinterest
 
-for (i in 1:nrow(modelstorun)){
+for (i in 1:length(allvarsofinterest)){
 
-  tempvarofinterest<-modelstorun$varofinterest[i]
+  tempvarofinterest<-allvarsofinterest[i]
 
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_secondary",sep="")
