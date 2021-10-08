@@ -214,6 +214,7 @@ phenodataframe$Ethnic<-as.factor(phenodataframe$Ethnic)
 
 ```
 
+
 ### Now you can move on to Step 3
 
 Choose the appropriate Step 3, depending on whether or not you have multiple race/ethnicities in your cohort

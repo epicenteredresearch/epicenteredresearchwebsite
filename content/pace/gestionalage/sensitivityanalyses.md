@@ -27,7 +27,6 @@ The last step is re-running the analysis among mothers without pregnancy complic
     - placental insufficiency
     - cervical insufficiency, isoimmunization, 
     - cervical cerclaje
-+ Physician initiated delivery, which might be indicative of pregnancy complications.
 + Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in
 + Restrict to only term births (>=37 weeks gestation)
 

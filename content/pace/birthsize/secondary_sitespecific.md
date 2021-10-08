@@ -118,6 +118,19 @@ phenodataframe$Smoke<-as.factor(phenodataframe$Smoke)
 phenodataframe$Ethnic<-as.factor(phenodataframe$Ethnic)
 
 ```
+For the sensitivity analysis, you may need to re-categorize pregnancy complications. The below example assumes a dataframe with a column that includes specific pregnancy complication. We are re-categorizing assuming there are at least 10 cases of GDM, at least 10 cases of preeclampsia, and the rest of the pregnancy complications are classified as "Other"
+
+```{r}
+
+phenodataframe$ComplicationsNew<-"Other Complication"
+phenodataframe$ComplicationsNew[which(phenodataframe$Complications=="No")]<-"No"
+phenodataframe$ComplicationsNew[which(phenodataframe$Complications=="GDM")]<-"GDM"
+phenodataframe$ComplicationsNew[which(phenodataframe$Complications=="Preeclampsia")]<-"Preeclampsia"
+
+table(phenodataframe$Complications,phenodataframe$ComplicationsNew)
+
+```
+
 
 ### Now you can move on to Step 3
 
