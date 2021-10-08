@@ -49,7 +49,7 @@ We provide an example description for reference (PACEPla_GA_Cohort_Methods_Date.
 
 ### Main Analysis 
 
-Analysis will be restricted to singleton births. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.
+Analysis will be restricted to singleton births. If there are siblings in the cohort (non-twins), randomly select one of the siblings for study inclusion. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.After you estimate cell composition (from function preprocessingofData), we recommend removing samples with estimated syncytiothrophoblast proportions of less than 0.25. We suggest study investigators check into what may be contributing to unusual cell composition estimates by checking the distribution of DNA methylation and clinical characteristics of these samples. 
 
 #### Sensitivity Analysis 
 
@@ -68,7 +68,6 @@ As an extra sensitivity analysis, we ask you to run the gestational age model ag
     - placental insufficiency
     - cervical insufficiency, isoimmunization, 
     - cervical cerclaje
-+ Physician initiated delivery, which might be indicative of pregnancy complications.
 + Caesarian section, if due to pregnancy complications. C-sections due to complications during labor are kept in. 
 + Restrict to only term births (>=37 weeks gestation)
 
@@ -95,7 +94,8 @@ If any of the categorical variables below have less than 10 individuals in one o
 +	**Parity**: preferred categorization is into 2 groups: 0 and >= 1
 +	**Maternal education**: preferred categorization is into 3 groups: 1=primary, 2=secondary, 3=university. It is used as an indicator of socioeconomic status. 
 +	**Maternal smoking during pregnancy**: preferred classification is into 3 groups: 1= No smoking in pregnancy, 2=Smoking, but stopped in early pregnancy (before first trimester), 3 = Smoking throughout pregnancy. If you want to use a different categorization, please contact the meta-analysis center to discuss.
-+	**Mode of delivery**: categorical into 2 groups: 1=spontaneous, 2=induced.
++	**Labor induced**: categorical into 2 groups: 1=No, 2=Yes.
++	**Caesarian section**: categorical into 2 groups: 1=No, 2=Yes.
 +	**Ancestry (optional)**: We will first run models adjusting for self-reported ancestry. We will then run models stratified by major ethnic groups (ie. European, African, Asian…). Within each major ethnic group, additional adjustment for ethnic background is optional (ie. Country, GWAS PCs, etc). 
 +	**Selection factors (optional)**: If your study design includes an enrichment of cases of some condition, please include the case-control variable in the models, or discuss with us.
 +	**Meanlog2oddsContamination**: Adjusting for the contamination score, which is output by the the `ExploratoryDataAnalysis` function. See below how to add this variable to your dataset

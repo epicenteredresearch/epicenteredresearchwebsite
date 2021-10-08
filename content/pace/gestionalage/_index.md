@@ -173,7 +173,7 @@ The function also returns a list that includes:
 
 ## Pre-processing the data
 
-#### For more details on the quality control checks, see here: [link](https://www.epicenteredresearch.com/pace/qcsteps/)
+#### For more details on the quality control checks, see here: [link](https://www.epicenteredresearch.com/pace/qcsteps/). 
 
 This part of the analysis can similarly be used for multiple downstream site-specific analyses because the data pre-processing does not depend on the exposure/outcome of interest. As noted in the function documentation, there are a few options for estimating cell composition, including reference-based methods for blood, cord blood, and placenta. The default is a reference-free based option (see function documentation for full details). For this analysis, please use the reference-based method for the placenta ([ref](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-07186-6)), which estimates cell composition using the constrained Houseman method. 
 
@@ -190,6 +190,9 @@ For this analysis, we recommend the removing the following samples (see [here](h
   + **Samples with too many failed probes**: Check the TooManyFailedProbes variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Probes that are flagged as 'failed' depend on the DetectionPvalMethod, DetectionPvalCutoff, minNbeads=3, and FilterZeroIntensities arguments in the `ExploratoryDataAnalysis` function.
   
   + **Low signal intensity overall**: Check the IntensityCat variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Methyl_and_Unmethyl_Signal_Intensities plot. 
+  
+
+##### If you have sufficient working memory to run all samples at the same time:  
 
 ```r
 
@@ -210,6 +213,83 @@ processedOut<-preprocessingofData(RGset=exampledat,
                   cohort="HEBC",analysisdate="20210618")
 
 ```
+
+##### If you do not have sufficient memory to run this function for all samples at the same time:
+
+This only works if compositeCellType is not "RefFree".
+
+```r
+
+SexWrongRemove<-c("9630789136_R02C01","9630789048_R06C01","9630789238_R02C01")
+TooManyFailedProbes<-c("9630789216_R05C01","9630789238_R03C01","9630789098_R04C02")
+PossibleContamination<-c("9630789136_R01C01","9630789121_R06C02")
+Unintentionalreps<-c("9630789136_R01C01", "9630789121_R06C02")
+
+allsamplestoexclude<-c(SexWrongRemove,TooManyFailedProbes,PossibleContamination,Unintentionalreps)
+
+allBasenames<-sampleNames(exampledat)
+
+## Removing bad ones
+allBasenames<-allBasenames[!(allBasenames %in% allsamplestoexclude)]
+
+## Randomly split into two sets
+basenames1<-sample(allBasenames,round(length(allBasenames)/2,0))
+basenames2<-allBasenames[!(allBasenames %in% basenames1)]
+
+exampledat1<-exampledat[,basenames1]
+pData(exampledat1)$Group<-"First group"
+
+exampledat2<-exampledat[,basenames2]
+pData(exampledat2)$Group<-"Second group"
+
+processedOut1<-preprocessingofData(RGset=exampledat1,
+                  SamplestoRemove=NULL, #already excluded
+                  ProbestoRemove=EDAresults$ProbestoRemove,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestage-placenta",
+                  compositeCellType="Placenta",
+                  KchooseManual=NULL,
+                  savelog=TRUE,
+                  cohort="HEBC_1",analysisdate="20210618") ## note the new cohort name
+                  
+processedOut2<-preprocessingofData(RGset=exampledat2,
+                  SamplestoRemove=NULL, #already excluded
+                  ProbestoRemove=EDAresults$ProbestoRemove,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestage-placenta",
+                  compositeCellType="Placenta",
+                  KchooseManual=NULL,
+                  savelog=TRUE,
+                  cohort="HEBC_2",analysisdate="20210618") ## note the new cohort name
+                  
+setwd("H:\\UCLA\\PACE\\Gestage-placenta")
+cohort="HEBC_1"; analysisdate="20210618"
+
+Mset.norm<-combine(processedOut1$mset,processedOut2$mset)
+betafinal<-cbind(processedOut1$processedBetas,processedOut2$processedBetas)
+Omega<-rbind(processedOut1$Omega,processedOut2$Omega)
+Kchoose<-NA
+
+processedOut<-list(mset=Mset.norm,processedBetas=betafinal,Omega=Omega,Kchoose=Kchoose)
+save(file=paste(cohort,"_",analysisdate,"_Preprocessed.RData",sep=""),compress=TRUE, list=c("processedOut"))
+
+summarybetas<-apply(betafinal,1,function(x){
+    tempx<-na.omit(x)
+    Ntemp<-length(tempx)
+    Nmisstemp<-length(x)-Ntemp
+    Mintemp<-min(tempx)
+    Maxtemp<-max(tempx)
+    Mediantemp<-median(tempx)
+    Meantemp<-mean(tempx)
+    sdtemp<-sd(tempx)
+    c(n=Ntemp,Nmissing=Nmisstemp,min=Mintemp,max=Maxtemp,median=Mediantemp,mean=Meantemp,sd=sdtemp)
+})
+
+summarybetas<-t(summarybetas)
+write.csv(summarybetas,paste(cohort,"_",analysisdate,"_Summarize_Beta_Values.csv",sep=""))
+
+
+
+```
+
 
 We will use the SeSAMe method to estimate the detection p-values (specified by the `DetectionPvalMethod` in the `ExploratoryDataAnalysis`). The `detectionMask` function masks the beta-values based on a specified detection p-value (for this analysis, using the cut-off of 0.05; specified by `DetectionPvalCutoff=0.05` in the `detectionMask` function) and a matrix that indicates other poor intensity values, which is output by the `ExploratoryDataAnalysis` function. Other poor intensity values that are masked include those having less than three beads per probe (specified by `minNbeads=3` in the `ExploratoryDataAnalysis` function) and intensity values of zero (`FilterZeroIntensities` is `TRUE` in the `ExploratoryDataAnalysis`). The `detectionMask` function outputs a beta-value matrix after masking (with `NA`) of all of these indicators of poor intensity values. See `?detectionMask` for more details.
 

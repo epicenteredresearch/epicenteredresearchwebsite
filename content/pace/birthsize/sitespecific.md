@@ -51,7 +51,7 @@ We provide an example description for reference (PACEPla_BW_Cohort_Methods_Date.
 
 ### Exclusion criteria
 
-Analysis will be restricted to singleton births. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data.
+Analysis will be restricted to singleton births. Analysis will be restricted to singleton births. If there are siblings in the cohort (non-twins), randomly select one of the siblings for study inclusion. If the DNA methylation data stems from a case-cohort study, please restrict the analysis to the sub-cohort. If the DNA methylation data stems from a case-control study, please let us know, and we can discuss the best exclusion criteria to use given the study design that generated the data. After you estimate cell composition (from function preprocessingofData), we recommend removing samples with estimated syncytiothrophoblast proportions of less than 0.25. We suggest study investigators check into what may be contributing to unusual cell composition estimates by checking the distribution of DNA methylation and clinical characteristics of these samples.
 
 #### Main Analysis
 
@@ -69,7 +69,8 @@ To evaluate fetal growth not linked to gestational age or pregnancy complication
 
 #### Secondary Analysis
 
-Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. These secondary analyses will be restricted to cohorts with at least 10 mothers with pregnancy complications in their dataset. 
+Our secondary analyses will include all children at term (between >=37 and <43 weeks of gestation) and adjust for pregnancy complications. These secondary analyses will be restricted to cohorts with at least 10 mothers with pregnancy complications in their dataset. We recommend creating groups for complications with at least 10 individuals, and categorize the rest as “other complications”. Example categories: 1. none, 2. gestational diabetes, 3. preeclampsia/eclampsia, 4. other complication.
+
 
 ### Outcome
 
