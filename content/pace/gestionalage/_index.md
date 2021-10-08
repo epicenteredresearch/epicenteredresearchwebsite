@@ -50,6 +50,7 @@ BiocManager::install("FlowSorted.Blood.EPIC")
 
 remotes::install_github("bokeh/rbokeh")
 remotes::install_github("ki-tools/growthstandards")
+remotes::install_github("cran/RefFreeEWAS")
 devtools::install_github("hhhh5/ewastools")
 
 ## If ExperimentHub (>1.17.2), need to update caching location
@@ -261,7 +262,7 @@ processedOut2<-preprocessingofData(RGset=exampledat2,
                   cohort="HEBC_2",analysisdate="20210618") ## note the new cohort name
                   
 setwd("H:\\UCLA\\PACE\\Gestage-placenta")
-cohort="HEBC_1"; analysisdate="20210618"
+cohort="HEBC"; analysisdate="20210618"
 
 Mset.norm<-combine(processedOut1$mset,processedOut2$mset)
 betafinal<-cbind(processedOut1$processedBetas,processedOut2$processedBetas)
@@ -285,8 +286,6 @@ summarybetas<-apply(betafinal,1,function(x){
 
 summarybetas<-t(summarybetas)
 write.csv(summarybetas,paste(cohort,"_",analysisdate,"_Summarize_Beta_Values.csv",sep=""))
-
-
 
 ```
 

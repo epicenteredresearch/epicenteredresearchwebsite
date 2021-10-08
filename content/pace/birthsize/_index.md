@@ -50,6 +50,7 @@ BiocManager::install("FlowSorted.Blood.EPIC")
 
 remotes::install_github("bokeh/rbokeh")
 remotes::install_github("ki-tools/growthstandards")
+remotes::install_github("cran/RefFreeEWAS")
 devtools::install_github("hhhh5/ewastools")
 
 ## If ExperimentHub (>1.17.2), need to update caching location
@@ -191,6 +192,8 @@ For this analysis, we recommend the removing the following samples (see [here](h
   
   + **Low signal intensity overall**: Check the IntensityCat variable in the Recommended_Samples_to_Remove csv output by the `ExploratoryDataAnalysis` function. Also see the Methyl_and_Unmethyl_Signal_Intensities plot. 
 
+##### If you have sufficient working memory to run all samples at the same time:  
+
 ```r
 
 SexWrongRemove<-c("9630789136_R02C01","9630789048_R06C01","9630789238_R02C01")
@@ -203,11 +206,85 @@ allsamplestoexclude<-c(SexWrongRemove,TooManyFailedProbes,PossibleContamination,
 processedOut<-preprocessingofData(RGset=exampledat,
                   SamplestoRemove=allsamplestoexclude,
                   ProbestoRemove=EDAresults$ProbestoRemove,
-                  destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
+                  destinationfolder="H:\\UCLA\\PACE\\Gestage-placenta",
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
                   cohort="HEBC",analysisdate="20210618")
+
+```
+
+##### If you do not have sufficient memory to run this function for all samples at the same time:
+
+This only works if compositeCellType is not "RefFree".
+
+```r
+
+SexWrongRemove<-c("9630789136_R02C01","9630789048_R06C01","9630789238_R02C01")
+TooManyFailedProbes<-c("9630789216_R05C01","9630789238_R03C01","9630789098_R04C02")
+PossibleContamination<-c("9630789136_R01C01","9630789121_R06C02")
+Unintentionalreps<-c("9630789136_R01C01", "9630789121_R06C02")
+
+allsamplestoexclude<-c(SexWrongRemove,TooManyFailedProbes,PossibleContamination,Unintentionalreps)
+
+allBasenames<-sampleNames(exampledat)
+
+## Removing bad ones
+allBasenames<-allBasenames[!(allBasenames %in% allsamplestoexclude)]
+
+## Randomly split into two sets
+basenames1<-sample(allBasenames,round(length(allBasenames)/2,0))
+basenames2<-allBasenames[!(allBasenames %in% basenames1)]
+
+exampledat1<-exampledat[,basenames1]
+pData(exampledat1)$Group<-"First group"
+
+exampledat2<-exampledat[,basenames2]
+pData(exampledat2)$Group<-"Second group"
+
+processedOut1<-preprocessingofData(RGset=exampledat1,
+                  SamplestoRemove=NULL, #already excluded
+                  ProbestoRemove=EDAresults$ProbestoRemove,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestage-placenta",
+                  compositeCellType="Placenta",
+                  KchooseManual=NULL,
+                  savelog=TRUE,
+                  cohort="HEBC_1",analysisdate="20210618") ## note the new cohort name
+                  
+processedOut2<-preprocessingofData(RGset=exampledat2,
+                  SamplestoRemove=NULL, #already excluded
+                  ProbestoRemove=EDAresults$ProbestoRemove,
+                  destinationfolder="H:\\UCLA\\PACE\\Gestage-placenta",
+                  compositeCellType="Placenta",
+                  KchooseManual=NULL,
+                  savelog=TRUE,
+                  cohort="HEBC_2",analysisdate="20210618") ## note the new cohort name
+                  
+setwd("H:\\UCLA\\PACE\\Gestage-placenta")
+cohort="HEBC"; analysisdate="20210618"
+
+Mset.norm<-combine(processedOut1$mset,processedOut2$mset)
+betafinal<-cbind(processedOut1$processedBetas,processedOut2$processedBetas)
+Omega<-rbind(processedOut1$Omega,processedOut2$Omega)
+Kchoose<-NA
+
+processedOut<-list(mset=Mset.norm,processedBetas=betafinal,Omega=Omega,Kchoose=Kchoose)
+save(file=paste(cohort,"_",analysisdate,"_Preprocessed.RData",sep=""),compress=TRUE, list=c("processedOut"))
+
+summarybetas<-apply(betafinal,1,function(x){
+    tempx<-na.omit(x)
+    Ntemp<-length(tempx)
+    Nmisstemp<-length(x)-Ntemp
+    Mintemp<-min(tempx)
+    Maxtemp<-max(tempx)
+    Mediantemp<-median(tempx)
+    Meantemp<-mean(tempx)
+    sdtemp<-sd(tempx)
+    c(n=Ntemp,Nmissing=Nmisstemp,min=Mintemp,max=Maxtemp,median=Mediantemp,mean=Meantemp,sd=sdtemp)
+})
+
+summarybetas<-t(summarybetas)
+write.csv(summarybetas,paste(cohort,"_",analysisdate,"_Summarize_Beta_Values.csv",sep=""))
 
 ```
 
