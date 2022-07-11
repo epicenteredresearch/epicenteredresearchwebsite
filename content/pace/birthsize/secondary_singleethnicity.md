@@ -20,6 +20,10 @@ Given the modeling approaches used, the `dataAnalysis` function requires a good 
 
 ```{r eval=FALSE}
 
+## if running in parallel, checking the number of available cores 
+library(parallel)
+detectCores() # should probably choose at least one less than the number available 
+
 allvarsofinterest=c("BWT_Zscore","BirthLength_Zscore","HeadCircum_Zscore","wlr_Zscore")
 
 ## You can reduce this dataframe to whatever variables you have.
@@ -52,9 +56,11 @@ for (i in 1:length(allvarsofinterest)){
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
+                  number_cores=8,
+                  runparallel=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618",
+                  cohort="HEBC",analysisdate="20220709",
                   analysisname="secondary")
   
   
@@ -94,9 +100,11 @@ for (i in 1:length(allvarsofinterest)){
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
+                  number_cores=8,
+                  runparallel=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618",
+                  cohort="HEBC",analysisdate="20220709",
                   analysisname="secondary")
   
   
@@ -109,7 +117,7 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 ```{r eval=FALSE}
 
-baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210618_Output"
+baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20220709_Output"
 
 listchecking<-as.list(rep(NA,length(allvarsofinterest)))
 names(listchecking)<-allvarsofinterest
@@ -121,7 +129,7 @@ for (i in 1:length(allvarsofinterest)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_secondary",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_secondary_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20220709_",tempvarofinterest,"_secondary_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))

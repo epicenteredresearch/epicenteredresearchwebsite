@@ -83,9 +83,11 @@ tempresults<-dataAnalysis(phenofinal=phenodataframe,
                           RestrictToSubset=TRUE,
                           RestrictionVar="NoPregnancyComplications",
                           RestrictToIndicator="Yes",
+                          number_cores=8,
+                          runparallel=TRUE,
                           destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210618",
+                          cohort="HEBC",analysisdate="20220709",
                           analysisname="sensitivtyanalysis")
                           
 tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
@@ -109,9 +111,11 @@ tempresultsNonHispanicWhite<-dataAnalysis(phenofinal=phenodataframe,
                           RestrictToSubset=TRUE,
                           RestrictionVar="NoPregnancyComplicationsandWhite",
                           RestrictToIndicator="Yes",
+                          number_cores=8,
+                          runparallel=TRUE,
                           destinationfolder="H:\\UCLA\\PACE\\Gestationalage-placenta",
                           savelog=TRUE,
-                          cohort="HEBC",analysisdate="20210618",
+                          cohort="HEBC",analysisdate="20220709",
                           analysisname="sensitivtyanalysis")
 
 ```

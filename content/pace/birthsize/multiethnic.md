@@ -34,7 +34,15 @@ Additional details regarding the `dataAnalysis` function can be found by running
 
 Given the modeling approaches used, the `dataAnalysis` function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
 
+#### If you plan to run your analysis in parallel
+
+Running your site-specific analysis in parallel (argument `runparallel=TRUE`) can greatly reduce the computation time. To run your analysis in parallel, you will need to specify the number of cores to use (argument `number_cores`). You can use the `detectCores()` function in the `parallel` library to check the number of cores available; depending on your computing resources, you may need to specify less cores than the total number available. If you are not planning to run your analysis in parallel, specify `runparallel=FALSE`.
+
 ```r
+
+## if running in parallel, checking the number of available cores 
+library(parallel)
+detectCores() # should probably choose at least one less than the number available 
 
 allvarsofinterest=c("BWT_Zscore","BirthLength_Zscore","HeadCircum_Zscore","wlr_Zscore")
 
@@ -69,9 +77,11 @@ for (i in 1:length(allvarsofinterest)){
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
+                  number_cores=8,
+                  runparallel=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618",
+                  cohort="HEBC",analysisdate="20220709",
                   analysisname="main")
   
     ## restricting to the most prevalent race/ethnicity
@@ -97,9 +107,11 @@ for (i in 1:length(allvarsofinterest)){
                   RestrictToSubset=TRUE,
                   RestrictionVar="Ethnic",
                   RestrictToIndicator="1",
+                  number_cores=8,
+                  runparallel=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618",
+                  cohort="HEBC",analysisdate="20220709",
                   analysisname="main")
   
 }
@@ -138,9 +150,11 @@ for (i in 1:length(allvarsofinterest)){
                   RestrictToSubset=FALSE,
                   RestrictionVar=NULL,
                   RestrictToIndicator=NULL,
+                  number_cores=8,
+                  runparallel=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618",
+                  cohort="HEBC",analysisdate="20220709",
                   analysisname="main")
   
     ## restricting to the most prevalent race/ethnicity
@@ -166,9 +180,11 @@ for (i in 1:length(allvarsofinterest)){
                   RestrictToSubset=TRUE,
                   RestrictionVar="Ethnic",
                   RestrictToIndicator="1",
+                  number_cores=8,
+                  runparallel=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618",
+                  cohort="HEBC",analysisdate="20220709",
                   analysisname="main")
   
 }
@@ -181,7 +197,7 @@ The function `dataAnalysis` includes an indicator of whether each site-specific 
 
 ```r
 
-baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20210618_Output"
+baseoutputdirectory<-"H:/UCLA/PACE/Birthweight-placenta/HEBC_20220709_Output"
 
 listchecking<-as.list(rep(NA,length(allvarsofinterest)))
 names(listchecking)<-allvarsofinterest
@@ -196,14 +212,14 @@ for (i in 1:length(allvarsofinterest)){
   cat("Exposure:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20220709_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_main/Ethnic_1",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("HEBC_20210618_",tempvarofinterest,"_main_allanalyses.RData",sep="")
+  tempfilename<-paste("HEBC_20220709_",tempvarofinterest,"_main_allanalyses.RData",sep="")
   load(tempfilename)
   if("CellInteraction" %in% names(alldataout)) alldataout$CellInteraction<-NULL
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_Ethnic_1[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))

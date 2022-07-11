@@ -18,11 +18,15 @@ This stage of the analysis is specific to the chosen exposure/outcome and the sp
 
 Given the modeling approaches used, the dataAnalysis function requires a good deal of time to run. We recommend first checking whether the function runs on a relatively small subset of sites (i.e. 100 CpG loci). If you encounter any issues, please let us know. If not, proceed to the next step.
 
+#### If you plan to run your analysis in parallel
+
+Running your site-specific analysis in parallel (argument `runparallel=TRUE`) can greatly reduce the computation time. To run your analysis in parallel, you will need to specify the number of cores to use (argument `number_cores`). You can use the `detectCores()` function in the `parallel` library to check the number of cores available; depending on your computing resources, you may need to specify less cores than the total number available. If you are not planning to run your analysis in parallel, specify `runparallel=FALSE`.
+
 ```r
 
 # if needed reload Preprocessed data of step 1 and the final phenodataframe from step 2
 # library(PACEanalysis)
-# load("C:/methylation_placenta/ITU_20210331_Output/ITU_20210331_Preprocessed.Rdata")
+# load("C:/methylation_placenta/ITU_20220709_Output/ITU_20220709_Preprocessed.Rdata")
 # load("C:/methylation_placenta/phenofinal_mentalhealth.Rdata")
 
 # MAIN MODELS WITH EXPOSURE AS CONTINUOUS (M01-M03 in the Analysis plan)
@@ -61,7 +65,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "testMAIN")
 }
 
@@ -102,7 +106,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "testMAIN")
 }
 
@@ -142,7 +146,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "testBWTGESTA")
 }
 
@@ -183,7 +187,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "testSENSITIVITY")
 }
 
@@ -236,7 +240,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "MAIN")
 }
 
@@ -277,7 +281,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "MAIN")
 }
 
@@ -317,7 +321,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "BWTGESTA")
 }
 
@@ -358,7 +362,7 @@ for (i in 1:nrow(modelstorun)){
                             destinationfolder="C:/methylation_placenta",
                             savelog=TRUE,
                             cohort="ITU",
-                            analysisdate = "20210404",
+                            analysisdate = "20220709",
                             analysisname = "SENSITIVITY")
 }
 
@@ -370,7 +374,7 @@ The function dataAnalysis includes an indicator of whether each site-specific mo
 
 ```r
 
-baseoutputdirectory<-"C:/methylation_placenta/ITU_20210404_Output"
+baseoutputdirectory<-"C:/methylation_placenta/ITU_20220709_Output"
 
 # BINARY EXPOSURE MODELS
 
@@ -387,7 +391,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_MAIN",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("ITU_20210404_",tempvarofinterest,"_MAIN_allanalyses.RData",sep="")
+  tempfilename<-paste("ITU_20220709_",tempvarofinterest,"_MAIN_allanalyses.RData",sep="")
   load(tempfilename)
   
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_MAIN_BIN[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
@@ -404,7 +408,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_BWTGESTA",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("ITU_20210404_",tempvarofinterest,"_BWTGESTA_allanalyses.RData",sep="")
+  tempfilename<-paste("ITU_20220709_",tempvarofinterest,"_BWTGESTA_allanalyses.RData",sep="")
   load(tempfilename)
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_BWTGESTA[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
   
@@ -427,7 +431,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_MAIN",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("ITU_20210404_",tempvarofinterest,"_MAIN_allanalyses.RData",sep="")
+  tempfilename<-paste("ITU_20220709_",tempvarofinterest,"_MAIN_allanalyses.RData",sep="")
   load(tempfilename)
   
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_MAIN_CONT[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))
@@ -445,7 +449,7 @@ for (i in 1:nrow(modelstorun)){
   cat("Outcome:",tempvarofinterest,"\n")
   tempdirectory<-paste(baseoutputdirectory,"/",tempvarofinterest,"_SENSITIVITY/MEDICATION_0",sep="")
   setwd(tempdirectory)
-  tempfilename<-paste("ITU_20210404_",tempvarofinterest,"_SENSITIVITY_allanalyses.RData",sep="")
+  tempfilename<-paste("ITU_20220709_",tempvarofinterest,"_SENSITIVITY_allanalyses.RData",sep="")
   load(tempfilename)
   
   if("warnings" %in% colnames(alldataout[[1]])) listchecking_SENSITIVITY[[i]]<-lapply(alldataout,function(x) if(length(x)>1) table(x$warnings))

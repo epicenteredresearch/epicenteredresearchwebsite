@@ -212,8 +212,8 @@ We also want to adjust for estimated contamination. To do this, we want to add i
 
 ```{r eval=FALSE}
 
-setwd("C:/methylation_placenta/ITU_20210401_Output/EDA")
-samplestoexclude<-read.csv("ITU_20210401_Recommended_Samples_to_Remove.csv",header=TRUE)
+setwd("C:/methylation_placenta/ITU_20220709_Output/EDA")
+samplestoexclude<-read.csv("ITU__Recommended_Samples_to_Remove.csv",header=TRUE)
 samplestoexclude<-samplestoexclude[,c("Basename","Meanlog2oddsContamination")]
 samplestoexclude<-unique(samplestoexclude)
 

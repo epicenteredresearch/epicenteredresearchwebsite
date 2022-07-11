@@ -114,11 +114,11 @@ If you closed prior R session, you can load list of the phenotype information by
 
 ```{r eval=FALSE}
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output")
-load("HEBC_20210618_Preprocessed.RData")
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20220709_Output")
+load("HEBC_20220709_Preprocessed.RData")
 
 ## load beta-values
-load("HEBC_20210618_PreprocessedBetas_nooutliers.RData")
+load("HEBC_20220709_PreprocessedBetas_nooutliers.RData")
 Betasnooutliers<-betafinal.nooutlier ## name of the object saved in the RData file
 
 phenodataframe<-as.data.frame(pData(processedOut$mset))
@@ -128,8 +128,8 @@ We also want to adjust for estimated contamination. To do this, we want to add i
 
 ```{r eval=FALSE}
 
-setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20210618_Output\\EDA")
-samplestoexclude<-read.csv("HEBC_20210618_Recommended_Samples_to_Remove.csv",header=TRUE)
+setwd("H:\\UCLA\\PACE\\Birthweight-placenta\\HEBC_20220709_Output\\EDA")
+samplestoexclude<-read.csv("HEBC_20220709_Recommended_Samples_to_Remove.csv",header=TRUE)
 samplestoexclude<-samplestoexclude[,c("Basename","Meanlog2oddsContamination")]
 samplestoexclude<-unique(samplestoexclude)
 

@@ -27,9 +27,10 @@ First need to install required packages if you don't have them already
 ```r
 
 ## First need to install required packages if you don't have them already
-install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS","pvclust",
-                   "GGally","Hmisc","MASS","sandwich", "lmtest","plyr","remotes","devtools"))
+install.packages(c("ggplot2","gplots","reshape","RPMM","pvclust","doParallel",
+                   "GGally","Hmisc","MASS","sandwich", "lmtest","plyr","remotes","devtools","parallel","dplyr"))
 
+remotes::install_version("RefFreeEWAS", "2.2")
 remotes::install_version("heatmap.plus", "1.3")
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -39,18 +40,17 @@ BiocManager::install(c("methylumi","minfi","sva","sesame","wateRmelon","EpiDISH"
                        "IlluminaHumanMethylation450kmanifest",
                        "IlluminaHumanMethylation450kanno.ilmn12.hg19",
                        "IlluminaHumanMethylationEPICanno.ilm10b4.hg19",
+                       "TxDb.Hsapiens.UCSC.hg19.knownGene",
+                       "org.Hs.eg.db","FDb.InfiniumMethylation.hg19",
+                       "FlowSorted.CordBloodCombined.450k",
+                       "FlowSorted.Blood.EPIC",
                        "FlowSorted.CordBlood.450k",
                        "FlowSorted.Blood.450k",
                        "illuminaio"))
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("FlowSorted.Blood.EPIC")
-
 remotes::install_github("bokeh/rbokeh")
 remotes::install_github("ki-tools/growthstandards")
-devtools::install_github("hhhh5/ewastools")
+remotes::install_github("hhhh5/ewastools")
 
 ## If ExperimentHub (>1.17.2), need to update caching location
 moveFiles<-function(package){
@@ -74,10 +74,14 @@ moveFiles(package)
 ## If recently installed sesame, need to cache the associated annotation data
 ## This only needs to be done once per new installation of sesame
 sesameData::sesameDataCacheAll()
+eh<-ExperimentHub()
+eh[["EH6019"]] ## one that isn't automatically downloaded
+eh[["EH3677"]] ## one that isn't automatically downloaded
 
 ## Need to then install package, specifying path to the source package
-install.packages("F:\\PACE\\PACEanalysis_0.1.7.tar.gz",
+install.packages("E:\\PACE\\PACEanalysis_0.1.8.tar.gz",
                  repos = NULL, type="source")
+
 ```
 
 ### Attaching package and loading the samples
@@ -123,9 +127,9 @@ exampledat<-loadingSamples(
   HEADCIRCUMvar=NULL,
   IDATdir="C:/methylation_placenta/idat_placenta", # select your idat folder
   destinationfolder="C:/methylation_placenta",     
-  savelog=TRUE,                             # A subfolder will be created in this case C:/methylation_placenta/ITU_20210401_Output
+  savelog=TRUE,                             # A subfolder will be created in this case C:/methylation_placenta/ITU_20220709_Output
   cohort="ITU",
-  analysisdate = "20210401")    
+  analysisdate = "20220709")    
 
 
 ```
@@ -147,9 +151,9 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   DetectionPvalCutoff=0.05,
                   minNbeads=3,
                   FilterZeroIntensities=TRUE,
-                  destinationfolder="C:/methylation_placenta", # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20210401_Output/EDA
+                  destinationfolder="C:/methylation_placenta", # EDA subfolder will be created, in this case C:/methylation_placenta/ITU_20220709_Output/EDA
                   savelog=TRUE, 
-                  cohort="ITU",analysisdate="20210401")
+                  cohort="ITU",analysisdate="20220709")
 
 ## You may want to save your data at this point, e.g
 ## save(exampledat,EDAresults,file="C:/methylation_placenta/exampledat_EDAresults.Rdata")
@@ -229,7 +233,7 @@ processedOut<-preprocessingofData(RGset=exampledat,
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="ITU",analysisdate="20210401")
+                  cohort="ITU",analysisdate="20220709")
 
 ```
 
@@ -241,7 +245,7 @@ betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   DetectionPvalCutoff=0.05,
                                   IndicatorGoodIntensity=EDAresults$IndicatorGoodIntensity,
                                   destinationfolder="C:/methylation_placenta",
-                                  cohort="ITU",analysisdate="20210401")
+                                  cohort="ITU",analysisdate="20220709")
 
 ```
 
@@ -253,7 +257,7 @@ Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
                                   trimming=FALSE,
                                   pct=0.005,
                                   destinationfolder="C:/methylation_placenta",
-                                  cohort="ITU",analysisdate="20210401")
+                                  cohort="ITU",analysisdate="20220709")
 
 ```
 

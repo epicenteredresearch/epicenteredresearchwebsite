@@ -27,9 +27,10 @@ First need to install required packages if you don't have them already
 ```r
 
 ## First need to install required packages if you don't have them already
-install.packages(c("ggplot2","gplots","reshape","RPMM","RefFreeEWAS","pvclust",
-                   "GGally","Hmisc","MASS","sandwich", "lmtest","plyr","remotes","devtools"))
+install.packages(c("ggplot2","gplots","reshape","RPMM","pvclust","doParallel",
+                   "GGally","Hmisc","MASS","sandwich", "lmtest","plyr","remotes","devtools","parallel","dplyr"))
 
+remotes::install_version("RefFreeEWAS", "2.2")
 remotes::install_version("heatmap.plus", "1.3")
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -39,19 +40,17 @@ BiocManager::install(c("methylumi","minfi","sva","sesame","wateRmelon","EpiDISH"
                        "IlluminaHumanMethylation450kmanifest",
                        "IlluminaHumanMethylation450kanno.ilmn12.hg19",
                        "IlluminaHumanMethylationEPICanno.ilm10b4.hg19",
+                       "TxDb.Hsapiens.UCSC.hg19.knownGene",
+                       "org.Hs.eg.db","FDb.InfiniumMethylation.hg19",
+                       "FlowSorted.CordBloodCombined.450k",
+                       "FlowSorted.Blood.EPIC",
                        "FlowSorted.CordBlood.450k",
                        "FlowSorted.Blood.450k",
                        "illuminaio"))
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("FlowSorted.Blood.EPIC")
-
 remotes::install_github("bokeh/rbokeh")
 remotes::install_github("ki-tools/growthstandards")
-remotes::install_github("cran/RefFreeEWAS")
-devtools::install_github("hhhh5/ewastools")
+remotes::install_github("hhhh5/ewastools")
 
 ## If ExperimentHub (>1.17.2), need to update caching location
 moveFiles<-function(package){
@@ -75,10 +74,14 @@ moveFiles(package)
 ## If recently installed sesame, need to cache the associated annotation data
 ## This only needs to be done once per new installation of sesame
 sesameData::sesameDataCacheAll()
+eh<-ExperimentHub()
+eh[["EH6019"]] ## one that isn't automatically downloaded
+eh[["EH3677"]] ## one that isn't automatically downloaded
 
 ## Need to then install package, specifying path to the source package
-install.packages("F:\\PACE\\PACEanalysis_0.1.7.tar.gz",
+install.packages("E:\\PACE\\PACEanalysis_0.1.8.tar.gz",
                  repos = NULL, type="source")
+
 ```
 
 ### Attaching package and loading the samples
@@ -107,7 +110,7 @@ exampledat<-loadingSamples(SamplePlacement=NULL,PhenoData=allphenodata,
                   IDATdir="H:\\UCLA\\PACE\\Birthweight-placenta\\IDATfiles",
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618")
+                  cohort="HEBC",analysisdate="20220709")
 
 
 ```
@@ -129,7 +132,7 @@ EDAresults<-ExploratoryDataAnalysis(RGset=exampledat,
                   FilterZeroIntensities=TRUE,
                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618")
+                  cohort="HEBC",analysisdate="20220709")
                   
                   
 ```
@@ -210,7 +213,7 @@ processedOut<-preprocessingofData(RGset=exampledat,
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="HEBC",analysisdate="20210618")
+                  cohort="HEBC",analysisdate="20220709")
 
 ```
 
@@ -249,7 +252,7 @@ processedOut1<-preprocessingofData(RGset=exampledat1,
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="HEBC_1",analysisdate="20210618") ## note the new cohort name
+                  cohort="HEBC_1",analysisdate="20220709") ## note the new cohort name
                   
 processedOut2<-preprocessingofData(RGset=exampledat2,
                   SamplestoRemove=NULL, #already excluded
@@ -258,10 +261,10 @@ processedOut2<-preprocessingofData(RGset=exampledat2,
                   compositeCellType="Placenta",
                   KchooseManual=NULL,
                   savelog=TRUE,
-                  cohort="HEBC_2",analysisdate="20210618") ## note the new cohort name
+                  cohort="HEBC_2",analysisdate="20220709") ## note the new cohort name
                   
 setwd("H:\\UCLA\\PACE\\Gestage-placenta")
-cohort="HEBC"; analysisdate="20210618"
+cohort="HEBC"; analysisdate="20220709"
 
 Mset.norm<-combine(processedOut1$mset,processedOut2$mset)
 betafinal<-cbind(processedOut1$processedBetas,processedOut2$processedBetas)
@@ -296,7 +299,7 @@ betasabovedetection<-detectionMask(processedBetas=processedOut$processedBetas,
                                   DetectionPvalCutoff=0.05,
                                   IndicatorGoodIntensity=EDAresults$IndicatorGoodIntensity,
                                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                                  cohort="HEBC",analysisdate="20210618")
+                                  cohort="HEBC",analysisdate="20220709")
 
 ```
 
@@ -308,7 +311,7 @@ Betasnooutliers<-outlierprocess(processedBetas=betasabovedetection,
                                   trimming=FALSE,
                                   pct=0.005,
                                   destinationfolder="H:\\UCLA\\PACE\\Birthweight-placenta",
-                                  cohort="HEBC",analysisdate="20210618")
+                                  cohort="HEBC",analysisdate="20220709")
 
 ```
 
